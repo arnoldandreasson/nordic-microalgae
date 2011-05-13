@@ -85,11 +85,11 @@ def execute(file_name = '../data_export/taxa_facts.txt',
             out.write(field_separator.join(row) + row_delimiter)                
     except (IOError, OSError):
         print("ERROR: Can't write to text file." + file_name)
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: Script will be terminated.")
         sys.exit(1)
     except mysql.Error, e:
-        print ("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
+        print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
         if out: out.close()

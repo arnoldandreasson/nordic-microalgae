@@ -90,11 +90,11 @@ def execute(file_name = '../data_import/taxa_facts.txt',
     #
     except (IOError, OSError):
         print("ERROR: Can't read text file." + infile)
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: Script will be terminated.")
         sys.exit(1)
     except mysql.Error, e:
-        print ("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
+        print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
         if infile: infile.close() 

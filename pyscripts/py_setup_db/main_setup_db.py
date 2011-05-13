@@ -31,16 +31,17 @@ import load_taxa_ranks
 def execute():
     """ Script that creates and populates a test database. """
     #
-    print ("\n=== Create tables. ===\n")
+    print("\n=== Create tables. ===\n")
+    print("Note: An exception 'lost connection...' will occur during database rebuild.")
     create_tables.execute()
     #
-    print ("\n=== Load: system_settings. ===\n")
+    print("\n=== Load: system_settings. ===\n")
     load_system_settings.execute()
     #
-    print ("\n=== Load: taxa_ranks. ===\n")
+    print("\n=== Load: taxa_ranks. ===\n")
     load_taxa_ranks.execute()
     #
-    print ("\n=== Finished. ===\n")
+    print("\n=== Finished. ===\n")
 
 
 # Main.

@@ -79,7 +79,7 @@ def execute(file_name = '../data_import/taxa_media.txt',
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon i taxa. Name: " + scientificname)
+                    print("Error: Can't find taxon in taxa. Name: " + scientificname)
                     continue # Skip this taxon.
 
                 # Check if db row exists. 
@@ -140,8 +140,8 @@ def execute(file_name = '../data_import/taxa_media.txt',
         infile.close()
     #
     except mysql.Error, e:
-        print ("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
+        print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
         if cursor: cursor.close()

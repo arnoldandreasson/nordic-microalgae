@@ -30,13 +30,13 @@ import export_taxa_facts
 def execute():
     """ """
     #
-    print ("\n=== Export: taxa. ===\n")
+    print("\n=== Export: taxa. ===\n")
     export_taxa.execute()
     #
-    print ("\n=== Export: taxa_facts. ===\n")
+    print("\n=== Export: taxa_facts. ===\n")
     export_taxa_facts.execute()
     #
-    print ("\n=== Finished. ===\n")
+    print("\n=== Finished. ===\n")
 
 
 # Main.

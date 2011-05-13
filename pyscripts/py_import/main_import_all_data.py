@@ -39,41 +39,41 @@ import generate_taxa_filter_search
 def execute():
     """ Script that creates and populates a test database. """
     #
-    print ("\n=== Import data: taxa. ===\n")
+    print("\n=== Import data: taxa. ===\n")
     import_taxa.execute()
     #
-#    print ("\n=== Import data: taxa_synonyms. ===\n")
+#    print("\n=== Import data: taxa_synonyms. ===\n")
 ###    import_taxa_synonyms.execute()
     #
-    print ("\n=== Import data: taxa_facts. ===\n")
+    print("\n=== Import data: taxa_facts. ===\n")
     import_taxa_facts.execute()
     #
-#    print ("\n=== Import data: taxa_facts_drafts. ===\n")
+#    print("\n=== Import data: taxa_facts_drafts. ===\n")
 ###    import_taxa_facts_drafts.execute()
     #
-#    print ("\n=== Import data: taxa_external_links. ===\n")
+#    print("\n=== Import data: taxa_external_links. ===\n")
 ###    import_taxa_external_links.execute()
     #
-#    print ("\n=== Import data: taxa_facts_external. ===\n")
+#    print("\n=== Import data: taxa_facts_external. ===\n")
 ###    import_taxa_facts_external.execute()
     #
-    print ("\n=== Import data: taxa_facts_peg. ===\n")
+    print("\n=== Import data: taxa_facts_peg. ===\n")
     import_taxa_facts_peg.execute()
     #
-    print ("\n=== Import data: taxa_media. ===\n")
+    print("\n=== Import data: taxa_media. ===\n")
     import_taxa_media.execute()
     #
     #
-    print ("\n=== Generate data: taxa_hierarchy_search. ===\n")
+    print("\n=== Generate data: taxa_hierarchy_search. ===\n")
     generate_taxa_hierarchy_search.execute()
     #
-    print ("\n=== Generate data: taxa_navigation. ===\n")
+    print("\n=== Generate data: taxa_navigation. ===\n")
     generate_taxa_navigation.execute()
     #
-#    print ("\n=== Generate data: taxa_filter_search. ===\n")
+#    print("\n=== Generate data: taxa_filter_search. ===\n")
 ###    generate_taxa_filter_search.execute()
     #
-    print ("\n=== Finished. ===\n")
+    print("\n=== Finished. ===\n")
 
 
 # Main.
