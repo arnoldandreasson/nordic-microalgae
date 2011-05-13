@@ -44,7 +44,7 @@ def execute():
             #
             if taxon_id == parent_id:
                 # Handle error in dyntaxa. Will generate infinite loop.
-                print ("ERROR: taxon_id = parent_id:" + unicode(taxon_id))
+                print("ERROR: taxon_id = parent_id:" + unicode(taxon_id))
                 continue # Continue with next taxon.
             #
             try:
@@ -61,12 +61,12 @@ def execute():
                     else:
                         parent_id = 0
             except mysql.Error, e:
-                print ("ERROR: taxon_id: " + unicode(taxon_id) + " parent_id: " + unicode(parent_id))
-                print ("ERROR %d: %s" % (e.args[0], e.args[1]))
+                print("ERROR: taxon_id: " + unicode(taxon_id) + " parent_id: " + unicode(parent_id))
+                print("ERROR %d: %s" % (e.args[0], e.args[1]))
     #
     except mysql.Error, e:
-        print ("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
+        print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
         if cursor_1: cursor_1.close()

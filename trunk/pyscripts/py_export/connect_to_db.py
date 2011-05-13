@@ -38,6 +38,6 @@ def connect():
                              charset = 'utf8')
     #
     except mysql.Error, e:
-        print ("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
+        print("ERROR: Script will be terminated.")
         sys.exit(1)

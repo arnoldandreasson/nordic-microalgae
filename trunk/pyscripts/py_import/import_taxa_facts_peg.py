@@ -28,8 +28,9 @@ import MySQLdb as mysql
 import sys
 import connect_to_db
 import json
-import plankton_toolbox.core.biology.taxa as taxa
-import plankton_toolbox.core.biology.taxa_sources as taxa_sources
+import codecs
+#import plankton_toolbox.core.biology.taxa as taxa
+#import plankton_toolbox.core.biology.taxa_sources as taxa_sources
 
     
 def execute(file_name = '../data_external/PEG_BVOL2010.json'):
@@ -43,10 +44,9 @@ def execute(file_name = '../data_external/PEG_BVOL2010.json'):
         cursor.close()
         cursor=db.cursor()
         # Read json file into PEG object.
-        peg = taxa.Peg() 
-        peg.clear()
-        importer = taxa_sources.JsonFile(taxaObject = peg)
-        importer.importTaxa(file = file_name)
+        peg = Peg() 
+#        importer = taxa_sources.JsonFile(taxaObject = peg)
+        peg.importTaxa(file = file_name)
         # Create lookup dictionary for Dyntaxa names.
         dyntaxanamedict = {}
         for taxon in peg.getTaxonList():
@@ -65,12 +65,35 @@ def execute(file_name = '../data_external/PEG_BVOL2010.json'):
                                (unicode(id), unicode(jsonstring)))
     #
     except mysql.Error, e:
-        print ("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
+        print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
         if cursor: cursor.close()
         if db: db.close()
+
+class Peg(object):
+    """
+    Class used to read a json file containing the HELCOM PEG dataset. 
+    The json file is prepared by Plankton Toolbox.
+    """
+    def __init__(self):
+        self._metadata = {} # Metadata for the dataset.
+        self._data = [] # List of taxon objects.
+        
+    def getTaxonList(self):
+        """ """
+        return self._data
+        
+    def importTaxa(self, file = None, encode = 'utf-8'):
+        """ """
+        if file == None:
+            raise UserWarning('File name is missing.')
+        indata = codecs.open(file, mode = 'r', encoding = encode)
+        jsonimport = json.loads(indata.read(), encoding = encode)
+        self._metadata.update(jsonimport['metadata'])
+        self._data.extend(jsonimport['data'])
+        indata.close()
 
     
 # Main.

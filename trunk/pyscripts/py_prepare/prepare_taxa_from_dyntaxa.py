@@ -28,9 +28,12 @@ import sys
 import string
 import codecs
   
-def execute(taxa_file_name = '../data_external/dyntaxa_taxa_xxxxxxxx.txt', 
-            names_file_name = '../data_external/dyntaxa_names_xxxxxxxx.txt', 
-            parents_file_name = '../data_external/dyntaxa_parents_xxxxxxxx.txt', 
+def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110429.txt', 
+            names_file_name = '../data_external/dyntaxa_names_20110429.txt', 
+            parents_file_name = '../data_external/dyntaxa_parents_20110429.txt', 
+#def execute(taxa_file_name = '../data_external/dyntaxa_taxa_xxxxxxxx.txt', 
+#            names_file_name = '../data_external/dyntaxa_names_xxxxxxxx.txt', 
+#            parents_file_name = '../data_external/dyntaxa_parents_xxxxxxxx.txt', 
             out_file_name = '../data_prepared/taxa.txt', 
             infile_encoding = 'utf16',
             outfile_encoding = 'utf16',
@@ -127,8 +130,8 @@ def execute(taxa_file_name = '../data_external/dyntaxa_taxa_xxxxxxxx.txt',
         out.close
     #
     except Exception, e:
-        print ("ERROR: Exception %s" % (e.args[0]))
-        print ("ERROR: Script will be terminated.")
+        print("ERROR: Exception %s" % (e.args[0]))
+        print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
         pass

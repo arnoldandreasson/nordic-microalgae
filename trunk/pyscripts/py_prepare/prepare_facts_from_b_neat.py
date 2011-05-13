@@ -132,8 +132,8 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
         out.close                
     #
 #    except Exception, e:
-#        print ("ERROR: Exception %s" % (e.args[0]))
-#        print ("ERROR: Script will be terminated.")
+#        print("ERROR: Exception %s" % (e.args[0]))
+#        print("ERROR: Script will be terminated.")
 #        sys.exit(1)
     finally:
         pass
