@@ -27,6 +27,7 @@
 import MySQLdb as mysql
 import connect_to_db
 import sys
+import json
 import codecs
 
 def execute(file_name = '../data_backup/taxa_facts_backup.txt', 
@@ -59,9 +60,10 @@ def execute(file_name = '../data_backup/taxa_facts_backup.txt',
         for taxon_id, facts_json in cursor.fetchall():
             if taxon_id in taxonidtoname:
                 taxonname = taxonidtoname[taxon_id] 
-                # Remove new line and spaces at beginning on row.
-                facts_json = facts_json.replace('\n    ', u'')
-                facts_json = facts_json.replace('\n', u'')
+                # Repack json and remove pretty print (by setting indent=None).
+                factsdict = json.loads(facts_json, encoding = 'utf-8')
+                facts_json = json.dumps(factsdict, encoding = 'utf-8', 
+                                     sort_keys = True, indent = None)
                 # Print row.
                 out.write(taxonname + field_separator + facts_json + row_delimiter)
             else:

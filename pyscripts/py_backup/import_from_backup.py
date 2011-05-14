@@ -26,6 +26,7 @@
 
 import MySQLdb as mysql
 import sys
+import json
 import codecs
 import string
 import connect_to_db
@@ -62,6 +63,11 @@ def execute(file_name = '../data_backup/taxa_facts_backup.txt',
                 if row[0] in taxonnametoid:
                     taxon_id = taxonnametoid[row[0]]
                     facts_json = row[1]
+                    # Repack json and add pretty print (by setting indent=4).
+                    factsdict = json.loads(facts_json, encoding = 'utf-8')
+                    facts_json = json.dumps(factsdict, encoding = 'utf-8', 
+                                         sort_keys = True, indent = 4)
+                    # Write to database.
                     cursor.execute("insert into taxa_facts(taxon_id, facts_json) values (%s, %s)", 
                                    (taxon_id, facts_json))
                 else:
