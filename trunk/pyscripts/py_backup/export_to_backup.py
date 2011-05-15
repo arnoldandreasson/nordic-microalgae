@@ -32,6 +32,7 @@ import codecs
 
 def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt', 
             taxa_media_file_name = '../data_backup/taxa_media_backup.txt', 
+            taxa_media_list_file_name = '../data_backup/taxa_media_list_backup.txt', 
             change_history_file_name = '../data_backup/change_history_backup.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
@@ -71,9 +72,23 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
                 # Print row.
                 out.write(taxonname + field_separator + facts_json + row_delimiter)
             else:
-                print("To backup, facts: Can't find taxon id in table taxa. Id: " + unicode(taxon_id))               
+                print("To backup, table taxa_facts: Can't find taxon id in table taxa. Id: " + unicode(taxon_id))               
         #
         out.close()
+
+
+
+        #    
+        # TAXA SYNONYMS.    
+        # Open file and write header.
+        #create table taxa_synonyms (
+        #taxon_id           int unsigned not null, -- FK.
+        #synonym_name       varchar(128) not null default '',
+        #synonym_author     varchar(256) not null default '',
+        #info_json          text not null default '',
+
+        
+        
         #    
         # TAXA MEDIA.    
         # Open file and write header.
@@ -97,7 +112,24 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
                           user_name + field_separator + 
                           metadata_json + row_delimiter)
             else:
-                print("To backup, media: Can't find taxon id in table taxa. Id: " + unicode(taxon_id))
+                print("To backup, table taxa_media: Can't find taxon id in table taxa. Id: " + unicode(taxon_id))
+        #    
+        # TAXA MEDIA LIST.    
+        # Open file and write header.
+        out = codecs.open(taxa_media_list_file_name, mode = 'w', encoding = file_encoding)
+        # Create and print header row.
+        outheader = ['Taxon name', 'Media list']
+        out.write(field_separator.join(outheader) + row_delimiter)
+        # Loop through rows.
+        cursor.execute("select taxon_id, media_list from taxa_media_list")
+        for taxon_id, media_list in cursor.fetchall():
+            if taxon_id in taxonidtoname:
+                taxonname = taxonidtoname[taxon_id] 
+                # Print row.
+                out.write(taxonname + field_separator + 
+                          media_list + row_delimiter)
+            else:
+                print("To backup, table taxa_media_list: Can't find taxon id in table taxa. Id: " + unicode(taxon_id))
         #    
         # CHANGE HISTORY.    
         # Open file and write header.
@@ -111,8 +143,7 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
             if taxon_id in taxonidtoname:
                 taxonname = taxonidtoname[taxon_id]
             else:
-                # This taxon is not available any longer. The change history row should be stored,
-                # but not connected to a valid taxon. 
+                # Taxon missing. The row should be saved, but not connected to a valid taxon. 
                 taxonname = '' 
             # Print row.
             out.write(taxonname + field_separator + 
@@ -124,6 +155,7 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
     except (IOError, OSError):
         print("ERROR: Can't write to text file.")
         print("ERROR: Script will be terminated.")
+#        print(sys.exc_info())
         sys.exit(1)
     except mysql.Error, e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))

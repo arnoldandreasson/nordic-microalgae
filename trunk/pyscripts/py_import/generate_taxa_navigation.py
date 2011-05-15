@@ -40,6 +40,7 @@ def execute():
         taxa = []
         idtoname = {}
         idtotaxon = {}
+        childcount = {} # 
         taxanavigation = {} 
         # Read taxa.
         cursor.execute("select id, name, rank, parent_id from taxa")
@@ -62,6 +63,7 @@ def execute():
                               'classification': '', 
                               'children': '', 
                               'siblings': ''}
+            # Save result.
             taxanavigation[id] = navigationdict
         #
         # Add previous and next ordered by rank and name.
@@ -75,10 +77,12 @@ def execute():
             # Stop chain when changing rank.
             if previousrank and (previousrank == rank):
                 if previousid:
+                    # Save result.
                     taxanavigation[id]['prev_in_rank'] = idtoname[previousid]
                     taxanavigation[previousid]['next_in_rank'] = idtoname[id]
             else:
                 if previousid:
+                    # Save result.
                     taxanavigation[id]['prev_in_rank'] = ''
                     taxanavigation[previousid]['next_in_rank'] = ''
             previousrank = rank                 
@@ -92,6 +96,7 @@ def execute():
             while parenttaxon['parent_id'] != 0:
                 parenttaxon = idtotaxon[parenttaxon['parent_id']]
                 classification = parenttaxon['name'] + ';' + classification
+            # Save result.
             taxanavigation[id]['classification'] = classification
             item['classification'] = classification # Used in sort function.
         #
@@ -101,11 +106,25 @@ def execute():
         previousid = None
         for index, item in enumerate(taxa):
             id = item['id']
+            # Save result.
             taxanavigation[id]['sort_order_tree'] = index
             if previousid:
+            # Save result.
                 taxanavigation[id]['prev_in_tree'] = idtoname[previousid]
                 taxanavigation[previousid]['next_in_tree'] = idtoname[id]
             previousid = id
+        #
+        # Calculate number of children.
+        # Will be used in lists of children and siblings.
+        for item in taxa:
+            id = item['id']
+            name = item['name']
+            count = 0
+            for item2 in taxa:
+                if id == item2['parent_id']:
+                    count += 1
+            # Save result.
+            childcount[name] = count
         #
         # Add children.
         for item in taxa:
@@ -115,6 +134,10 @@ def execute():
                 if id == item2['parent_id']:
                     children.append(item2['name'])
             children.sort()
+            # Add child-counter to children.
+            for index, child in enumerate(children):
+                children[index] = child + ':' + unicode(childcount[child])
+            # Save result.
             taxanavigation[id]['children'] = ';'.join(children)
         #
         # Add siblings.
@@ -129,6 +152,10 @@ def execute():
                     if (parent == item2['parent_id']) and (rank == item2['rank']): # Check rank due to error in tree.
                         siblings.append(item2['name'])
             siblings.sort()
+            # Add child-counter to siblings.
+            for index, child in enumerate(siblings):
+                siblings[index] = child + ':' + unicode(childcount[child])
+            # Save result.
             taxanavigation[id]['siblings'] = ';'.join(siblings)
         #
         # Insert all rows in taxa_navigation table.
