@@ -33,6 +33,7 @@ import connect_to_db
 
 def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt', 
             taxa_media_file_name = '../data_backup/taxa_media_backup.txt', 
+            taxa_media_list_file_name = '../data_backup/taxa_media_list_backup.txt', 
             change_history_file_name = '../data_backup/change_history_backup.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
@@ -50,6 +51,8 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
         cursor.execute(""" delete from taxa_facts """) 
         # Remove all rows in table taxa_media.
         cursor.execute(""" delete from taxa_media """) 
+        # Remove all rows in table taxa_media_list.
+        cursor.execute(""" delete from taxa_media_list """) 
         # Remove all rows in table change_history.
         cursor.execute(""" delete from change_history """) 
         # Create dictionary for translations from taxon_name to taxon_id.
@@ -80,7 +83,21 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
                     cursor.execute("insert into taxa_facts(taxon_id, facts_json) values (%s, %s)", 
                                    (taxon_id, facts_json))
                 else:
-                    print("Can't find taxon name in table taxa. Name: " + row[0])
+                    print("From backup, table taxa_facts: Can't find taxon name in table taxa. Name: " + row[0])
+
+
+
+        #    
+        # TAXA SYNONYMS.    
+        # Open file and write header.
+        #create table taxa_synonyms (
+        #taxon_id           int unsigned not null, -- FK.
+        #synonym_name       varchar(128) not null default '',
+        #synonym_author     varchar(256) not null default '',
+        #info_json          text not null default '',
+
+        
+        
         #    
         # TAXA MEDIA.    
         # Open file for reading.
@@ -107,7 +124,27 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
                     cursor.execute("insert into taxa_media(taxon_id, media_id, media_type, user_name, metadata_json) values (%s, %s, %s, %s, %s)", 
                                    (taxon_id, media_id, media_type, user_name, metadata_json))
                 else:
-                    print("Can't find taxon name in table taxa. Name: " + row[0])
+                    print("From backup, table taxa_media: Can't find taxon name in table taxa. Name: " + row[0])
+        #    
+        # TAXA MEDIA LIST.    
+        # Open file for reading.
+        infile = codecs.open(taxa_media_list_file_name, mode = 'r', encoding = file_encoding)    
+        # Iterate over rows in file.
+        for rowindex, row in enumerate(infile):
+            if rowindex == 0: # First row is assumed to be the header row.
+                headers = map(string.strip, row.split(field_separator))
+                headers = map(unicode, headers)
+            else:
+                row = map(string.strip, row.split(field_separator))
+                row = map(unicode, row)
+                if row[0] in taxonnametoid:
+                    taxon_id = taxonnametoid[row[0]]
+                    media_list = row[1]
+                    # Write to database.
+                    cursor.execute("insert into taxa_media_list(taxon_id, media_list) values (%s, %s)", 
+                                   (taxon_id,media_list))
+                else:
+                    print("From backup, table taxa_media_list: Can't find taxon name in table taxa. Name: " + row[0])
         #    
         # CHANGE HISTORY.    
         # Open file for reading.
@@ -140,8 +177,6 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
         #    
         # Log import from backup to change_history.
         description = 'Import_from_backup.py: Tables are loaded from backup files.'    
-#        cursor.execute("insert into change_history(taxon_id, current_taxon_name, user_name, description, timestamp) values (%s, %s, user(), %s, now())", 
-#                       (unicode(0), '', description))
         cursor.execute("insert into change_history(taxon_id, current_taxon_name, user_name, description, timestamp) values (%s, %s, %s, %s, now())", 
                        (unicode(0), '', 'db-admin', description))
     #
