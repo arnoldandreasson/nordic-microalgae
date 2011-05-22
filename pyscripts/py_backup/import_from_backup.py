@@ -31,7 +31,11 @@ import codecs
 import string
 import connect_to_db
 
-def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt', 
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt', 
             taxa_media_file_name = '../data_backup/taxa_media_backup.txt', 
             taxa_media_list_file_name = '../data_backup/taxa_media_list_backup.txt', 
             change_history_file_name = '../data_backup/change_history_backup.txt', 
@@ -45,7 +49,7 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
     """
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
         # Remove all rows in table taxa_facts.
         cursor.execute(""" delete from taxa_facts """) 
@@ -189,9 +193,9 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
-        if infile: infile.close() 
-        if cursor: cursor.close()
         if db: db.close()
+        if cursor: cursor.close()
+        if infile: infile.close()
 
 
 # Main.

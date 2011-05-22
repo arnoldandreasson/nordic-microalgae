@@ -28,11 +28,14 @@ import MySQLdb as mysql
 import sys
 import connect_to_db
 
-def execute():
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = ''):
     """ Imports synonym names for taxa. """
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
         #
         cursor.execute("""

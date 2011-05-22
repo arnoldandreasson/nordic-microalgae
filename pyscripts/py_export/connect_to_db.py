@@ -27,13 +27,13 @@
 import MySQLdb as mysql
 import sys
 
-def connect():
+def connect(db_host, db_name, db_user, db_passwd):
     """ Connects to MySQL database. """
     try:
-        return mysql.connect(host = 'localhost', 
-                             db = 'nordicmicroalgae', 
-                             user = 'root', 
-                             passwd = '',
+        return mysql.connect(host = db_host, 
+                             db = db_name, 
+                             user = db_user, 
+                             passwd = db_passwd,
                              use_unicode = True,
                              charset = 'utf8')
     #

@@ -30,7 +30,11 @@ import sys
 import json
 import codecs
 
-def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt', 
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt', 
             taxa_media_file_name = '../data_backup/taxa_media_backup.txt', 
             taxa_media_list_file_name = '../data_backup/taxa_media_list_backup.txt', 
             change_history_file_name = '../data_backup/change_history_backup.txt', 
@@ -44,9 +48,12 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
     Run this export before rebuilding the database. Run 'import_from_backup.py' when
     taxa and data from external sources are loaded.    
     """
+    db = None
+    cursor = None
+    out = None
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()        
         # Create dictionary for translations from taxon_id to taxon_name.
         taxonidtoname = {}
@@ -162,8 +169,9 @@ def execute(taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt',
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
-        if cursor: cursor.close()
         if db: db.close()
+        if cursor: cursor.close()
+        if out: out.close()
 
 
 # Main.

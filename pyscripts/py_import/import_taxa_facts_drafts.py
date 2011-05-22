@@ -28,11 +28,17 @@ import MySQLdb as mysql
 import sys
 import connect_to_db
 
-def execute():
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            ):
     """ Imports drafts versions of facts. """
+    db = None
+    cursor = None
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
         #
         cursor.execute("""
@@ -44,8 +50,8 @@ def execute():
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
-        if cursor: cursor.close()
         if db: db.close()
+        if cursor: cursor.close()
 
 
 # Main.

@@ -30,14 +30,21 @@ import sys
 import json
 import codecs
 
-def execute(file_name = '../data_export/taxa_facts.txt', 
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            file_name = '../data_download/taxa_facts.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
             row_delimiter = '\r\n'):
     """ Exports facts managed by our own contributors. Format: Table with tab separated fields. """
+    db = None
+    cursor = None
+    out = None
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
         cursortaxa=db.cursor()
         # Read header list from system settings (Facts: Headers).
@@ -92,9 +99,9 @@ def execute(file_name = '../data_export/taxa_facts.txt',
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
-        if out: out.close()
-        if cursor: cursor.close()
         if db: db.close()
+        if cursor: cursor.close()
+        if out: out.close()
 
 
 # Main.

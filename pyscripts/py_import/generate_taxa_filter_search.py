@@ -27,17 +27,93 @@
 import MySQLdb as mysql
 import sys
 import connect_to_db
+import json
+import string
 
-def execute():
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            ):
     """ Automatically generated db table for filter-related lookup. """
+    db = None
+    cursor = None
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
+        # Remove all rows in table taxa_filter_search.
+        cursor.execute(""" delete from taxa_filter_search """) 
         #
-        cursor.execute("""
-    
-        """)
+        # Loop through all taxa.
+        cursor.execute("select id, name from taxa")
+        for taxon_id, taxon_name in cursor.fetchall():
+            #
+            # Check if illustrated. 
+            #
+            cursor.execute("select count(*) from taxa_media where taxon_id = %s", taxon_id)
+            result = cursor.fetchone()
+            if result[0] > 0: 
+                # Add row in taxa_filter_search.
+                cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                               (taxon_id, 'Illustrated', 'True'))
+            #
+            # Check if HELCOM PEG. 
+            #
+            cursor.execute("select count(*) from taxa_helcom_peg where taxon_id = %s", taxon_id)
+            result = cursor.fetchone()
+            if result[0] > 0: 
+                # Add row in taxa_filter_search.
+                cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                               (taxon_id, 'HELCOM PEG', 'True'))
+            #
+            # Check if Harmful. 
+            #
+            cursor.execute("select count(*) from taxa_external_facts where (taxon_id = %s) and (provider = %s)", 
+                           (taxon_id, 'IOC'))
+            result = cursor.fetchone()
+            if result[0] > 0: 
+                # Add row in taxa_filter_search.
+                cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                               (taxon_id, 'Harmful', 'True'))
+        #
+        # Loop through taxon_facts. 
+        cursor.execute("select taxon_id, facts_json from taxa_facts")
+        for taxon_id, facts_json in cursor.fetchall():
+                # Unpack json.
+                factsdict = json.loads(facts_json, encoding = 'utf-8')
+                #
+                # Add rows from Facts.Country.
+                #
+                if 'Country' in factsdict:
+                    for item in factsdict['Country']:
+                        # Add row in taxa_filter_search.
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Country', item))
+                #
+                # Add rows from Facts.Geographic area.
+                #
+                if 'Geographic area' in factsdict:
+                    for item in factsdict['Geographic area']:
+                        # Add row in taxa_filter_search.
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Geographic area', item))
+                #
+                # Add rows from Facts.Habitat
+                #
+                if 'Habitat' in factsdict:
+                    for item in factsdict['Habitat']:
+                        # Add row in taxa_filter_search.
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Habitat', item))
+                #
+                # Add rows from Facts.Trophic type
+                #
+                if 'Trophic type' in factsdict:
+                    for item in factsdict['Trophic type']:
+                        # Add row in taxa_filter_search.
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Trophic type', item))
     #
     except mysql.Error, e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))

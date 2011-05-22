@@ -31,14 +31,20 @@ import codecs
 import json
 import connect_to_db
   
-def execute(file_name = '../data_import/taxa_media.txt', 
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            file_name = '../data_import/taxa_media.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
             row_delimiter = '\r\n'):
     """ Imports content to the main taxa table. """
+    db = None
+    cursor = None
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor = db.cursor()
         # Remove all rows in tables.
         cursor.execute(""" delete from taxa_media """) 
@@ -144,8 +150,8 @@ def execute(file_name = '../data_import/taxa_media.txt',
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
-        if cursor: cursor.close()
         if db: db.close()
+        if cursor: cursor.close()
 
 
 # Main.

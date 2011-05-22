@@ -28,8 +28,8 @@ import import_taxa
 import import_taxa_facts
 import import_taxa_facts_drafts
 import import_taxa_external_links
-import import_taxa_facts_external
-import import_taxa_facts_peg
+import import_taxa_external_facts
+import import_taxa_helcom_peg
 import import_taxa_synonyms
 import import_taxa_media
 import generate_taxa_hierarchy_search
@@ -54,11 +54,11 @@ def execute():
 #    print("\n=== Import data: taxa_external_links. ===\n")
 ###    import_taxa_external_links.execute()
     #
-#    print("\n=== Import data: taxa_facts_external. ===\n")
-###    import_taxa_facts_external.execute()
+#    print("\n=== Import data: taxa_external_facts. ===\n")
+###    import_taxa_external_facts.execute()
     #
-    print("\n=== Import data: taxa_facts_peg. ===\n")
-    import_taxa_facts_peg.execute()
+    print("\n=== Import data: taxa_helcom_peg. ===\n")
+    import_taxa_helcom_peg.execute()
     #
     print("\n=== Import data: taxa_media. ===\n")
     import_taxa_media.execute()
@@ -70,8 +70,8 @@ def execute():
     print("\n=== Generate data: taxa_navigation. ===\n")
     generate_taxa_navigation.execute()
     #
-#    print("\n=== Generate data: taxa_filter_search. ===\n")
-###    generate_taxa_filter_search.execute()
+    print("\n=== Generate data: taxa_filter_search. ===\n")
+    generate_taxa_filter_search.execute()
     #
     print("\n=== Finished. ===\n")
 
