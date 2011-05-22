@@ -30,14 +30,18 @@ import string
 import codecs
 import connect_to_db
   
-def execute(file_name = '../data_import/taxa.txt', 
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            file_name = '../data_import/taxa.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
             row_delimiter = '\r\n'):
     """ Imports content to the main taxa table. """
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor = db.cursor()
         # Remove all rows in table.
         cursor.execute(""" delete from taxa """) 

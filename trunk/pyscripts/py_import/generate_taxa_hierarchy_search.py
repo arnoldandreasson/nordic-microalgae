@@ -28,11 +28,15 @@ import MySQLdb as mysql
 import sys
 import connect_to_db
     
-def execute():
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            ):
     """ Automatically generated db table for fast taxon classification lookup. """
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor_1=db.cursor()
         cursor_2=db.cursor()
         # Remove all rows from table.
@@ -69,9 +73,9 @@ def execute():
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
+        if db: db.close()
         if cursor_1: cursor_1.close()
         if cursor_2: cursor_2.close()
-        if db: db.close()
 
 
 # Main.

@@ -28,11 +28,18 @@ import MySQLdb as mysql
 import sys
 import connect_to_db
     
-def execute():
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            ):
     """ Automatically generated db table for taxon navigation, next, previous, etc. """
+    db = None
+    cursor = None
+    out = None
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
         # Remove all rows from table.
         cursor.execute(" delete from taxa_navigation ")
@@ -185,8 +192,9 @@ def execute():
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
-        if cursor: cursor.close()
         if db: db.close()
+        if cursor: cursor.close()
+        if out: out.close()
 
 # Sort functions for taxa list.
 def taxa_by_rank_name_sortfunction(s1, s2):

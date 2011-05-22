@@ -31,14 +31,18 @@ import codecs
 import string
 import json
 
-def execute(file_name = '../data_import/taxa_facts.txt', 
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = '',
+            file_name = '../data_import/taxa_facts.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
             row_delimiter = '\r\n'): # For windows usage.
     """ Imports facts managed by our own contributors. """
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
         # Open file for reading.
         infile = codecs.open(file_name, mode = 'r', encoding = file_encoding)    
@@ -97,9 +101,9 @@ def execute(file_name = '../data_import/taxa_facts.txt',
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
-        if infile: infile.close() 
-        if cursor: cursor.close()
         if db: db.close()
+        if cursor: cursor.close()
+        if infile: infile.close() 
 
 
 # Main.

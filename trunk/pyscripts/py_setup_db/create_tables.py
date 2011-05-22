@@ -28,11 +28,16 @@ import MySQLdb as mysql
 import sys
 import connect_to_db
 
-def execute():
+def execute(db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = ''):
     """ Creates all tables in the database. """
+    db = None
+    cursor = None
     try:
         # Connect to db.
-        db = connect_to_db.connect()
+        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
         #
         cursor.execute("""
@@ -176,9 +181,9 @@ create table taxa_external_links (
   primary key (taxon_id, provider, type)
 ) engine=MyISAM charset=utf8;
 
--- Table: taxa_facts_external --
-drop table if exists taxa_facts_external;
-create table taxa_facts_external (
+-- Table: taxa_external_facts --
+drop table if exists taxa_external_facts;
+create table taxa_external_facts (
   taxon_id           int unsigned not null, -- FK, PK.
   provider           varchar(64) not null default '', -- PK.
   facts_json         text not null default '',
@@ -186,9 +191,9 @@ create table taxa_facts_external (
   primary key (taxon_id, provider)
 ) engine=MyISAM charset=utf8;
 
--- Table: taxa_facts_peg (Plankton Expert Group) --
-drop table if exists taxa_facts_peg;
-create table taxa_facts_peg (
+-- Table: taxa_helcom_peg (HELCOM PEG, Plankton Expert Group) --
+drop table if exists taxa_helcom_peg;
+create table taxa_helcom_peg (
   taxon_id           int unsigned not null, -- FK, PK.
   facts_json         text not null default '',
   -- constraints:
@@ -223,14 +228,13 @@ create table change_history (
 ) engine=MyISAM charset=utf8;
 
         """)
+        #
+        if db: db.close()
     #
     except mysql.Error, e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    finally:
-        ### if cursor: cursor.close()
-        if db: db.close()
 
 
 # Main.
