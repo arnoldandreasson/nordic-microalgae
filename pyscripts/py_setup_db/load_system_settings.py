@@ -37,44 +37,315 @@ def execute():
         cursor=db.cursor()
         # Remove all rows from table.
         cursor.execute(" delete from system_settings ")
-        #
+        # Create empty dictionary.
         keydict = {} 
         #
-        keydict['External links'] = \
-            {
+        # Facts:
+        # "Field list" contains all used fields stored in json records.
+        # Note that more fields can occur due to earlier use, but these fields are currently used. 
+        # The "Field list" will be transformed to columns when exporting data to file. 
+        #
+        keydict["Facts"] = {
+            "Field list": [
+                "Morphology",
+                "Ecology",
+                "Other remarks",
+                "Tropic type",
+                "Harmful",
+                "Note on harmfulness",
+                "Substrate",
+                "Life form",
+                "Width",
+                "Length",
+                "Size",
+                "Resting spore",
+                "Literature"
+            ]
+        }        
+        #
+        # Media:
+        # "Field list" contains all used fields stored in json records.
+        # Note that more fields can occur due to earlier use, but these fields are currently used. 
+        # The "Field list" list will be transformed to columns when exporting data to file. 
+        #
+        keydict["Media"] = {
+            "Field list": [
+                "Title",
+                "Creator",
+                "Institute",
+                "Contributor",
+                "Caption",
+                "Sampling date",
+                "Location",
+                "Latitude",
+                "Longitude",                
+                "License",
+                "Preservation",
+                "Stain",
+                "Contrast enhancement",
+                "Observation technique",
+                
+                "Media type" # ???
+            ]
+        }
+        #
+        # External facts:
+        # "Field list" contains all used fields stored in json records.
+        # External facts will not be exported to file. They are imported from
+        # text files and can not be modified from the web application.
+        # Source of data and copyright notice are important to handle properly. 
+        #
+        keydict["External facts"] = {
+            "Provider list": [
+                "AlgaeBase",
+                "WORMS",
+                "IOC",
+                "Dyntaxa"
+            ],
+            "Providers": {
+                "AlgaeBase": {
+                    "Field list": [
+                        "TODO"
+                    ],
+                    "Source of data": "",
+                    "Copyright notice": ""
+                },
+                "WORMS": {
+                    "Field list": [
+                        "TODO"
+                    ],
+                    "Source of data": "",
+                    "Copyright notice": ""
+                },
+                "IOC": {
+                    "Field list": [
+                        "TODO"
+                    ],
+                    "Source of data": "",
+                    "Copyright notice": ""
+                },
+                "Dyntaxa": {
+                    "Field list": [
+                        "TODO"
+                    ],
+                    "Source of data": "",
+                    "Copyright notice": ""
+                }
+            }
+        }
+        #
+        # Information to be used when linking to external web pages.
+        #
+        keydict["External links"] = {
+            "Providers": [
+                "AlgaeBase",
+                "WORMS",
+                "IOC",
+                "Dyntaxa"
+            ],
+            "Providers": {
                 "AlgaeBase": {
                     "Taxon url": "http://algaebase.org/browse/taxonomy/?id=<replace-id>",
                     "Home url": "http://algaebase.org"
+                },
+                "WORMS": {
+                    "Taxon url": "TODO?id=<replace-id>",
+                    "Home url": "TODO"
+                },
+                "IOC": {
+                    "Taxon url": "TODO?id=<replace-id>",
+                    "Home url": "TODO"
+                },
+                "Dyntaxa": {
+                    "Taxon url": "TODO?id=<replace-id>",
+                    "Home url": "TODO"
                 }
             }
-        keydict['Facts'] = \
-            {
-                "Headers": [
-                    "Morphology",
-                    "Ecology",
-                    "Other remarks",
-                    "Tropic type",
-                    "Harmful",
-                    "Note on harmfulness",
-                    "Substrate",
-                    "Life form",
-                    "Width",
-                    "Length",
-                    "Size",
-                    "Resting spore",
-                    "Literature"
-                ]
-            }
-        keydict['External facts'] = \
-            {
-                "AlgaeBase": {
-                    "Headers": [
-                        "Test"
-                    ]
-                }
-            }
-        keydict['HELCOM PEG'] = \
-            {
+        }
+        #
+        #
+        #
+        keydict["Species view"] = {
+            "Field list": [ # TODO: Fields only?
+                "Component.Images", # TODO: Component or Division or ... this is not the web component available via api.
+                "Component.Classification",
+                "Component.Similar species",
+                "Facts.Tropic type",
+                "Facts.Morphology",
+                "Facts.Ecology",
+                "Facts.Other remarks",
+                "Facts.Tropic type",
+                "External Facts.IOC.Harmful",
+                "External Facts.IOC.Note on harmfulness",
+                "Facts.Substrate",
+                "Facts.Life form",
+                "Facts.Width",
+                "Facts.Length",
+                "Facts.Size",
+                "Facts.Resting spore",
+                "Facts.Literature",
+                "Component.HELCOM PEG"
+            ]
+        }
+        #
+        #
+        #
+        keydict["Taxon view"] = {
+            "Field list": [
+                "Component.Classification",
+                "Component.Similar species",
+                "Facts.Tropic type",
+                "Facts.Morphology",
+                "Facts.Ecology",
+                "Facts.Other remarks",
+                "Facts.Tropic type",
+                "External Facts.IOC.Harmful",
+                "External Facts.IOC.Note on harmfulness",
+                "Facts.Substrate",
+                "Facts.Life form",
+                "Facts.Width",
+                "Facts.Length",
+                "Facts.Size",
+                "Facts.Resting spore",
+                "Facts.Literature"
+                "Component.HELCOM PEG"
+            ]
+        }
+        #
+        #
+        #
+        keydict["Image view"] = {
+            "Field list": [
+                "Media.Title",
+                "Media.Creator",
+                "Media.Institute",
+                "Media.Contributor",
+                "Media.Caption",
+                "Media.Sampling date",
+                "Media.Location",
+                "Component.Geo position",
+#                "Media.Latitude",
+#                "Media.Longitude",
+                "Media.License",
+                "Media.Preservation",
+                "Media.Stain",
+                "Media.Contrast enhancement",
+                "Media.Observation technique"
+            ]
+        }        
+        #
+        # Facts view formats:
+        # Information needed when viewing data.
+        # "Type" is also used when importing/exporting data to distinguish between text fields and lists of texts.
+        #
+        keydict["Facts view formats"] = {
+            "Morphology": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Ecology": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Other remarks": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Tropic type": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Harmful": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Note on harmfulness": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Substrate": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Life form": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Width": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Length": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Size": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Resting spore": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Literature": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""}
+            
+#            "Country": {"Type": "text list", "CSS class": "", "Hint": "", "Help": ""}
+#            "Geographic area": {"Type": "text list", "CSS class": "", "Hint": "", "Help": ""}
+#            "Habitat": {"Type": "text list", "CSS class": "", "Hint": "", "Help": ""}
+#            "Trophic type": {"Type": "text list", "CSS class": "", "Hint": "", "Help": ""}
+
+        }
+        #
+        # Media view formats:
+        # Information needed when viewing data.
+        # "Type" is also used when importing/exporting data to distinguish between text fields and lists of texts.
+        #
+        keydict["Media view formats"] = {
+            "Title": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Creator": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Institute": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Contributor": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Caption": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Sampling date": {"Type": "date", "CSS class": "", "Hint": "", "Help": ""},
+            "Location": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Latitude": {"Type": "geo_position_latitude", "CSS class": "", "Hint": "", "Help": ""},
+            "Longitude": {"Type": "geo_position_longitude", "CSS class": "", "Hint": "", "Help": ""},
+            "License": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Preservation": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Stain": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Contrast enhancement": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Observation technique": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""}
+        }
+        #
+        # Facts edit formats:
+        # Information needed when editing data.
+        #
+        keydict["Facts edit formats"] = {
+            "Morphology": {"Type": "text", "Hint": "", "Help": ""},
+            "Ecology": {"Type": "text", "Hint": "", "Help": ""},
+            "Other remarks": {"Type": "text", "Hint": "", "Help": ""},
+            "Tropic type": {"Type": "text", "Hint": "", "Help": ""},
+            "Harmful": {"Type": "text", "Hint": "", "Help": ""},
+            "Note on harmfulness": {"Type": "text", "Hint": "", "Help": ""},
+            "Substrate": {"Type": "text", "Hint": "", "Help": ""},
+            "Life form": {"Type": "text", "Hint": "", "Help": ""},
+            "Width": {"Type": "text", "Hint": "", "Help": ""},
+            "Length": {"Type": "text", "Hint": "", "Help": ""},
+            "Size": {"Type": "text", "Hint": "", "Help": ""},
+            "Resting spore": {"Type": "text", "Hint": "", "Help": ""},
+            "Literature": {"Type": "text", "Hint": "", "Help": ""}
+        }
+        #
+        # Media edit formats:
+        # Information needed when editing data.
+        #
+        keydict["Media edit formats"] = {
+            "Title": {"Type": "text", "Hint": "", "Help": ""},
+            "Creator": {"Type": "text", "Hint": "", "Help": ""},
+            "Institute": {"Type": "text", "Hint": "", "Help": ""},
+            "Contributor": {"Type": "text", "Hint": "", "Help": ""},
+            "Caption": {"Type": "text", "Hint": "", "Help": ""},
+            "Sampling date": {"Type": "date", "Hint": "", "Help": ""},
+            "Location": {"Type": "text", "Hint": "", "Help": ""},
+            "Latitude": {"Type": "geo_position_latitude", "Hint": "", "Help": ""},
+            "Longitude": {"Type": "geo_position_longitude", "Hint": "", "Help": ""},
+            
+            "License": {"Type": "select", 
+                "Select list": ["Creative Commons Attribution 3.0 Unported", 
+                                "Creative Commons Attribution-NoDerivs 3.0 Unported", 
+                                "Creative Commons Attribution-ShareAlike 3.0 Unported", 
+                                "Public domain"],
+                "Default selection": "Attribution-ShareAlike 3.0 Unported", 
+                "Hint": "", "Help": ""},
+            
+            "Preservation": {"Type": "select", 
+                "Select list": ["No preservation", "Lugols iodine", "Formaldehyde", "Glutardialdehyde", "Osmium tetroxide", "Other preservative"],
+                "Default selection": "No preservation", 
+                "Hint": "", "Help": ""},
+            "Stain": {"Type": "select", 
+                "Select list": ["No stain", "DAPI", "Primulin", "Proflavin", "Calcofluor-Fluorescent brightener", "Other stain"], 
+                "Default selection": "No stain", 
+                "Hint": "", "Help": ""},
+            "Contrast enhancement": {"Type": "select", 
+                "Select list": ["No contrast enhancement", "DIC/Nomarski", "Phase contrast", "Acid cleaned and mounted in resin with high refractive index", "Other"], 
+                "Default selection": "No contrast enhancement", 
+                "Hint": "", "Help": ""},
+            "Observation technique": {"Type": "select", 
+                "Select list": ["Not described", "Light microscopy", "Fluorescence microscopy", "TEM Transmission Electron Micoscopy", 
+                                "SEM Scanning Electron Microscopy", "Photography from land Photography from ship Photography from air Satellite remote sensing", 
+                                "Other observation technique"], 
+                "Default selection": "Not described", 
+                "Hint": "", "Help": ""}
+        }
+        #
+        # HELCOM PEG:
+        # Display information for HELCOM PEG size classes table.
+        #
+        keydict["HELCOM PEG"] = {
                 "Species fields": [
                     "Species",
                     "Author",
@@ -105,77 +376,80 @@ def execute():
                     "Comment on Carbon calculation" #,
 #                    "Correction/addition 2009",
 #                    "Correction/addition 2010"
-                    ]
-            }
-#"Species"
-#"Author"
-#"Division"
-#"Class"
-#"Order"
-#"SFLAG"
-#"Stage"
-#"Trophy"
-#"Geometric shape"
-#"Formula"
-#
-#"Size class"
-#"Unit"
-#"Size range"
-#"Length(l1), µm"
-#"Length(l2), µm"
-#"Width(w), µm"
-#"Height(h), µm"
-#"Diameter(d1), µm"
-#"Diameter(d2), µm"
-#"No. of cells/counting unit"
-#"Calculated volume, µm3"
-#"Comment"
-#"Filament: length of cell, µm"
-#"Calculated Carbon pg/counting unit"
-#"Comment on Carbon calculation"
-#"Correction/addition 2009"
-#"Correction/addition 2010"
-            
-        keydict['Filters'] = \
-            {
-                "Groups": [
-                        "Select",
-                        "Country",
-                        "Geographic area",
-                        "Habitat",
-                        "Trophic type"
-                ],
+                    ],
+                "Source of data": 
+                    """
+                    Olenina, I., Hajdu, S., Edler, L., Andersson, A., Wasmund, N., Busch, S., Göbel, J., 
+                    Gromisz, S., Huseby, S., Huttunen, M., Jaanus, A., Kokkonen, P., Ledaine, I. and Niemkiewicz, E. 
+                    2006 Biovolumes and size-classes of phytoplankton in the Baltic Sea HELCOM Balt.Sea Environ. Proc. No. 106, 144pp.
+                    <br /><br /> 
+                    <a href="http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106.pdf">http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106.pdf</a> 
+                    <br /><br /> 
+                    Data comes from Annex 1:
+                    <br /> 
+                    <a href="http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106ANNEX1Biovolumes_web.xls">http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106ANNEX1Biovolumes_web.xls</a> 
+                    <br /><br /> 
+                    An updated version from September 2007 has been used.
+                    """,
+                "Copyright notice": ""
+        }
+        #
+        # Filters:
+        # Display information for taxon filters. Filters are divided into groups.
+        # - Label: Displayed text.
+        # - Defaults: Indicates if the filter should be selected by default.
+        # - Filter and value: Used to match values in the db-table taxa_filter_search.
+        #                     Example: "where ((filter = 'Illustrated' and value = 'True') and
+        #                                      (filter = 'HELCOM PEG' and value = 'True') and
+        #                                      ((filter = 'Country' and value = 'Denmark') or
+        #                                       (filter = 'Country' and value = 'Finland')) and
+        #                                      ((filter = 'Geographic area' and value = 'Baltic sea') or
+        #                                       (filter = 'Geographic area' and value = 'Skagerakk')))
+        #
+        keydict["Filters"] = {
+            "Group list": [
+                    "Select",
+                    "Country",
+                    "Geographic area",
+                    "Habitat",
+                    "Trophic type"
+            ],
+            "Groups": {
                 "Select": [
-                        {"Label": "Show illustrated only", "Default": "False"}, 
-                        {"Label": "Show HELCOM PEG only", "Default": "False"}, 
-                        {"Label": "Show Harmful algae only", "Default": "False"}
+                        {"Label": "Show illustrated only", "Default": "False", "Filter": "Illustrated", "Value": "True"}, 
+                        {"Label": "Show HELCOM PEG only", "Default": "False", "Filter": "HELCOM PEG", "Value": "True"}, 
+                        {"Label": "Show Harmful algae only", "Default": "False", "Filter": "Harmful", "Value": "True"}
                 ],
                 "Country": [
-                        {"Label": "Denmark", "Default": "True"}, 
-                        {"Label": "Finland", "Default": "True"}, 
-                        {"Label": "Norway", "Default": "True"}, 
-                        {"Label": "Sweden", "Default": "True"} 
+                        {"Label": "Denmark", "Default": "True", "Filter": "Country", "Value": "Denmark"}, 
+                        {"Label": "Finland", "Default": "True", "Filter": "Country", "Value": "Finland"}, 
+                        {"Label": "Norway", "Default": "True", "Filter": "Country", "Value": "Norway"}, 
+                        {"Label": "Sweden", "Default": "True", "Filter": "Country", "Value": "Sweden"}, 
+                        {"Label": "Not defined", "Default": "True", "Filter": "Country", "Value": ""} 
                  ],
                 "Geographic area": [
-                        {"Label": "Baltic sea", "Default": "True"},
-                        {"Label": "Skagerakk", "Default": "True"},
-                        {"Label": "North sea", "Default": "True"},
-                        {"Label": "Norwegian sea", "Default": "True"}, 
-                        {"Label": "Greenland sea", "Default": "True"} 
+                        {"Label": "Baltic sea", "Default": "True", "Filter": "Geographic area", "Value": "Baltic sea"},
+                        {"Label": "Skagerakk", "Default": "True", "Filter": "Geographic area", "Value": "Skagerakk"},
+                        {"Label": "North sea", "Default": "True", "Filter": "Geographic area", "Value": "North sea"},
+                        {"Label": "Norwegian sea", "Default": "True", "Filter": "Geographic area", "Value": "Norwegian sea"}, 
+                        {"Label": "Not defined", "Default": "True", "Filter": "Geographic area", "Value": ""} 
                 ],
                 "Habitat": [
-                        {"Label": "Marine/planktonic", "Default": "True"}, 
-                        {"Label": "Marine/benthic", "Default": "True"}, 
-                        {"Label": "Freshwater/planktonic", "Default": "True"}, 
-                        {"Label": "Freshwater/benthic", "Default": "True"} 
+                        {"Label": "Marine/planktonic", "Default": "True", "Filter": "Habitat", "Value": "Marine/planktonic"}, 
+                        {"Label": "Marine/benthic", "Default": "True", "Filter": "Habitat", "Value": "Marine/benthic"}, 
+                        {"Label": "Freshwater/planktonic", "Default": "True", "Filter": "Habitat", "Value": "Freshwater/planktonic"}, 
+                        {"Label": "Not defined", "Default": "True", "Filter": "Habitat", "Value": ""} 
                 ],
                 "Trophic type": [
-                        {"Label": "Photo- or mixotrophic", "Default": "True"}, 
-                        {"Label": "Heterotrophic", "Default": "True"} 
-                ],
+                        {"Label": "Photo- or mixotrophic", "Default": "True", "Filter": "Trophic type", "Value": "Photo- or mixotrophic"}, 
+                        {"Label": "Heterotrophic", "Default": "True", "Filter": "Trophic type", "Value": "Heterotrophic"}, 
+                        {"Label": "Not defined", "Default": "True", "Filter": "Trophic type", "Value": ""} 
+                ]
             }
+        }
         #
         # Iterate over keydict keys and insert into db table.
+        #
         for key in keydict.keys():
             jsonstring = json.dumps(keydict[key], encoding = 'utf-8', 
                                  sort_keys=True, indent=4)

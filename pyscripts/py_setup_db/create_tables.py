@@ -135,7 +135,7 @@ create table taxa_filter_search (
   filter             varchar(64) not null default '', -- PK. -- Country, Geographic area, Habitat, Trophic type.
   value              varchar(64) not null default '',
   -- constraints:
-  primary key (taxon_id, filter), 
+  primary key (taxon_id, filter, value), 
   key (filter) 
 ) engine=MyISAM charset=utf8;
 

@@ -127,11 +127,11 @@ def execute(file_name = '../data_import/taxa_media.txt',
                 # 
                 if taxonid in taxondict:
                     if sortorder == '0':
-                        taxondict[taxonid] = [mediaid] + taxondict[taxonid]
+                        taxondict[taxonid] = [mediaid] + taxondict[taxonid] # Add at beginning.
                     else:
-                        taxondict[taxonid].append(mediaid)
+                        taxondict[taxonid].append(mediaid) # Append at end.
                 else:
-                    taxondict[taxonid] = [mediaid]
+                    taxondict[taxonid] = [mediaid] # This was the first one.
         #
         for taxonid in taxondict:
             cursor.execute("insert into taxa_media_list(taxon_id, media_list) values (%s, %s)", 
