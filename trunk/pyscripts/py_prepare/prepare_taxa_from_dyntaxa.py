@@ -28,9 +28,9 @@ import sys
 import string
 import codecs
   
-def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110429.txt', 
-            names_file_name = '../data_external/dyntaxa_names_20110429.txt', 
-            parents_file_name = '../data_external/dyntaxa_parents_20110429.txt', 
+def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt', 
+            names_file_name = '../data_external/dyntaxa_names_20110523.txt', 
+            parents_file_name = '../data_external/dyntaxa_parents_20110523.txt', 
 #def execute(taxa_file_name = '../data_external/dyntaxa_taxa_xxxxxxxx.txt', 
 #            names_file_name = '../data_external/dyntaxa_names_xxxxxxxx.txt', 
 #            parents_file_name = '../data_external/dyntaxa_parents_xxxxxxxx.txt', 
