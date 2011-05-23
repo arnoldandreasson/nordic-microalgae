@@ -101,6 +101,17 @@ def execute(db_host = 'localhost',
             classification = item['name']
             parenttaxon = item
             while parenttaxon['parent_id'] != 0:
+                
+                
+                # Check if infinite loop.
+                if parenttaxon['id'] == parenttaxon['parent_id']:
+                    print("Break classification. Infinite loop for " + unicode(parenttaxon['id']) + " " + parenttaxon['name'])
+                    classification = '<ERROR, Infinite loop>;' + classification
+                    break # Break while loop.
+                
+                
+                
+                
                 parenttaxon = idtotaxon[parenttaxon['parent_id']]
                 classification = parenttaxon['name'] + ';' + classification
             # Save result.

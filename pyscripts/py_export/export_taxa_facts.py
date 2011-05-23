@@ -48,16 +48,26 @@ def execute(db_host = 'localhost',
         cursor=db.cursor()
         cursortaxa=db.cursor()
         # Read header list from system settings (Facts: Headers).
+        headers = None
+        fieldtypes = {}
         cursor.execute("select settings_value from system_settings where settings_key = 'Facts'")
         result = cursor.fetchone()
         if result:
             # From string to dictionary.
-            valuedict = json.loads(result[0], encoding = 'utf-8')
+            factssettingsdict = json.loads(result[0], encoding = 'utf-8')
             # Read headers.
-            headers = valuedict.get('Headers', None)
+            headers = factssettingsdict.get('Field list', None)
             if not headers:
                 print("ERROR: No headers found. Terminates script.")
                 return # Terminate script.
+            # Read field types and store in dictionary.
+            fieldtypedict = factssettingsdict.get('Field types', None)
+            if not fieldtypedict:
+                print("ERROR: No field types found. Terminates script.")
+                return # Terminate script.
+            else:
+                for key, value in fieldtypedict.items():
+                    fieldtypes[key] = value 
         else:
             print("ERROR: Can't read headers from system_settings. Terminates script.")
             return # Terminate script.
@@ -83,7 +93,14 @@ def execute(db_host = 'localhost',
                 factsdict = json.loads(result[0], encoding = 'utf-8')
                 # Add column values to row, if available.
                 for headeritem in headers:
-                    row.append(factsdict.get(headeritem, ''))
+                    # Check field type and convert to string representation. 
+                    if (headeritem in fieldtypes) and (fieldtypes[headeritem] == 'text'):  
+                        row.append(factsdict.get(headeritem, ''))
+                    elif (headeritem in fieldtypes) and (fieldtypes[headeritem] == 'text list'):  
+                        row.append(';'.join(factsdict.get(headeritem, [])))
+                    else:
+                        print("ERROR: Can't handle field type for: " + headeritem + ". Terminates script.")
+                        return # Terminate script.
             else:
                 # Add empty columns.
                 for headeritem in headers:

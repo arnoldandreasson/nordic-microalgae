@@ -64,8 +64,31 @@ def execute(db_host = 'localhost',
                 "Length",
                 "Size",
                 "Resting spore",
-                "Literature"
-            ]
+                "Literature",
+                "Countries",
+                "Geographic areas",
+                "Habitats",
+                "Trophic types"
+            ],
+            "Field types": {
+                "Morphology": "text",
+                "Ecology": "text",
+                "Other remarks": "text",
+                "Tropic type": "text",
+                "Harmful": "text",
+                "Note on harmfulness": "text",
+                "Substrate": "text",
+                "Life form": "text",
+                "Width": "text",
+                "Length": "text",
+                "Size": "text",
+                "Resting spore": "text",
+                "Literature": "text",
+                "Countries": "text list",
+                "Geographic areas": "text list",
+                "Habitats": "text list",
+                "Trophic types": "text list"
+            }
         }        
         #
         # Media:
@@ -89,9 +112,25 @@ def execute(db_host = 'localhost',
                 "Stain",
                 "Contrast enhancement",
                 "Observation technique",
-                
                 "Media type" # ???
-            ]
+            ],
+            "Field types": {
+                "Title": "text",
+                "Creator": "text",
+                "Institute": "text",
+                "Contributor": "text",
+                "Caption": "text",
+                "Sampling date": "text",
+                "Location": "text",
+                "Latitude": "text",
+                "Longitude": "text",
+                "License": "text",
+                "Preservation": "text",
+                "Stain": "text",
+                "Contrast enhancement": "text",
+                "Observation technique": "text",
+                "Media type": "text",
+            }
         }
         #
         # External facts:
