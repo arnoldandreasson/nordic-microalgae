@@ -76,7 +76,7 @@ create table taxa_synonyms (
   synonym_author     varchar(256) not null default '',
   info_json          text not null default '',
   -- constraints:
-  primary key (taxon_id),
+  primary key (taxon_id, synonym_name),
   key (synonym_name)
 ) engine=MyISAM charset=utf8;
 
