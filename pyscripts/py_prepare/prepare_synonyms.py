@@ -120,11 +120,13 @@ TaxonNameUseTypeId    snamn    definition
                 if taxonidtonamedict[taxonid] == name:
                     continue
                 # Skip if not ERMS (11) or original name (13).
-                if not (taxonnametypeId in [u'11', u'13']): 
+#                if not (taxonnametypeId in [u'11', u'13']): 
+#                # Skip if not original name (13).
+                if not (taxonnametypeId in [u'13']): 
                     continue
                 # Add info as Json.
                 infojson = {}
-                if taxonnametypeId == u'11': infojson['Hint'] = 'ERMS name'        
+#                if taxonnametypeId == u'11': infojson['Hint'] = 'ERMS name'        
                 if taxonnametypeId == u'13': infojson['Hint'] = 'Original name'
                 if taxonnameusetypeid == u'3': infojson['Hint'] = 'Misspelled, but commonly used.'
                 infojsonstring = json.dumps(infojson, encoding = 'utf-8', 
@@ -136,48 +138,7 @@ TaxonNameUseTypeId    snamn    definition
                 
         taxafile.close()
         out.close
-                
-#        parentsfile.close()
-#        #
-#        # Create outdatafile.
-#        out = codecs.open(out_file_name, mode = 'w', encoding = outfile_encoding)
-#        # Header, define and print.
-#        outheader = ['Scientific name', 'Author', 'Rank', 'Parent name']
-#        out.write(field_separator.join(outheader) + row_delimiter)
-#        # Restart taxafile and iterate.
-#        taxafile.seek(0)            
-#        # Iterate over rows in file.
-#        for rowindex, row in enumerate(taxafile):
-#            if rowindex == 0: # First row is assumed to be the header row.
-#                # Header: TaxonId    SortOrder    TaxonTypeId    ScientificName    Author    CommonName    Kingdom    Phylum    Class    Order    Family    Genus    OrganismGroupId    IsSwedishTaxon    IsRedlisted    IsRedlistedSpecies    IsNatura2000Listed    RedlistCategoryId    OrganismGroup    OrganismSubGroupId    OrganismSubGroup    RedlistTaxonCategoryId    RedlistCategory    RedlistCriteria    Landscape
-#                pass
-#            else:
-#                row = map(string.strip, row.split(field_separator))
-#                row = map(unicode, row)
-#                #
-#                taxonid = row[0]
-#                scientificname = row[3] # ScientificName
-#                author = row[4] # Author
-#                rank = rankdict.get(row[2], None) # TaxonTypeId
-#                parentname = ''
-#                #
-#                if taxonid in taxonidtoparentiddict:
-#                    parentid = taxonidtoparentiddict[taxonid]
-#                    if parentid in taxonidtonamedict:
-#                        parentname = taxonidtonamedict[parentid]
-#                    else:
-#                        print("ERROR: Not in taxonidtonamedict: " + parentid)
-#                else:
-#                    if rank != 'Kingdom':
-#                        print("ERROR: No parent found: " + rank + "  " + taxonid + "  " + scientificname)
-#                # Create row.
-#                outrow = [scientificname, author, rank, parentname]
-#                # Print row.
-#                out.write(field_separator.join(outrow) + row_delimiter)                
-#        #            
-#        taxafile.close()
-#        out.close
-    #
+                    #
     except Exception, e:
         print("ERROR: Exception %s" % (e.args[0]))
         print("ERROR: Script will be terminated.")
@@ -185,47 +146,7 @@ TaxonNameUseTypeId    snamn    definition
     finally:
         pass
 
-def create_rankdict():
-    """ Rank-list as defined by Dyntaxa. """
-    #
-    rankdict = {        
-        "1": "Kingdom",
-        "2": "Phylum",
-        "3": "Subphylum",
-        "4": "Superclass",
-        "5": "Class",
-        "6": "Subclass",
-        "7": "Superorder",
-        "8": "Order",
-        "9": "Suborder",
-        "10": "Superfamily",
-        "11": "Family",
-        "12": "Subfamily",
-        "13": "Tribe",
-        "14": "Genus",
-        "15": "Subgenus",
-        "16": "Section",
-        "17": "Species",
-        "18": "Subspecies",
-        "19": "Variety",
-        "20": "Form",
-        "21": "Hybrid",
-        "22": "Cultural variety",
-        "23": "Population",
-        "24": "Group of families",
-        "25": "Infraclass",
-        "26": "Parvclass",
-        "27": "Sensu lato",
-        "28": "Species pair",
-        "-2": "Group",
-        "-1": "Group of lichens",
-        "29": "Infraorder",
-        "30": "Avdelning",
-        "31": "Underavdelning"}
-    #
-    return rankdict        
 
-        
 # Main.
 if __name__ == '__main__':
     execute()
