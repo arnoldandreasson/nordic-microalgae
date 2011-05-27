@@ -42,8 +42,8 @@ def execute():
     print("\n=== Import data: taxa. ===\n")
     import_taxa.execute()
     #
-#    print("\n=== Import data: taxa_synonyms. ===\n")
-###    import_taxa_synonyms.execute()
+    print("\n=== Import data: taxa_synonyms. ===\n")
+    import_taxa_synonyms.execute()
     #
     print("\n=== Import data: taxa_facts. ===\n")
     import_taxa_facts.execute()

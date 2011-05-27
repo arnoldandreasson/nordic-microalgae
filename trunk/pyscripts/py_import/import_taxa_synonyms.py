@@ -27,31 +27,65 @@
 import MySQLdb as mysql
 import sys
 import connect_to_db
+import codecs
+import string
+import json
 
 def execute(db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
-            db_passwd = ''):
-    """ Imports synonym names for taxa. """
+            db_passwd = '',
+            file_name = '../data_import/taxa_synonyms.txt', 
+            file_encoding = 'utf16',
+            field_separator = '\t', 
+            row_delimiter = '\r\n'): # For windows usage.
+    """ Imports facts managed by our own contributors. """
     try:
         # Connect to db.
         db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
-        #
-        cursor.execute("""
-    
-        """)
+        # Open file for reading.
+        infile = codecs.open(file_name, mode = 'r', encoding = file_encoding)    
+        # Iterate over rows in file.
+        for rowindex, row in enumerate(infile):
+            if rowindex == 0: # First row is assumed to be the header row.
+                # 'Scientific name', 'Synonym name', 'Synonym author', 'Info json'
+                headers = map(string.strip, row.split(field_separator))
+                headers = map(unicode, headers)
+            else:
+                row = map(string.strip, row.split(field_separator))
+                row = map(unicode, row)
+                # Get taxon_id from name.
+                cursor.execute("select id from taxa " + 
+                                 "where name = %s", (row[0]))
+                result = cursor.fetchone()
+                if result:
+                    taxon_id = result[0]
+                else:
+                    print("Error: Can't find taxon i taxa. Name: " + row[0])
+                    continue # Skip this taxon.
+                
+                # Insert row.
+                synonymname = row[1]
+                synonymauthor = row[2] 
+                infojson = row[3]
+                cursor.execute("insert into taxa_synonyms(taxon_id, synonym_name, synonym_author, info_json) values (%s, %s, %s, %s)", 
+                                (unicode(taxon_id), synonymname, synonymauthor, infojson))
     #
+    except (IOError, OSError):
+        print("ERROR: Can't read text file." + infile)
+        print("ERROR: Script will be terminated.")
+        sys.exit(1)
     except mysql.Error, e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     finally:
-        if cursor: cursor.close()
         if db: db.close()
+        if cursor: cursor.close()
+        if infile: infile.close() 
 
 
 # Main.
 if __name__ == '__main__':
     execute()
-
