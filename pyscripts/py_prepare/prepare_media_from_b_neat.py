@@ -56,7 +56,7 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
         out = codecs.open(out_file_name, mode = 'w', encoding = outfile_encoding)
         # Header, define and print.
         outheader = ['Scientific name', 'Media id', 'Media type', 'User name', 'Sort order', 
-                     'Location', 'Latitude DD', 'Longitude DD', 'Media format', 'Media type', 'Date', 
+                     'Location', 'Latitude DD', 'Longitude DD', 'Media format', 'Date', 
                      'Date added', 'Title', 'Description', 'Creator', 'Publisher', 'Contributor', 'Rights']
         out.write(field_separator.join(outheader) + row_delimiter)
         # Open image file for reading.
@@ -81,7 +81,6 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
                 latitude = row[7] # 7 : latitude 
                 longitude = row[8] # 8 : longitude                 
                 mediaformat = row[16] # 16 : dc_format
-                mediatype = row[15] # 15 : dc_type 
                 date = row[14] # 14 : dc_date 
                 date_added = row[5] # 5 : date_added 
                 title = row[9] # 9 : dc_title 
@@ -93,7 +92,7 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
                 # Create row.
                 outrow = [scientificname, mediaid, mediatype, username, sortorder, 
                           location, latitude, longitude, 
-                          mediaformat, mediatype, date, date_added, 
+                          mediaformat, date, date_added, 
                           title, description, creator, publisher, contributor, rights] 
                 # Print row.
                 out.write(field_separator.join(outrow) + row_delimiter)                
