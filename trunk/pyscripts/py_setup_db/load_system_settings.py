@@ -52,6 +52,7 @@ def execute(db_host = 'localhost',
         #
         keydict["Facts"] = {
             "Field list": [
+                "Note on taxonomy",
                 "Morphology",
                 "Ecology",
                 "Other remarks",
@@ -71,6 +72,7 @@ def execute(db_host = 'localhost',
                 "Trophic types"
             ],
             "Field types": {
+                "Note on taxonomy": "text",
                 "Morphology": "text",
                 "Ecology": "text",
                 "Other remarks": "text",
@@ -111,8 +113,7 @@ def execute(db_host = 'localhost',
                 "Preservation",
                 "Stain",
                 "Contrast enhancement",
-                "Observation technique",
-                "Media type" # ???
+                "Observation technique"
             ],
             "Field types": {
                 "Title": "text",
@@ -128,8 +129,7 @@ def execute(db_host = 'localhost',
                 "Preservation": "text",
                 "Stain": "text",
                 "Contrast enhancement": "text",
-                "Observation technique": "text",
-                "Media type": "text",
+                "Observation technique": "text"
             }
         }
         #
@@ -210,10 +210,19 @@ def execute(db_host = 'localhost',
         #
         #
         keydict["Species view"] = {
+            "Ranks": [
+                "Species pair", 
+                "Species", 
+                "Subspecies", 
+                "Variety", 
+                "Form", 
+                "Hybrid" 
+            ],
             "Field list": [ # TODO: Fields only?
-                "Component.Images", # TODO: Component or Division or ... this is not the web component available via api.
-                "Component.Classification",
-                "Component.Similar species",
+#                "Component.Images", # TODO: Component or Division or ... this is not the web component available via api.
+#                "Component.Classification",
+#                "Component.Similar species",
+                "Facts.Note on taxonomy",
                 "Facts.Tropic type",
                 "Facts.Morphology",
                 "Facts.Ecology",
@@ -228,16 +237,38 @@ def execute(db_host = 'localhost',
                 "Facts.Size",
                 "Facts.Resting spore",
                 "Facts.Literature",
-                "Component.HELCOM PEG"
+#                "Component.HELCOM PEG"
             ]
         }
         #
         #
         #
         keydict["Taxon view"] = {
+            "Ranks": [
+                "Domain", 
+                "Kingdom", 
+                "Subkingdom", 
+                "Phylum", 
+                "Subphylum", 
+                "Superclass", 
+                "Class", 
+                "Subclass", 
+                "Infraclass", 
+                "Superorder", 
+                "Order", 
+                "Suborder", 
+                "Infraorder", 
+                "Superfamily", 
+                "Family", 
+                "Subfamily", 
+                "Tribe", 
+                "Genus", 
+                "Subgenus" 
+            ],
             "Field list": [
-                "Component.Classification",
-                "Component.Similar species",
+#                "Component.Classification",
+#                "Component.Similar species",
+                "Facts.Note on taxonomy",
                 "Facts.Tropic type",
                 "Facts.Morphology",
                 "Facts.Ecology",
@@ -252,7 +283,7 @@ def execute(db_host = 'localhost',
                 "Facts.Size",
                 "Facts.Resting spore",
                 "Facts.Literature"
-                "Component.HELCOM PEG"
+#                "Component.HELCOM PEG"
             ]
         }
         #
@@ -283,6 +314,7 @@ def execute(db_host = 'localhost',
         # "Type" is also used when importing/exporting data to distinguish between text fields and lists of texts.
         #
         keydict["Facts view formats"] = {
+            "Note on taxonomy": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Morphology": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Ecology": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Other remarks": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
@@ -329,19 +361,20 @@ def execute(db_host = 'localhost',
         # Information needed when editing data.
         #
         keydict["Facts edit formats"] = {
-            "Morphology": {"Type": "text", "Hint": "", "Help": ""},
-            "Ecology": {"Type": "text", "Hint": "", "Help": ""},
-            "Other remarks": {"Type": "text", "Hint": "", "Help": ""},
-            "Tropic type": {"Type": "text", "Hint": "", "Help": ""},
-            "Harmful": {"Type": "text", "Hint": "", "Help": ""},
-            "Note on harmfulness": {"Type": "text", "Hint": "", "Help": ""},
-            "Substrate": {"Type": "text", "Hint": "", "Help": ""},
-            "Life form": {"Type": "text", "Hint": "", "Help": ""},
-            "Width": {"Type": "text", "Hint": "", "Help": ""},
-            "Length": {"Type": "text", "Hint": "", "Help": ""},
-            "Size": {"Type": "text", "Hint": "", "Help": ""},
-            "Resting spore": {"Type": "text", "Hint": "", "Help": ""},
-            "Literature": {"Type": "text", "Hint": "", "Help": ""}
+            "Note on taxonomy": {"Type": "textfield", "Description": ""},
+            "Morphology": {"Type": "textfield", "Description": ""},
+            "Ecology": {"Type": "textfield", "Description": ""},
+            "Other remarks": {"Type": "textfield", "Description": ""},
+            "Tropic type": {"Type": "textfield", "Description": ""},
+            "Harmful": {"Type": "textfield", "Description": ""},
+            "Note on harmfulness": {"Type": "textfield", "Description": ""},
+            "Substrate": {"Type": "textfield", "Description": ""},
+            "Life form": {"Type": "textfield", "Description": ""},
+            "Width": {"Type": "textfield", "Description": ""},
+            "Length": {"Type": "textfield", "Description": ""},
+            "Size": {"Type": "textfield", "Description": ""},
+            "Resting spore": {"Type": "textfield", "Description": ""},
+            "Literature": {"Type": "textfield", "Description": ""}
         }
         #
         # Media edit formats:
@@ -367,16 +400,16 @@ def execute(db_host = 'localhost',
                 "Description": "Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a> for more information"},
 
             "Preservation": {"Type": "checkboxes", 
-                "Options": ["No preservation", "Lugols iodine", "Formaldehyde", "Glutardialdehyde", "Osmium tetroxide", "Other preservative"],
-                "Default value": "No preservation", 
+                "Options": ["Not described", "Lugols iodine", "Formaldehyde", "Glutardialdehyde", "Osmium tetroxide", "Other preservative"],
+                "Default value": "Not described", 
                 "Description": ""},
             "Stain": {"Type": "checkboxes", 
-                "Options": ["No stain", "DAPI", "Primulin", "Proflavin", "Calcofluor-Fluorescent brightener", "Other stain"], 
-                "Default value": "No stain", 
+                "Options": ["Not described", "DAPI", "Primulin", "Proflavin", "Calcofluor-Fluorescent brightener", "Other stain"], 
+                "Default value": "Not described", 
                 "Description": ""},
             "Contrast enhancement": {"Type": "checkboxes", 
-                "Options": ["No contrast enhancement", "DIC/Nomarski", "Phase contrast", "Acid cleaned and mounted in resin with high refractive index", "Other"], 
-                "Default value": "No contrast enhancement", 
+                "Options": ["Not described", "DIC/Nomarski", "Phase contrast", "Acid cleaned and mounted in resin with high refractive index", "Other"], 
+                "Default value": "Not described", 
                 "Description": ""},
             "Observation technique": {"Type": "checkboxes", 
                 "Options": ["Not described", "Light microscopy", "Fluorescence microscopy", "TEM Transmission Electron Micoscopy", 
@@ -421,6 +454,53 @@ def execute(db_host = 'localhost',
 #                    "Correction/addition 2009",
 #                    "Correction/addition 2010"
                     ],
+                    "Geometric shape images": {
+                        "sphere": "sphere.jpg",
+                        "rotational ellipsoid": "rotational ellipsoid.jpg",
+                        "cylinder": "cylinder.jpg",
+                        "chain of spheres": "chain of spheres.jpg",
+                        "spheres": "spheres.jpg",
+                        "flattened ellipsoid": "flattened ellipsoid.jpg",
+                        "cone + half sphere": "cone and half sphere.jpg",
+                        "sphere-20%": "sphere.jpg",
+                        "sphere-10%": "sphere.jpg",
+                        "cone-10%": "cone.jpg",
+                        "2 cones": "2 cone.jpg",
+                        "half cone + cut flattened ellipsoid": "half cone and cut flattened ellipsoid.jpg",
+                        "half cone": "half cone.jpg",
+                        "monoraphidioid": "monoraphidioid.jpg",
+                        "sphere-25%": "sphere.jpg",
+                        "2 cones-30%": "2 cones.jpg",
+                        "flattened ellipsoid - 20%": "flattened ellipsoid.jpg",
+                        "(cone + half sphere)-20%": "cone and half sphere.jpg",
+                        "(cone + half sphere)-25%": "cone and half sphere.jpg",
+                        "rotational ellipsoid-20%": "rotational ellipsoid.jpg",
+                        "girdle diameter": "girdle diameter.jpg",
+                        "half sphere": "half sphere.jpg",
+                        "flattened ellipsoid-20%": "flattened ellipsoid.jpg",
+                        "cone+ half sphere": "cone and half sphere.jpg",
+                        "truncated cone + half sphere": "truncated cone and half sphere.jpg",
+                        "cone": "cone.jpg",
+                        "rotational ellipsoid x 0.5": "rotational ellipsoid .jpg",
+                        "oval cylinder": "oval cylinder.jpg",
+                        "prism on triangle base": "prism on triangle base.jpg",
+                        "parallelepiped": "parallelepiped.jpg",
+                        "half parallelepiped": "half parallelepiped.jpg",
+                        "cone + half sphere - 40%": "cone  and half sphere.jpg",
+                        "parallelepiped-30%": "parallelepiped.jpg",
+                        "parallelepiped-10%": "parallelepiped.jpg",
+                        "Pyramid": "pyramid.jpg",
+                        "parallelepiped/2": "parallelepiped.jpg",
+                        "parallelepiped-40%": "parallelepiped.jpg",
+                        "parallelepiped-20%": "parallelepiped.jpg",
+                        "oval cylinder-30%": "oval cylinder.jpg",
+                        "trapezoid": "trapezoid.jpg",
+                        "two truncated cones": "two truncated cones.jpg",
+                        "parallelepiped-25%": "parallelepiped.jpg",
+                        "half sphere-30%": "half sphere.jpg",
+                        "Cone+half sphere": "Cone and half sphere.jpg",
+                        "2 spheres * 5/8": "2 sphere.jpg"                    
+                    },
                 "Source of data": 
                     """
                     Olenina, I., Hajdu, S., Edler, L., Andersson, A., Wasmund, N., Busch, S., Göbel, J., 
@@ -453,10 +533,10 @@ def execute(db_host = 'localhost',
         keydict["Filters"] = {
             "Group list": [
                     "Select",
-                    "Country",
-                    "Geographic area",
-                    "Habitat",
-                    "Trophic type"
+                    "Country (not yet implemented)",
+                    "Geographic area (not yet implemented)",
+                    "Habitat (not yet implemented)",
+                    "Trophic type (not yet implemented)"
             ],
             "Groups": {
                 "Select": [
@@ -464,30 +544,31 @@ def execute(db_host = 'localhost',
                         {"Label": "Show HELCOM PEG only", "Default": "False", "Filter": "HELCOM PEG", "Value": "True"}, 
                         {"Label": "Show Harmful algae only", "Default": "False", "Filter": "Harmful", "Value": "True"}
                 ],
-                "Country": [
-                        {"Label": "Denmark", "Default": "True", "Filter": "Country", "Value": "Denmark"}, 
-                        {"Label": "Finland", "Default": "True", "Filter": "Country", "Value": "Finland"}, 
-                        {"Label": "Norway", "Default": "True", "Filter": "Country", "Value": "Norway"}, 
-                        {"Label": "Sweden", "Default": "True", "Filter": "Country", "Value": "Sweden"}, 
-                        {"Label": "Not defined", "Default": "True", "Filter": "Country", "Value": ""} 
+                "Country (not yet implemented)": [
+                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Country"}, 
+                        {"Label": "Denmark", "Default": "False", "Filter": "Country", "Value": "Denmark"}, 
+                        {"Label": "Finland", "Default": "False", "Filter": "Country", "Value": "Finland"}, 
+                        {"Label": "Norway", "Default": "False", "Filter": "Country", "Value": "Norway"}, 
+                        {"Label": "Sweden", "Default": "False", "Filter": "Country", "Value": "Sweden"} 
                  ],
-                "Geographic area": [
-                        {"Label": "Baltic sea", "Default": "True", "Filter": "Geographic area", "Value": "Baltic sea"},
-                        {"Label": "Skagerakk", "Default": "True", "Filter": "Geographic area", "Value": "Skagerakk"},
-                        {"Label": "North sea", "Default": "True", "Filter": "Geographic area", "Value": "North sea"},
-                        {"Label": "Norwegian sea", "Default": "True", "Filter": "Geographic area", "Value": "Norwegian sea"}, 
-                        {"Label": "Not defined", "Default": "True", "Filter": "Geographic area", "Value": ""} 
+                "Geographic area (not yet implemented)": [
+                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Geographic area"}, 
+                        {"Label": "Baltic sea", "Default": "False", "Filter": "Geographic area", "Value": "Baltic sea"},
+                        {"Label": "Skagerakk", "Default": "False", "Filter": "Geographic area", "Value": "Skagerakk"},
+                        {"Label": "North sea", "Default": "False", "Filter": "Geographic area", "Value": "North sea"},
+                        {"Label": "Norwegian sea", "Default": "False", "Filter": "Geographic area", "Value": "Norwegian sea"} 
                 ],
-                "Habitat": [
-                        {"Label": "Marine/planktonic", "Default": "True", "Filter": "Habitat", "Value": "Marine/planktonic"}, 
-                        {"Label": "Marine/benthic", "Default": "True", "Filter": "Habitat", "Value": "Marine/benthic"}, 
-                        {"Label": "Freshwater/planktonic", "Default": "True", "Filter": "Habitat", "Value": "Freshwater/planktonic"}, 
-                        {"Label": "Not defined", "Default": "True", "Filter": "Habitat", "Value": ""} 
+                "Habitat (not yet implemented)": [
+                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Habitat"}, 
+                        {"Label": "Marine/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Marine/planktonic"}, 
+                        {"Label": "Marine/benthic", "Default": "False", "Filter": "Habitat", "Value": "Marine/benthic"}, 
+                        {"Label": "Freshwater/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/planktonic"}, 
+                        {"Label": "Freshwater/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/benthic"} 
                 ],
-                "Trophic type": [
-                        {"Label": "Photo- or mixotrophic", "Default": "True", "Filter": "Trophic type", "Value": "Photo- or mixotrophic"}, 
-                        {"Label": "Heterotrophic", "Default": "True", "Filter": "Trophic type", "Value": "Heterotrophic"}, 
-                        {"Label": "Not defined", "Default": "True", "Filter": "Trophic type", "Value": ""} 
+                "Trophic type (not yet implemented)": [
+                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Trophic type"}, 
+                        {"Label": "Photo- or mixotrophic", "Default": "False", "Filter": "Trophic type", "Value": "Photo- or mixotrophic"}, 
+                        {"Label": "Heterotrophic", "Default": "False", "Filter": "Trophic type", "Value": "Heterotrophic"} 
                 ]
             }
         }
