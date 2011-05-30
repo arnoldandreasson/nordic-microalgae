@@ -55,7 +55,7 @@ def execute(db_host = 'localhost',
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
                 # Header: 'Scientific name', 'Media id', 'Media type', 'User name', 'Sort order', 
-                #         'Location', 'Latitude DD', 'Longitude DD', 'Media format', 'Media type', 'Date', 
+                #         'Location', 'Latitude DD', 'Longitude DD', 'Media format', 'Date', 
                 #         'Dateadded', 'Title', 'Description', 'Creator', 'Publisher', 'Contributor', 'Rights'
                 header = map(string.strip, row.split(field_separator))
                 header = map(unicode, header)
@@ -71,7 +71,8 @@ def execute(db_host = 'localhost',
                 # Create metadata.
                 metadata = {}
                 for columnindex, headeritem in enumerate(header):
-                    if not (headeritem in ['Scientific name', 'Media id', 'Media type', 'User name', 'Sort order']):
+#                    if not (headeritem in ['Scientific name', 'Media id', 'Media type', 'User name', 'Sort order']):
+                    if not (headeritem in ['Scientific name', 'Media id', 'Sort order']):
                         if row[columnindex]:
                             metadata[headeritem] = row[columnindex]
                 # Convert facts to string.
@@ -90,7 +91,7 @@ def execute(db_host = 'localhost',
 
                 # Check if db row exists. 
                 cursor.execute("select count(*) from taxa_media where taxon_id = %s and media_id = %s and media_type = %s", 
-                               (taxon_id, row[2], row[16]))
+                               (taxon_id, row[1], row[2]))
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_media(taxon_id, media_id, media_type, user_name, metadata_json) values (%s, %s, %s, %s, %s)", 
