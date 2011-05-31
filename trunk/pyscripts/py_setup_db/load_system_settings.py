@@ -570,7 +570,7 @@ def execute(db_host = 'localhost',
                         {"Label": "Marine/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Marine/planktonic"}, 
                         {"Label": "Marine/benthic", "Default": "False", "Filter": "Habitat", "Value": "Marine/benthic"}, 
                         {"Label": "Freshwater/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/planktonic"}, 
-                        {"Label": "Freshwater/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/benthic"} 
+                        {"Label": "Freshwater/benthic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/benthic"} 
                 ],
                 "Trophic type (not yet implemented)": [
                         {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Trophic type"}, 
