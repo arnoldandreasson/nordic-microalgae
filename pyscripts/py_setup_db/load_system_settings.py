@@ -113,7 +113,8 @@ def execute(db_host = 'localhost',
                 "Preservation",
                 "Stain",
                 "Contrast enhancement",
-                "Observation technique"
+                "Observation technique",
+                "Image galleries"
             ],
             "Field types": {
                 "Title": "text",
@@ -129,7 +130,8 @@ def execute(db_host = 'localhost',
                 "Preservation": "text",
                 "Stain": "text",
                 "Contrast enhancement": "text",
-                "Observation technique": "text"
+                "Observation technique": "text",
+                "Image galleries": "text list"
             }
         }
         #
@@ -305,7 +307,8 @@ def execute(db_host = 'localhost',
                 "Media.Preservation",
                 "Media.Stain",
                 "Media.Contrast enhancement",
-                "Media.Observation technique"
+                "Media.Observation technique",
+                "Image galleries"
             ]
         }        
         #
@@ -416,6 +419,10 @@ def execute(db_host = 'localhost',
                                 "SEM Scanning Electron Microscopy", "Photography from land Photography from ship Photography from air Satellite remote sensing", 
                                 "Other observation technique"], 
                 "Default value": "Not described", 
+                "Description": ""},
+            "Image galleries": {"Type": "checkboxes", 
+                "Options": ["HELCOM-PEG", "Skagerrak-Kattegat", "Norwegian Sea", "Freshwater"], 
+                "Default value": "", 
                 "Description": ""}
         }
         #
@@ -542,7 +549,7 @@ def execute(db_host = 'localhost',
                 "Select": [
                         {"Label": "Show illustrated only", "Default": "False", "Filter": "Illustrated", "Value": "True"}, 
                         {"Label": "Show HELCOM PEG only", "Default": "False", "Filter": "HELCOM PEG", "Value": "True"}, 
-                        {"Label": "Show Harmful algae only", "Default": "False", "Filter": "Harmful", "Value": "True"}
+                        {"Label": "Show Harmful algae only (not yet implemented)", "Default": "False", "Filter": "Harmful", "Value": "True"}
                 ],
                 "Country (not yet implemented)": [
                         {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Country"}, 
