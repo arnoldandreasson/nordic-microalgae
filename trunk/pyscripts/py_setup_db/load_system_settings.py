@@ -421,7 +421,8 @@ def execute(db_host = 'localhost',
                 "Default value": "Not described", 
                 "Description": ""},
             "Image galleries": {"Type": "checkboxes", 
-                "Options": ["HELCOM-PEG", "Skagerrak-Kattegat", "Norwegian Sea", "Freshwater"], 
+                "Options": ["HELCOM-PEG", "Skagerrak-Kattegat", "Norwegian Sea", "Freshwater", 
+                            "Swedish benthic freshwater diatoms"], 
                 "Default value": "", 
                 "Description": ""}
         }
@@ -549,7 +550,8 @@ def execute(db_host = 'localhost',
                 "Select": [
                         {"Label": "Show illustrated only", "Default": "False", "Filter": "Illustrated", "Value": "True"}, 
                         {"Label": "Show HELCOM PEG only", "Default": "False", "Filter": "HELCOM PEG", "Value": "True"}, 
-                        {"Label": "Show Harmful algae only (not yet implemented)", "Default": "False", "Filter": "Harmful", "Value": "True"}
+                        {"Label": "Show Swedish benthic freshwater diatoms only", "Default": "False", "Filter": "Benthic FW. diatoms", "Value": "True"}, 
+                        {"Label": "Show IOC Harmful algae only (not yet implemented)", "Default": "False", "Filter": "Harmful", "Value": "True"}
                 ],
                 "Country (not yet implemented)": [
                         {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Country"}, 
