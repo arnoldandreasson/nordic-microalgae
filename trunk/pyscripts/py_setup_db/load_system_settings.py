@@ -308,7 +308,7 @@ def execute(db_host = 'localhost',
                 "Media.Stain",
                 "Media.Contrast enhancement",
                 "Media.Observation technique",
-                "Image galleries"
+                "Media.Image galleries"
             ]
         }        
         #
