@@ -43,8 +43,8 @@ def execute(db_host = 'localhost',
         # Connect to db.
         db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor = db.cursor()
-        # Remove all rows in table.
-        cursor.execute(""" delete from taxa """) 
+#        # Remove all rows in table.
+#        cursor.execute(""" delete from taxa """) 
         # Open file for reading.
         infile = codecs.open(file_name, mode = 'r', encoding = file_encoding)    
         # Iterate over rows in file.
