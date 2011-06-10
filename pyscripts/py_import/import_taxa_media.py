@@ -35,7 +35,7 @@ def execute(db_host = 'localhost',
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
             db_passwd = '',
-            file_name = '../data_import/taxa_media.txt', 
+            file_name = '../data_import/media.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
             row_delimiter = '\r\n'):
@@ -46,9 +46,9 @@ def execute(db_host = 'localhost',
         # Connect to db.
         db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor = db.cursor()
-        # Remove all rows in tables.
-        cursor.execute(""" delete from taxa_media """) 
-        cursor.execute(""" delete from taxa_media_list """) 
+#        # Remove all rows in tables.
+#        cursor.execute(""" delete from taxa_media """) 
+#        cursor.execute(""" delete from taxa_media_list """) 
         # Open file for reading.
         infile = codecs.open(file_name, mode = 'r', encoding = file_encoding)    
         # Iterate over rows in file.

@@ -40,13 +40,14 @@ def execute():
     """ Script that creates and populates a test database. """
     #
     print("\n=== Import data: taxa. ===\n")
-    import_taxa.execute()
+    import_taxa.execute(file_name = '../data_import/taxa_dyntaxa.txt')
     #
     print("\n=== Import data: taxa_synonyms. ===\n")
-    import_taxa_synonyms.execute()
+    import_taxa_synonyms.execute(file_name = '../data_import/synonyms_dyntaxa.txt')
+    import_taxa_synonyms.execute(file_name = '../data_import/synonyms_algaebase.txt')
     #
     print("\n=== Import data: taxa_facts. ===\n")
-    import_taxa_facts.execute()
+    import_taxa_facts.execute(file_name = '../data_import/facts_b_neat.txt')
     #
 #    print("\n=== Import data: taxa_facts_drafts. ===\n")
 ###    import_taxa_facts_drafts.execute()
@@ -58,10 +59,10 @@ def execute():
 ###    import_taxa_external_facts.execute()
     #
     print("\n=== Import data: taxa_helcom_peg. ===\n")
-    import_taxa_helcom_peg.execute()
+    import_taxa_helcom_peg.execute(file_name = '../data_external/PEG_BVOL2010.json')
     #
     print("\n=== Import data: taxa_media. ===\n")
-    import_taxa_media.execute()
+    import_taxa_media.execute(file_name = '../data_import/media_b_neat.txt')
     #
     #
     print("\n=== Generate data: taxa_hierarchy_search. ===\n")

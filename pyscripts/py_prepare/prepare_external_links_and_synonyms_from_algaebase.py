@@ -27,15 +27,17 @@
 import sys
 import string
 import codecs
+import json
   
 def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.txt', 
-            taxa_file_name = '../data_import/taxa.txt', 
-            out_file_name = '../data_prepared/algaebase_external_links.txt', 
+            taxa_file_name = '../data_prepared/taxa_dyntaxa.txt', 
+            out_external_links_file_name = '../data_prepared/external_links_algaebase.txt', 
+            out_synonyms_file_name = '../data_prepared/synonyms_algaebase.txt', 
             infile_encoding = 'utf16',
             outfile_encoding = 'utf16',
             field_separator = '\t', 
             row_delimiter = '\r\n'):
-    """ Prepare import file to the main taxa table. """    
+    """ Prepare import file to be used for external links. """    
     #
     try:       
         #
@@ -64,9 +66,13 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.t
                 currentflag = row[8]
                 #
                 #
-                if currentflag in ['U', 'P']: # U: uncertain taxonomically, P: not checked
+                if currentflag in ['U', 'P', 'D']: # U: uncertain taxonomically, P: not checked, D: deprecated.
                     continue
                 #
+                if currentflag == '': # 
+                    print("Current flag is empty: " + id + 
+                          " name: " + genus + " " + species + " ssp. " + subspecies + " var. " + variety + " f. " + forma)
+                    continue
                 #
                 name = genus + ' ' + species
                 if len(forma) > 0:
@@ -77,23 +83,26 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.t
                     name = name + ' ssp. ' + subspecies
                 #
                 #
-                if currentflag in ['C', 'c']: # C: Valid or current.
+                if currentflag in ['C', 'c', 'S', 's']: # C: Valid or current, S: Synonym.
                     ab_nametoid_dict[name] = id
                     ab_idtoname_dict[id] = name
-                elif currentflag in ['S', 's']: # S: Synonym.
-                    ab_synonymnametoid_dict[name] = idforsynonyms
                 else:
                     print("Error in current flag: " + currentflag)
                 
+                if currentflag in ['S', 's']: # S: Synonym.
+                    ab_synonymnametoid_dict[name] = idforsynonyms
         #
         # Open taxa file.
         infile = codecs.open(taxa_file_name, mode = 'r', encoding = infile_encoding)    
         #
-        # Create outdatafile.
-        out = codecs.open(out_file_name, mode = 'w', encoding = outfile_encoding)
+        # Create outdatafiles.
+        outlinks = codecs.open(out_external_links_file_name, mode = 'w', encoding = outfile_encoding)
+        outsynonyms = codecs.open(out_synonyms_file_name, mode = 'w', encoding = outfile_encoding)
         # Header, define and print.
-        outheader = ['Scientific name', 'Algaebase id', 'Synonym', 'Algaebase current name']
-        out.write(field_separator.join(outheader) + row_delimiter)
+        outheader = ['Scientific name', 'Algaebase id']
+        outlinks.write(field_separator.join(outheader) + row_delimiter)
+        outheader = ['Scientific name', 'Synonym name', 'Synonym author', 'Info json']
+        outsynonyms.write(field_separator.join(outheader) + row_delimiter)
         # Iterate over rows in file.
         matchcounter = 0
         nomatchcounter = 0
@@ -117,28 +126,31 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.t
                         matchcounter += 1
                         algaebaseid = ab_nametoid_dict[scientificname]
                         #
-                        # Create row.
-                        outrow = [scientificname, algaebaseid, '', '']
-                        # Print row.
-                        out.write(field_separator.join(outrow) + row_delimiter)                
+                        # Create and print row.
+                        outrow = [scientificname, algaebaseid]
+                        outlinks.write(field_separator.join(outrow) + row_delimiter)                
+                    else:
+                        nomatchcounter += 1
+                        print('No match: ' + scientificname)
 
-                    elif scientificname in ab_synonymnametoid_dict:
+                    if scientificname in ab_synonymnametoid_dict:
                         try:
                             synonymcounter += 1  
-                            synonym = 'S'
                             algaebaseid = ab_synonymnametoid_dict[scientificname]
-                            currentname = ab_idtoname_dict[algaebaseid]
-                            # Create row.
-                            outrow = [scientificname, algaebaseid, synonym, currentname]
-                            # Print row.
-                            out.write(field_separator.join(outrow) + row_delimiter)                
+                            currentname = ab_idtoname_dict[algaebaseid]                            
+                            # Add info as Json.
+                            infojson = {}
+                            infojson['Source'] = 'AlgaeBase'
+                            infojson['Hint'] = 'Valid name'
+                            infojsonstring = json.dumps(infojson, encoding = 'utf-8', 
+                                                        sort_keys = True, indent = None)         
+                            # Create and print row.
+                            outrow = [scientificname, currentname, '', infojsonstring]
+                            outsynonyms.write(field_separator.join(outrow) + row_delimiter)                
                         except:
                             synonymerrorscounter += 1
                             print('ERROR. Synonym lookup failed: ' + scientificname)
                     
-                    else:
-                        nomatchcounter += 1
-                        print('No match: ' + scientificname)
                 else:
                     highertaxacounter += 1
         #
@@ -151,7 +163,8 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.t
         #
         algaebasefile.close()            
         infile.close()
-        out.close
+        outlinks.close
+        outsynonyms.close
     #
     except Exception, e:
         print("ERROR: Exception %s" % (e.args[0]))

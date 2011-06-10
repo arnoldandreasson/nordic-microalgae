@@ -33,7 +33,7 @@ import json
 #            names_file_name = '../data_external/dyntaxa_names_xxxxxxxx.txt', 
 def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt', 
             names_file_name = '../data_external/dyntaxa_names_20110523.txt', 
-            out_file_name = '../data_prepared/taxa_synonyms.txt', 
+            out_file_name = '../data_prepared/synonyms_dyntaxa.txt', 
             infile_encoding = 'utf16',
             outfile_encoding = 'utf16',
             field_separator = '\t', 
@@ -126,6 +126,7 @@ TaxonNameUseTypeId    snamn    definition
                     continue
                 # Add info as Json.
                 infojson = {}
+                infojson['Source'] = 'DynTaxa'
 #                if taxonnametypeId == u'11': infojson['Hint'] = 'ERMS name'        
                 if taxonnametypeId == u'13': infojson['Hint'] = 'Original name'
                 if taxonnameusetypeid == u'3': infojson['Hint'] = 'Misspelled, but commonly used.'

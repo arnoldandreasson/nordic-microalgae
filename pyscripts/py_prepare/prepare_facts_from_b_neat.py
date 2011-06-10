@@ -29,7 +29,7 @@ import string
 
 def execute(species_file_name = '../data_external/b_neat_species.txt', 
             facts_file_name = '../data_external/b_neat_species_data.txt', 
-            out_file_name = '../data_prepared/taxa_facts.txt', 
+            out_file_name = '../data_prepared/facts_b_neat.txt', 
             infile_encoding = 'utf16', 
             outfile_encoding = 'utf16', 
             field_separator = '\t', 

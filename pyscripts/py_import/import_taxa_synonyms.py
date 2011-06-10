@@ -69,8 +69,11 @@ def execute(db_host = 'localhost',
                 synonymname = row[1]
                 synonymauthor = row[2] 
                 infojson = row[3]
-                cursor.execute("insert into taxa_synonyms(taxon_id, synonym_name, synonym_author, info_json) values (%s, %s, %s, %s)", 
-                                (unicode(taxon_id), synonymname, synonymauthor, infojson))
+                try:
+                    cursor.execute("insert into taxa_synonyms(taxon_id, synonym_name, synonym_author, info_json) values (%s, %s, %s, %s)", 
+                                    (unicode(taxon_id), synonymname, synonymauthor, infojson))
+                except mysql.Error, e:
+                    print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
     #
     except (IOError, OSError):
         print("ERROR: Can't read text file." + infile)

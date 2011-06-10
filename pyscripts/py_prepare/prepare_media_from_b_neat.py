@@ -30,7 +30,7 @@ import string
 
 def execute(species_file_name = '../data_external/b_neat_species.txt', 
             images_file_name = '../data_external/b_neat_images.txt', 
-            out_file_name = '../data_prepared/taxa_media.txt', 
+            out_file_name = '../data_prepared/media_b_neat.txt', 
             infile_encoding = 'utf16',
             outfile_encoding = 'utf16',
             field_separator = '\t', 
