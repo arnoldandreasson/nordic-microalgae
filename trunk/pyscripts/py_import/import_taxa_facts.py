@@ -31,14 +31,15 @@ import codecs
 import string
 import json
 
-def execute(db_host = 'localhost', 
-            db_name = 'nordicmicroalgae', 
-            db_user = 'root', 
-            db_passwd = '',
-            file_name = '../data_import/facts.txt', 
+def execute(file_name = '../data_import/facts.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
-            row_delimiter = '\r\n'): # For windows usage.
+            row_delimiter = '\r\n',
+            db_host = 'localhost', 
+            db_name = 'nordicmicroalgae', 
+            db_user = 'root', 
+            db_passwd = ''
+            ):
     """ Imports facts managed by our own contributors. """
     try:
         # Connect to db.

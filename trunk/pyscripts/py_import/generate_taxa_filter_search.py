@@ -70,7 +70,7 @@ def execute(db_host = 'localhost',
             # Check if Harmful. 
             #
             cursor.execute("select count(*) from taxa_external_facts where (taxon_id = %s) and (provider = %s)", 
-                           (taxon_id, 'IOC'))
+                           (taxon_id, 'IOC-HAB'))
             result = cursor.fetchone()
             if result[0] > 0: 
                 # Add row in taxa_filter_search.

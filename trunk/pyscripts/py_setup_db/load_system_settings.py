@@ -165,7 +165,7 @@ def execute(db_host = 'localhost',
                 },
                 "IOC-HAB": {
                     "Field list": [
-                        "TODO"
+                        "Harmful, IOC-HAB"
                     ],
                     "Source of data": "",
                     "Copyright notice": ""
@@ -235,8 +235,9 @@ def execute(db_host = 'localhost',
                 "Facts.Ecology",
                 "Facts.Other remarks",
                 "Facts.Tropic type",
-                "External Facts.IOC.Harmful",
-                "External Facts.IOC.Note on harmfulness",
+                "Facts.Harmful",
+                "Facts.Note on harmfulness",
+                "External Facts.IOC-HAB.Harmful, IOC-HAB",
                 "Facts.Substrate",
                 "Facts.Life form",
                 "Facts.Width",
