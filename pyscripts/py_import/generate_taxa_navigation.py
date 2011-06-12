@@ -72,28 +72,29 @@ def execute(db_host = 'localhost',
                               'siblings': ''}
             # Save result.
             taxanavigation[id] = navigationdict
-        #
-        # Add previous and next ordered by rank and name.
-        # Sort taxa by rank and name.
-        taxa.sort(taxa_by_rank_name_sortfunction) # Sort function defined below.
-        previousid = None
-        previousrank = None
-        for item in taxa:
-            id = item['id']
-            rank = item['rank']
-            # Stop chain when changing rank.
-            if previousrank and (previousrank == rank):
-                if previousid:
-                    # Save result.
-                    taxanavigation[id]['prev_in_rank'] = idtoname[previousid]
-                    taxanavigation[previousid]['next_in_rank'] = idtoname[id]
-            else:
-                if previousid:
-                    # Save result.
-                    taxanavigation[id]['prev_in_rank'] = ''
-                    taxanavigation[previousid]['next_in_rank'] = ''
-            previousrank = rank                 
-            previousid = id
+#        #
+#        # Add previous and next ordered by rank and name.
+#        # Sort taxa by rank and name.
+#        # REPLACED BY CODE BELOW. 
+#        taxa.sort(taxa_by_rank_name_sortfunction) # Sort function defined below.
+#        previousid = None
+#        previousrank = None
+#        for item in taxa:
+#            id = item['id']
+#            rank = item['rank']
+#            # Stop chain when changing rank.
+#            if previousrank and (previousrank == rank):
+#                if previousid:
+#                    # Save result.
+#                    taxanavigation[id]['prev_in_rank'] = idtoname[previousid]
+#                    taxanavigation[previousid]['next_in_rank'] = idtoname[id]
+#            else:
+#                if previousid:
+#                    # Save result.
+#                    taxanavigation[id]['prev_in_rank'] = ''
+#                    taxanavigation[previousid]['next_in_rank'] = ''
+#            previousrank = rank                 
+#            previousid = id
         #
         # Add classification.
         for item in taxa:
@@ -131,6 +132,25 @@ def execute(db_host = 'localhost',
                 taxanavigation[id]['prev_in_tree'] = idtoname[previousid]
                 taxanavigation[previousid]['next_in_tree'] = idtoname[id]
             previousid = id
+
+
+
+        #
+        # Add previous and next name in tree walk. 
+        # Next and previous is always in the same rank.
+        # (Taxa is already sorted by classification).
+        prevousidforranks = {} # rank: id.
+        for index, item in enumerate(taxa):
+            id = item['id']
+            rank = item['rank']
+            if rank in prevousidforranks:
+            # Save result.
+                taxanavigation[id]['prev_in_rank'] = idtoname[prevousidforranks[rank]]
+                taxanavigation[prevousidforranks[rank]]['next_in_rank'] = idtoname[id]
+            prevousidforranks[rank] = id
+
+
+
         #
         # Calculate number of children.
         # Will be used in lists of children and siblings.
@@ -208,13 +228,13 @@ def execute(db_host = 'localhost',
         if out: out.close()
 
 # Sort functions for taxa list.
-def taxa_by_rank_name_sortfunction(s1, s2):
-    """ """
-    str1 = s1.get('rank', '') + ':' + s1.get('name', '')
-    str2 = s2.get('rank', '') + ':' + s2.get('name', '')
-    if str1 < str2: return -1
-    if str1 > str2: return 1
-    return 0 # Both are equal.
+#def taxa_by_rank_name_sortfunction(s1, s2):
+#    """ """
+#    str1 = s1.get('rank', '') + ':' + s1.get('name', '')
+#    str2 = s2.get('rank', '') + ':' + s2.get('name', '')
+#    if str1 < str2: return -1
+#    if str1 > str2: return 1
+#    return 0 # Both are equal.
 
 def taxa_by_classification_sortfunction(s1, s2):
     """ """
