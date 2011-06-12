@@ -26,25 +26,84 @@
 
 import MySQLdb as mysql
 import sys
+import codecs
+import string
+import json
 import connect_to_db
 
-def execute(db_host = 'localhost', 
+def execute(provider = "IOC-HAB",
+            file_name = '../data_import/external_facts_ioc_hab.txt', 
+            file_encoding = 'utf16',
+            field_separator = '\t', 
+            row_delimiter = '\r\n',
+            db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
-            db_passwd = '',
+            db_passwd = ''
             ):
     """ Imports facts automatically fetched from external sources. """
-    db = None
-    cursor = None
     try:
         # Connect to db.
         db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
-        #
-        cursor.execute("""
-    
-        """)
+        # Open file for reading.
+        infile = codecs.open(file_name, mode = 'r', encoding = file_encoding)    
+        # Iterate over rows in file.
+        for rowindex, row in enumerate(infile):
+            if rowindex == 0: # First row is assumed to be the header row.
+                headers = map(string.strip, row.split(field_separator))
+                headers = map(unicode, headers)
+            else:
+                row = map(string.strip, row.split(field_separator))
+                row = map(unicode, row)
+                # Get taxon_id from name.
+                cursor.execute("select id from taxa " + 
+                                 "where name = %s", (row[0]))
+                result = cursor.fetchone()
+                if result:
+                    taxon_id = result[0]
+                else:
+                    print("Error: Can't find taxon i taxa. Name: " + row[0])
+                    continue # Skip this taxon.
+                # Get facts_json from db.
+                cursor.execute("select facts_json from taxa_external_facts " + 
+                               "where (taxon_id = %s) and (provider = %s) ", 
+                               (unicode(taxon_id), unicode(provider)))
+                result = cursor.fetchone()
+                if result:
+                    # From string to dictionary.
+                    factsdict = json.loads(result[0], encoding = 'utf-8')
+                    # Add column values to row, if available.
+                    for headeritem in headers:
+                        row.append(factsdict.get(headeritem, ''))
+                else:
+                    # Add empty columns.
+                    factsdict = {}
+                # Update facts.
+                for colindex, headeritem in enumerate(headers):
+                    if not headeritem in ['Scientific name']:
+                        factsdict[headeritem] = row[colindex]
+                # Convert facts to string.
+                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                                     sort_keys=True, indent=4)
+                # Check if db row exists. 
+                cursor.execute("select count(*) from taxa_external_facts " + 
+                               "where (taxon_id = %s) and (provider = %s) ", 
+                               (unicode(taxon_id), unicode(provider)))
+                result = cursor.fetchone()
+                if result[0] == 0: 
+                    cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) " + 
+                                   "values (%s, %s, %s)", 
+                                   (unicode(taxon_id), unicode(provider), jsonstring))
+                else:
+                    cursor.execute("update taxa_external_facts set facts_json = %s " + 
+                                   "where (taxon_id = %s) and (provider = %s) ", 
+                                   (jsonstring, unicode(taxon_id), unicode(provider)))
     #
+    except (IOError, OSError):
+        print("ERROR: Can't read text file." + infile)
+        print("ERROR: Script will be terminated.")
+        sys.exit(1)
     except mysql.Error, e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
@@ -52,6 +111,7 @@ def execute(db_host = 'localhost',
     finally:
         if db: db.close()
         if cursor: cursor.close()
+        if infile: infile.close() 
 
 
 # Main.

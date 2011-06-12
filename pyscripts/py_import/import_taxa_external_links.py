@@ -32,7 +32,7 @@ import connect_to_db
 
 def execute(provider = "AlgaeBase",
             link_type = "Taxon URL",
-            url_template = "http://algaebase.org/browse/taxonomy/?id=<replace-id>",
+            url_template = "http://algaebase.org/search/species/detail/?species_id=<replace-id>",
             file_name = '../data_import/external_links_algaebase.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
@@ -43,6 +43,7 @@ def execute(provider = "AlgaeBase",
             db_passwd = ''
             ):
     """ Imports data for links to external sources. """
+    infile = None
     try:
         # Connect to db.
         db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
@@ -78,7 +79,7 @@ def execute(provider = "AlgaeBase",
                     print("WARNING (taxa_external_links): MySQL %d: %s" % (e.args[0], e.args[1]))
     #
     except (IOError, OSError):
-        print("ERROR: Can't read text file." + infile)
+        print("ERROR: Can't read text file." + file_name)
         print("ERROR: Script will be terminated.")
         sys.exit(1)
     except mysql.Error, e:

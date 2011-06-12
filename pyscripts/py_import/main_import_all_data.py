@@ -42,8 +42,9 @@ def execute():
     print("\n=== Import data: taxa. ===\n")
     import_taxa.execute(file_name = '../data_import/taxa_dyntaxa.txt')
     #
-    print("\n=== Import data: taxa_synonyms. ===\n")
+    print("\n=== Import data: taxa_synonyms, DynTaxa. ===\n")
     import_taxa_synonyms.execute(file_name = '../data_import/synonyms_dyntaxa.txt')
+    print("\n=== Import data: taxa_synonyms, AlgaeBase. ===\n")
     import_taxa_synonyms.execute(file_name = '../data_import/synonyms_algaebase.txt')
     #
     print("\n=== Import data: taxa_facts. ===\n")
@@ -52,16 +53,26 @@ def execute():
 #    print("\n=== Import data: taxa_facts_drafts. ===\n")
 ###    import_taxa_facts_drafts.execute()
     #
-    print("\n=== Import data: taxa_external_links. ===\n")
+    print("\n=== Import data: taxa_external_links, AlgaeBase. ===\n")
     import_taxa_external_links.execute(
             provider = "AlgaeBase",
             link_type = "Taxon URL",
             url_template = "http://algaebase.org/search/species/detail/?species_id=<replace-id>",
-            file_name = '../data_import/external_links_algaebase.txt', 
+            file_name = '../data_import/external_links_algaebase.txt' 
+            )
+    print("\n=== Import data: taxa_external_links, IOC-HAB. ===\n")
+    import_taxa_external_links.execute(
+            provider = "IOC-HAB",
+            link_type = "Taxon URL",
+            url_template = "http://www.marinespecies.org/hab/aphia.php?p=taxdetails&id=<replace-id>",
+            file_name = '../data_import/external_links_ioc_hab.txt' 
             )
     #
 #    print("\n=== Import data: taxa_external_facts. ===\n")
-###    import_taxa_external_facts.execute()
+    import_taxa_external_facts.execute(
+            provider = "IOC-HAB",
+            file_name = '../data_import/external_facts_ioc_hab.txt', 
+            )
     #
     print("\n=== Import data: taxa_helcom_peg. ===\n")
     import_taxa_helcom_peg.execute(file_name = '../data_external/PEG_BVOL2010.json')
