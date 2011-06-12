@@ -145,7 +145,7 @@ def execute(db_host = 'localhost',
             "Provider list": [
                 "AlgaeBase",
                 "WORMS",
-                "IOC",
+                "IOC-HAB",
                 "Dyntaxa"
             ],
             "Providers": {
@@ -163,7 +163,7 @@ def execute(db_host = 'localhost',
                     "Source of data": "",
                     "Copyright notice": ""
                 },
-                "IOC": {
+                "IOC-HAB": {
                     "Field list": [
                         "TODO"
                     ],
@@ -191,20 +191,25 @@ def execute(db_host = 'localhost',
             ],
             "Providers": {
                 "AlgaeBase": {
-                    "Taxon url": "http://algaebase.org/browse/taxonomy/?id=<replace-id>",
-                    "Home url": "http://algaebase.org"
+                    "Provider image": "AlgaeBase.jpg",
+                    "Home URL": "http://algaebase.org",
+                    "Taxon URL": "http://algaebase.org/browse/taxonomy/?id=<replace-id>",
+                    "PDF URL": "TODO"
                 },
                 "WORMS": {
-                    "Taxon url": "TODO?id=<replace-id>",
-                    "Home url": "TODO"
+                    "Provider image": "WORMS.jpg",
+                    "Home URL": "http://www.marinespecies.org",
+                    "Taxon URL": "TODO?id=<replace-id>"
                 },
-                "IOC": {
-                    "Taxon url": "TODO?id=<replace-id>",
-                    "Home url": "TODO"
+                "IOC-HAB": {
+                    "Provider image": "IOC-HAB.jpg",
+                    "Home URL": "http://www.marinespecies.org/hab/",
+                    "Taxon URL": "http://www.marinespecies.org/hab/aphia.php?p=taxdetails&id=<replace-id>"
                 },
-                "Dyntaxa": {
-                    "Taxon url": "TODO?id=<replace-id>",
-                    "Home url": "TODO"
+                "DynTaxa": {
+                    "Provider image": "DynTaxa.jpg",
+                    "Home URL": "http://www.artdata.slu.se/dyntaxa",
+                    "Taxon URL": "TODO?id=<replace-id>"
                 }
             }
         }

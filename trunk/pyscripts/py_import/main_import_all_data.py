@@ -52,8 +52,13 @@ def execute():
 #    print("\n=== Import data: taxa_facts_drafts. ===\n")
 ###    import_taxa_facts_drafts.execute()
     #
-#    print("\n=== Import data: taxa_external_links. ===\n")
-###    import_taxa_external_links.execute()
+    print("\n=== Import data: taxa_external_links. ===\n")
+    import_taxa_external_links.execute(
+            provider = "AlgaeBase",
+            link_type = "Taxon URL",
+            url_template = "http://algaebase.org/search/species/detail/?species_id=<replace-id>",
+            file_name = '../data_import/external_links_algaebase.txt', 
+            )
     #
 #    print("\n=== Import data: taxa_external_facts. ===\n")
 ###    import_taxa_external_facts.execute()
