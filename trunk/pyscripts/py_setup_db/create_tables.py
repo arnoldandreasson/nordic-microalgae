@@ -176,7 +176,7 @@ create table taxa_external_links (
   taxon_id           int unsigned not null, -- FK, PK.
   provider           varchar(64) not null default '', -- PK.
   type               varchar(64) not null default '', -- PK.
-  value              varchar(64) not null default '',
+  value              text not null default '',
   -- constraints:
   primary key (taxon_id, provider, type)
 ) engine=MyISAM charset=utf8;
