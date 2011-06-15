@@ -75,7 +75,10 @@ def execute():
             )
     #
     print("\n=== Import data: taxa_helcom_peg. ===\n")
-    import_taxa_helcom_peg.execute(file_name = '../data_external/PEG_BVOL2010.json')
+    import_taxa_helcom_peg.execute(
+            file_name = '../data_import/peg_bvol2010.json',
+            translate_file_name = '../data_import/peg_to_dyntaxa.txt'
+            )
     #
     print("\n=== Import data: taxa_media. ===\n")
     import_taxa_media.execute(file_name = '../data_import/media_b_neat.txt')

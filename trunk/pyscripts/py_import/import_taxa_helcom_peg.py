@@ -29,15 +29,20 @@ import sys
 import connect_to_db
 import json
 import codecs
+import string
 #import plankton_toolbox.core.biology.taxa as taxa
 #import plankton_toolbox.core.biology.taxa_sources as taxa_sources
 
     
-def execute(db_host = 'localhost', 
+def execute(file_name = '../data_import/peg_bvol2010.json',
+            translate_file_name = '../data_import/peg_to_dyntaxa.txt', 
+            file_encoding = 'utf16',
+            field_separator = '\t', 
+            db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
-            db_passwd = '',
-            file_name = '../data_external/PEG_BVOL2010.json'):
+            db_passwd = ''
+            ):
     """ Imports facts related to size classes produced by HELCOMs Plankton Expert Group. """
     db = None
     cursor = None
@@ -49,26 +54,44 @@ def execute(db_host = 'localhost',
         cursor.execute(" delete from taxa_helcom_peg ")
         cursor.close()
         cursor=db.cursor()
-        # Read json file into PEG object.
-        peg = Peg() 
-#        importer = taxa_sources.JsonFile(taxaObject = peg)
-        peg.importTaxa(file = file_name)
-        # Create lookup dictionary for Dyntaxa names.
-        dyntaxanamedict = {}
-        for taxon in peg.getTaxonList():
-            if "Dyntaxa name" in taxon:
-                dyntaxanamedict[taxon["Dyntaxa name"]] = taxon
-        # Iterate over all rows in taxa table.
-        cursor.execute("select id, name from taxa")
-        for row in cursor.fetchall():
-            id, name = row
-            pegobject = dyntaxanamedict.get(name, None)
-            # If PEG-object exists, insert into the taxa_helcom_peg table.
-            if pegobject:
-                jsonstring = json.dumps(pegobject, encoding = 'utf-8', 
+        # Read translation file and add to dictionary.
+        translatedict = {}
+        infile = codecs.open(translate_file_name, mode = 'r', encoding = file_encoding)    
+        for rowindex, row in enumerate(infile):
+            if rowindex == 0: # First row is assumed to be the header row.
+                pass
+            else:
+                row = map(string.strip, row.split(field_separator))
+                row = map(unicode, row)
+                pegname = row[0]    
+                dyntaxaname = row[1]
+                translatedict[pegname] = dyntaxaname
+        # Read json file into HELCOM PEG object.
+        indata = codecs.open(file_name, mode = 'r', encoding = 'utf8')
+        helcompeg = json.loads(indata.read(), encoding = 'utf8')
+        indata.close()
+        
+        #
+        for pegitem in helcompeg:
+            #
+            name = pegitem['Species']
+            # Translate to dyntaxa.
+            if name in translatedict:
+                name = translatedict[name]
+            # Get taxon_id from name.
+            cursor.execute("select id from taxa " + 
+                             "where name = %s", (name))
+            result = cursor.fetchone()
+            if result:
+                taxon_id = result[0]
+                
+                jsonstring = json.dumps(pegitem, encoding = 'utf-8', 
                                         sort_keys=True, indent=4)
                 cursor.execute("insert into taxa_helcom_peg(taxon_id, facts_json) values (%s, %s)", 
-                               (unicode(id), unicode(jsonstring)))
+                               (unicode(taxon_id), unicode(jsonstring)))
+            else:
+                print("Error: Import HELCOM PEG. Can't find taxon for: " + name)
+                continue # Skip this taxon.
     #
     except mysql.Error, e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
@@ -77,29 +100,6 @@ def execute(db_host = 'localhost',
     finally:
         if db: db.close()
         if cursor: cursor.close()
-
-class Peg(object):
-    """
-    Class used to read a json file containing the HELCOM PEG dataset. 
-    The json file is prepared by Plankton Toolbox.
-    """
-    def __init__(self):
-        self._metadata = {} # Metadata for the dataset.
-        self._data = [] # List of taxon objects.
-        
-    def getTaxonList(self):
-        """ """
-        return self._data
-        
-    def importTaxa(self, file = None, encode = 'utf-8'):
-        """ """
-        if file == None:
-            raise UserWarning('File name is missing.')
-        indata = codecs.open(file, mode = 'r', encoding = encode)
-        jsonimport = json.loads(indata.read(), encoding = encode)
-        self._metadata.update(jsonimport['metadata'])
-        self._data.extend(jsonimport['data'])
-        indata.close()
 
     
 # Main.
