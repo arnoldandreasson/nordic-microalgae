@@ -57,7 +57,9 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
         # Header, define and print.
         outheader = ['Scientific name', 'Media id', 'Media type', 'User name', 'Sort order', 
                      'Location', 'Latitude DD', 'Longitude DD', 'Media format', 'Date', 
-                     'Date added', 'Title', 'Description', 'Creator', 'Publisher', 'Contributor', 'Rights']
+                     'Date added', 'Title', 'Description', 'Creator', 'Publisher', 'Contributor', 'Rights' 
+#                     , 'Old mediaid'
+                     ]
         out.write(field_separator.join(outheader) + row_delimiter)
         # Open image file for reading.
         imagesfile = codecs.open(images_file_name, mode = 'r', encoding = infile_encoding)    
@@ -88,12 +90,23 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
                 creator = row[10] # 10 : dc_creator 
                 publisher = row[12] # 12 : dc_publisher 
                 contributor = row[13] # 13 : dc_contributor                  
-                rights = row[17] # 17 : dc_rights 
+                rights = row[17] # 17 : dc_rights
+                # Temp: 
+                oldmediaid = mediaid # To be temporary used for name translation.  
+                
+                # Replace mediaid by new name format.
+                parts = mediaid.split('_')
+                print('Mediaid OLD: ' + mediaid + ' ' + 
+                      'NEW: ' + scientificname + '_' + parts[-1])
+                mediaid = scientificname + '_' + parts[-1] # Replace.
+                
                 # Create row.
                 outrow = [scientificname, mediaid, mediatype, username, sortorder, 
                           location, latitude, longitude, 
                           mediaformat, date, date_added, 
-                          title, description, creator, publisher, contributor, rights] 
+                          title, description, creator, publisher, contributor, rights 
+#                          , oldmediaid
+                          ] 
                 # Print row.
                 out.write(field_separator.join(outrow) + row_delimiter)                
         #            
