@@ -33,7 +33,7 @@ import string
 def execute(db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
-            db_passwd = '',
+            db_passwd = ''
             ):
     """ Automatically generated db table for filter-related lookup. """
     db = None
@@ -70,7 +70,7 @@ def execute(db_host = 'localhost',
             # Check if Harmful. 
             #
             cursor.execute("select count(*) from taxa_external_facts where (taxon_id = %s) and (provider = %s)", 
-                           (taxon_id, 'IOC-HAB'))
+                           (taxon_id, 'IOC'))
             result = cursor.fetchone()
             if result[0] > 0: 
                 # Add row in taxa_filter_search.

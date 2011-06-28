@@ -145,7 +145,7 @@ def execute(db_host = 'localhost',
             "Provider list": [
                 "AlgaeBase",
                 "WORMS",
-                "IOC-HAB",
+                "IOC",
                 "Dyntaxa"
             ],
             "Providers": {
@@ -163,9 +163,9 @@ def execute(db_host = 'localhost',
                     "Source of data": "",
                     "Copyright notice": ""
                 },
-                "IOC-HAB": {
+                "IOC": {
                     "Field list": [
-                        "Harmful, IOC-HAB"
+                        "Harmfulness, IOC"
                     ],
                     "Source of data": "",
                     "Copyright notice": ""
@@ -201,7 +201,7 @@ def execute(db_host = 'localhost',
                     "Home URL": "http://www.marinespecies.org",
                     "Taxon URL": "TODO?id=<replace-id>"
                 },
-                "IOC-HAB": {
+                "IOC": {
                     "Provider image": "IOC-HAB.jpg",
                     "Home URL": "http://www.marinespecies.org/hab/",
                     "Taxon URL": "http://www.marinespecies.org/hab/aphia.php?p=taxdetails&id=<replace-id>"
@@ -237,7 +237,7 @@ def execute(db_host = 'localhost',
                 "Facts.Tropic type",
                 "Facts.Harmful",
                 "Facts.Note on harmfulness",
-                "External Facts.IOC-HAB.Harmful, IOC-HAB",
+                "External Facts.IOC.Harmfulness, IOC",
                 "Facts.Substrate",
                 "Facts.Life form",
                 "Facts.Width",
@@ -518,16 +518,13 @@ def execute(db_host = 'localhost',
                 "Source of data": 
                     """
                     Olenina, I., Hajdu, S., Edler, L., Andersson, A., Wasmund, N., Busch, S., Göbel, J., 
-                    Gromisz, S., Huseby, S., Huttunen, M., Jaanus, A., Kokkonen, P., Ledaine, I. and Niemkiewicz, E. 
-                    2006 Biovolumes and size-classes of phytoplankton in the Baltic Sea HELCOM Balt.Sea Environ. Proc. No. 106, 144pp.
-                    <br /><br /> 
-                    <a href="http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106.pdf">http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106.pdf</a> 
-                    <br /><br /> 
-                    Data comes from Annex 1:
-                    <br /> 
-                    <a href="http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106ANNEX1Biovolumes_web.xls">http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106ANNEX1Biovolumes_web.xls</a> 
-                    <br /><br /> 
-                    An updated version from September 2007 has been used.
+                    Gromisz, S., Huseby, S., Huttunen, M., Jaanus, A., Kokkonen, P., Ledaine, I. and Niemkiewicz, 
+                    E. 
+                    <a href="http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106.pdf">
+                    2006 Biovolumes and size-classes of phytoplankton in the Baltic Sea HELCOM Balt.Sea Environ. Proc. No. 106, 144pp. (PDF)</a>,  
+                    <br/> 
+                    <a href="http://www.ices.dk/env/repfor/index.asp">HELCOM PEG Biovolume</a>,   
+                    <a href="http://www.ices.dk/env/repfor/PEG_BVOL2011.xls">PEG_BVOL2011.xls</a>
                     """,
                 "Copyright notice": ""
         }
