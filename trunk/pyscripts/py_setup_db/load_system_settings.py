@@ -370,20 +370,20 @@ def execute(db_host = 'localhost',
         # Information needed when editing data.
         #
         keydict["Facts edit formats"] = {
-            "Note on taxonomy": {"Type": "textfield", "Description": ""},
-            "Morphology": {"Type": "textfield", "Description": ""},
-            "Ecology": {"Type": "textfield", "Description": ""},
-            "Other remarks": {"Type": "textfield", "Description": ""},
-            "Tropic type": {"Type": "textfield", "Description": ""},
-            "Harmful": {"Type": "textfield", "Description": ""},
-            "Note on harmfulness": {"Type": "textfield", "Description": ""},
-            "Substrate": {"Type": "textfield", "Description": ""},
-            "Life form": {"Type": "textfield", "Description": ""},
-            "Width": {"Type": "textfield", "Description": ""},
-            "Length": {"Type": "textfield", "Description": ""},
-            "Size": {"Type": "textfield", "Description": ""},
-            "Resting spore": {"Type": "textfield", "Description": ""},
-            "Literature": {"Type": "textfield", "Description": ""}
+            "Note on taxonomy": {"Type": "textarea", "Description": ""},
+            "Morphology": {"Type": "textarea", "Description": ""},
+            "Ecology": {"Type": "textarea", "Description": ""},
+            "Other remarks": {"Type": "textarea", "Description": ""},
+            "Tropic type": {"Type": "textarea", "Description": ""},
+            "Harmful": {"Type": "textarea", "Description": ""},
+            "Note on harmfulness": {"Type": "textarea", "Description": ""},
+            "Substrate": {"Type": "textarea", "Description": ""},
+            "Life form": {"Type": "textarea", "Description": ""},
+            "Width": {"Type": "textarea", "Description": ""},
+            "Length": {"Type": "textarea", "Description": ""},
+            "Size": {"Type": "textarea", "Description": ""},
+            "Resting spore": {"Type": "textarea", "Description": ""},
+            "Literature": {"Type": "textarea", "Description": ""}
         }
         #
         # Media edit formats:
