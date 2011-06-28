@@ -31,7 +31,7 @@ import connect_to_db
 def execute(db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
-            db_passwd = '',
+            db_passwd = ''
             ):
     """ Automatically generated db table for taxon navigation, next, previous, etc. """
     db = None

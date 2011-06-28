@@ -40,15 +40,18 @@ def execute():
     """ Script that creates and populates a test database. """
     #
     print("\n=== Import data: taxa. ===\n")
-    import_taxa.execute(file_name = '../data_import/taxa_dyntaxa.txt')
+    import_taxa.execute(file_name = '../data_import/taxa_dyntaxa.txt',
+                        delete_db_content = True)
     #
     print("\n=== Import data: taxa_synonyms, DynTaxa. ===\n")
-    import_taxa_synonyms.execute(file_name = '../data_import/synonyms_dyntaxa.txt')
+    import_taxa_synonyms.execute(file_name = '../data_import/synonyms_dyntaxa.txt',
+                                 delete_db_content = True)
     print("\n=== Import data: taxa_synonyms, AlgaeBase. ===\n")
     import_taxa_synonyms.execute(file_name = '../data_import/synonyms_algaebase.txt')
     #
     print("\n=== Import data: taxa_facts. ===\n")
-    import_taxa_facts.execute(file_name = '../data_import/facts_b_neat.txt')
+    import_taxa_facts.execute(file_name = '../data_import/facts_b_neat.txt',
+                              delete_db_content = True)
     #
 #    print("\n=== Import data: taxa_facts_drafts. ===\n")
 ###    import_taxa_facts_drafts.execute()
@@ -58,11 +61,12 @@ def execute():
             provider = "AlgaeBase",
             link_type = "Taxon URL",
             url_template = "http://algaebase.org/search/species/detail/?species_id=<replace-id>",
-            file_name = '../data_import/external_links_algaebase.txt' 
+            file_name = '../data_import/external_links_algaebase.txt',
+            delete_db_content = True 
             )
-    print("\n=== Import data: taxa_external_links, IOC-HAB. ===\n")
+    print("\n=== Import data: taxa_external_links, IOC. ===\n")
     import_taxa_external_links.execute(
-            provider = "IOC-HAB",
+            provider = "IOC",
             link_type = "Taxon URL",
             url_template = "http://www.marinespecies.org/hab/aphia.php?p=taxdetails&id=<replace-id>",
             file_name = '../data_import/external_links_ioc_hab.txt' 
@@ -70,18 +74,20 @@ def execute():
     #
 #    print("\n=== Import data: taxa_external_facts. ===\n")
     import_taxa_external_facts.execute(
-            provider = "IOC-HAB",
-            file_name = '../data_import/external_facts_ioc_hab.txt', 
+            provider = "IOC",
+            file_name = '../data_import/external_facts_ioc_hab.txt',
+            delete_db_content = True 
             )
     #
     print("\n=== Import data: taxa_helcom_peg. ===\n")
     import_taxa_helcom_peg.execute(
-            file_name = '../data_import/peg_bvol2010.json',
+            file_name = '../data_import/peg_bvol2011.json',
             translate_file_name = '../data_import/peg_to_dyntaxa.txt'
             )
     #
     print("\n=== Import data: taxa_media. ===\n")
-    import_taxa_media.execute(file_name = '../data_import/media_b_neat.txt')
+    import_taxa_media.execute(file_name = '../data_import/media_b_neat.txt',
+                              delete_db_content = True)
     #
     #
     print("\n=== Generate data: taxa_hierarchy_search. ===\n")

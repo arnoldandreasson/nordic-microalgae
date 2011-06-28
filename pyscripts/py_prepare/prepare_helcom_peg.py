@@ -29,9 +29,9 @@ import string
 import codecs
 import json
   
-def execute(file_name = '../data_external/peg_bvol2010.txt', 
+def execute(file_name = '../data_external/peg_bvol2011.txt', 
 #            translate_file_name = '../data_external/peg_to_dyntaxa.txt', 
-            out_file_name = '../data_prepared/peg_bvol2010.json', 
+            out_file_name = '../data_prepared/peg_bvol2011.json', 
             infile_encoding = 'utf16',
             outfile_encoding = 'utf8',
             field_separator = '\t', 
@@ -147,6 +147,7 @@ def translate_header(importFileHeader):
 #    if (importFileHeader == u'Comment on Carbon calculation'): return u'Comment on Carbon calculation'
     if (importFileHeader == u'CORRECTION / ADDITION                            2009'): return u'Correction/addition 2009' # Modified
     if (importFileHeader == u'CORRECTION / ADDITION                            2010'): return u'Correction/addition 2010' # Modified
+    if (importFileHeader == u'CORRECTION / ADDITION                            2011'): return u'Correction/addition 2011' # Modified
     return importFileHeader     
         
 def is_taxon_related(header, column):

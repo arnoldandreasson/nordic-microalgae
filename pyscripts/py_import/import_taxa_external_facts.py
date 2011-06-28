@@ -31,7 +31,7 @@ import string
 import json
 import connect_to_db
 
-def execute(provider = "IOC-HAB",
+def execute(provider = "IOC",
             file_name = '../data_import/external_facts_ioc_hab.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
@@ -39,13 +39,17 @@ def execute(provider = "IOC-HAB",
             db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
-            db_passwd = ''
+            db_passwd = '',
+            delete_db_content = False
             ):
     """ Imports facts automatically fetched from external sources. """
     try:
         # Connect to db.
         db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
+        # Remove all rows in table.
+        if delete_db_content == True:
+            cursor.execute(""" delete from taxa_external_facts """) 
         # Open file for reading.
         infile = codecs.open(file_name, mode = 'r', encoding = file_encoding)    
         # Iterate over rows in file.

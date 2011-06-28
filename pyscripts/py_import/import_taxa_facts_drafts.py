@@ -32,6 +32,7 @@ def execute(db_host = 'localhost',
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
             db_passwd = '',
+            delete_db_content = False
             ):
     """ Imports drafts versions of facts. """
     db = None
@@ -40,6 +41,9 @@ def execute(db_host = 'localhost',
         # Connect to db.
         db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
         cursor=db.cursor()
+        # Remove all rows in table.
+        if delete_db_content == True:
+            cursor.execute(""" delete from taxa_facts_drafts """) 
         #
         cursor.execute("""
     
