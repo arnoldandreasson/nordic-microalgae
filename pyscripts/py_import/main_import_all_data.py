@@ -26,7 +26,7 @@
 
 import import_taxa
 import import_taxa_facts
-import import_taxa_facts_drafts
+###import import_taxa_facts_drafts
 import import_taxa_external_links
 import import_taxa_external_facts
 import import_taxa_helcom_peg

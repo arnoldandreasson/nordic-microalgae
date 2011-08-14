@@ -29,7 +29,6 @@ import sys
 import codecs
 import string
 import json
-import connect_to_db
 
 def execute(provider = "IOC",
             file_name = '../data_import/external_facts_ioc_hab.txt', 
@@ -45,7 +44,9 @@ def execute(provider = "IOC",
     """ Imports facts automatically fetched from external sources. """
     try:
         # Connect to db.
-        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
+        db = mysql.connect(host = db_host, db = db_name, 
+                           user = db_user, passwd = db_passwd,
+                           use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
         # Remove all rows in table.
         if delete_db_content == True:

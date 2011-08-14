@@ -25,7 +25,6 @@
 # THE SOFTWARE.
 
 import MySQLdb as mysql
-import connect_to_db
 import sys
 import json
 import codecs
@@ -53,7 +52,9 @@ def execute(db_host = 'localhost',
     out = None
     try:
         # Connect to db.
-        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
+        db = mysql.connect(host = db_host, db = db_name, 
+                           user = db_user, passwd = db_passwd,
+                           use_unicode = True, charset = 'utf8')
         cursor=db.cursor()        
         # Create dictionary for translations from taxon_id to taxon_name.
         taxonidtoname = {}
