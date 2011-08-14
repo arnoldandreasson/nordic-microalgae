@@ -41,7 +41,6 @@
 
 import MySQLdb as mysql
 import sys
-import connect_to_db
 
 def execute(db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
@@ -52,7 +51,9 @@ def execute(db_host = 'localhost',
     cursor = None
     try:
         # Connect to db.
-        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
+        db = mysql.connect(host = db_host, db = db_name, 
+                           user = db_user, passwd = db_passwd,
+                           use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
         # Delete all rows.
         cursor.execute(""" delete from taxa_ranks """) 

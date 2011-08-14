@@ -28,7 +28,6 @@ import MySQLdb as mysql
 import sys
 import string
 import codecs
-import connect_to_db
 
 def execute(provider = "AlgaeBase",
             link_type = "Taxon URL",
@@ -47,7 +46,9 @@ def execute(provider = "AlgaeBase",
     infile = None
     try:
         # Connect to db.
-        db = connect_to_db.connect(db_host, db_name, db_user, db_passwd)
+        db = mysql.connect(host = db_host, db = db_name, 
+                           user = db_user, passwd = db_passwd,
+                           use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
         # Remove all rows in table.
         if delete_db_content == True:
