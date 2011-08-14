@@ -150,12 +150,13 @@ create table taxa_filter_search (
 drop table if exists taxa_media;
 create table taxa_media (
   taxon_id           int unsigned not null, -- FK, PK.
-  media_id           varchar(64) not null default '',
-  media_type         varchar(64) not null default '',
+  media_id           varchar(64) not null default '', -- PK.
+  media_type         varchar(64) not null default '', -- PK.
   user_name          varchar(128) not null default '',
   metadata_json      text not null default '',
   -- constraints:
   primary key (taxon_id, media_id, media_type), 
+  key (media_id),  
   key (media_type)  
 ) engine=MyISAM charset=utf8;
 
