@@ -134,10 +134,10 @@ def execute(db_host = 'localhost',
                 "Latitude": "text",
                 "Longitude": "text",
                 "License": "text",
-                "Preservation": "text",
-                "Stain": "text",
-                "Contrast enhancement": "text",
-                "Observation technique": "text",
+                "Preservation": "text list",
+                "Stain": "text list",
+                "Contrast enhancement": "text list",
+                "Observation technique": "text list",
                 "Image galleries": "text list"
             }
         }
