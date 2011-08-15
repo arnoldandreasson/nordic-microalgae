@@ -26,6 +26,7 @@
 
 import py_export.export_taxa as export_taxa
 import py_export.export_taxa_facts as export_taxa_facts
+import py_export.export_taxa_media as export_taxa_media
 import py_backup.export_to_backup as export_to_backup
 
 def execute():
@@ -43,6 +44,10 @@ def execute():
     print("\n=== Export: taxa_facts. ===\n")
     export_taxa_facts.execute(db_host, db_name, db_user, db_passwd, 
                               file_name = pathtodownloads + 'taxa_facts.txt')
+    #
+    print("\n=== Export: taxa_media. ===\n")
+    export_taxa_media.execute(db_host, db_name, db_user, db_passwd, 
+                              file_name = pathtodownloads + 'taxa_media.txt')
     #    
     print("\n=== Export: taxa_facts_backup, taxa_media_backup, taxa_media_list_backup and change_history_backup. ===\n")
     export_to_backup.execute(db_host, db_name, db_user, db_passwd, 
