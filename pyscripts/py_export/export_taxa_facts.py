@@ -75,7 +75,7 @@ def execute(db_host = 'localhost',
         # Open file and write header.
         out = codecs.open(file_name, mode = 'w', encoding = file_encoding)
         # Header.
-        outheader = ['Taxon name', 'Classification']
+        outheader = ['Taxon name', 'Rank', 'Classification']
         outheader.extend(headers)
         # Print header row.
         out.write(field_separator.join(outheader) + row_delimiter)
@@ -84,8 +84,15 @@ def execute(db_host = 'localhost',
         for taxon_id, taxon_name in cursortaxa.fetchall():
             # Create row.
             row = [taxon_name]
-            # TODO: Create classification string.
-            row.append('---') # TODO:.
+            # Add rank and classification string from the taxa_navigation table.
+            cursor.execute("select rank, classification from taxa_navigation where taxon_id = %s", taxon_id)
+            result = cursor.fetchone()
+            if result:
+                row.append(result[0])
+                row.append(result[1])
+            else:
+                row.append('') # Empty if missing.
+                row.append('')
             # Get facts_json.
             cursor.execute("select facts_json from taxa_facts where taxon_id = %s", taxon_id)
             result = cursor.fetchone()
