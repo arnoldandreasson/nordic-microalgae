@@ -35,6 +35,7 @@ import import_taxa_media
 import generate_taxa_hierarchy_search
 import generate_taxa_navigation
 import generate_taxa_filter_search
+import generate_taxa_media_filter_search
 
 def execute():
     """ Script that creates and populates a test database. """
@@ -98,6 +99,9 @@ def execute():
     #
     print("\n=== Generate data: taxa_filter_search. ===\n")
     generate_taxa_filter_search.execute()
+    #
+    print("\n=== Generate data: taxa_media_filter_search. ===\n")
+    generate_taxa_media_filter_search.execute()
     #
     print("\n=== Finished. ===\n")
 

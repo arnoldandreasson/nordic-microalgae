@@ -170,6 +170,19 @@ create table taxa_media_list (
   primary key (taxon_id) 
 ) engine=MyISAM charset=utf8;
 
+-- Table: taxa_media_filter_search --
+-- Note: Should be automatically generated from taxa_media.
+drop table if exists taxa_media_filter_search;
+create table taxa_media_filter_search (
+  taxon_id           int unsigned not null, -- FK.
+  media_id           varchar(64) not null default '', -- PK.
+  filter             varchar(64) not null default '', -- PK, K. -- 
+  value              varchar(64) not null default '', -- PK.
+  -- constraints:
+  primary key (media_id, filter, value), 
+  key (filter) 
+) engine=MyISAM charset=utf8;
+
 -- ===== EXTERNAL =====
 
 -- Table: taxa_external_links --
@@ -239,7 +252,29 @@ create table change_history (
         sys.exit(1)
 
 
-# Main.
-if __name__ == '__main__':
-    execute()
+# To be used when this module is launched directly from the command line.
+import getopt
+def main():
+    # Parse command line options.
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "h:d:u:p:", ["host=", "database=", "user=", "password="])
+    except getopt.error, msg:
+        print msg
+        sys.exit(2)
+    # Create dictionary with named arguments.
+    params = {}
+    for opt, arg in opts:
+        if opt in ("-h", "--host"):
+            params['db_host'] = arg
+        elif opt in ("-d", "--database"):
+            params['db_name'] = arg
+        elif opt in ("-u", "--user"):
+            params['db_user'] = arg
+        elif opt in ("-p", "--password"):
+            params['db_passwd'] = arg
+    # Execute with parameter list.
+    execute(**params) # The "two stars" prefix converts the dictionary into named arguments. 
+
+if __name__ == "__main__":
+    main()
 
