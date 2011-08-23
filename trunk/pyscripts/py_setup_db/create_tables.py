@@ -231,7 +231,7 @@ create table change_history (
 
         """)
         #
-        if db: db.close()
+        #if db: db.close()
     #
     except mysql.Error, e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
