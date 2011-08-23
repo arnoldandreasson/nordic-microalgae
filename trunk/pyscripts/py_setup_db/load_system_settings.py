@@ -703,7 +703,29 @@ def execute(db_host = 'localhost',
         if cursor: cursor.close()
 
 
-# Main.
-if __name__ == '__main__':
-    execute()
+# To be used when this module is launched directly from the command line.
+import getopt
+def main():
+    # Parse command line options.
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "h:d:u:p:", ["host=", "database=", "user=", "password="])
+    except getopt.error, msg:
+        print msg
+        sys.exit(2)
+    # Create dictionary with named arguments.
+    params = {}
+    for opt, arg in opts:
+        if opt in ("-h", "--host"):
+            params['db_host'] = arg
+        elif opt in ("-d", "--database"):
+            params['db_name'] = arg
+        elif opt in ("-u", "--user"):
+            params['db_user'] = arg
+        elif opt in ("-p", "--password"):
+            params['db_passwd'] = arg
+    # Execute with parameter list.
+    execute(**params) # The "two stars" prefix converts the dictionary into named arguments. 
+
+if __name__ == "__main__":
+    main()
 
