@@ -120,7 +120,7 @@ def execute(db_host = 'localhost',
                 "Preservation",
                 "Stain",
                 "Contrast enhancement",
-                "Observation technique",
+                "Technique",
                 "Image galleries"
             ],
             "Field types": {
@@ -143,7 +143,7 @@ def execute(db_host = 'localhost',
                 "Preservation": "text list",
                 "Stain": "text list",
                 "Contrast enhancement": "text list",
-                "Observation technique": "text list",
+                "Technique": "text list",
                 "Image galleries": "text list"
             }
         }
@@ -329,10 +329,10 @@ def execute(db_host = 'localhost',
                 "Media.Longitude, degree",
                 "Media.Longitude, minute",
                 "Media.License",
+                "Media.Technique",
                 "Media.Preservation",
-                "Media.Stain",
                 "Media.Contrast enhancement",
-                "Media.Observation technique",
+                "Media.Stain",
                 "Media.Image galleries"
             ]
         }        
@@ -388,7 +388,7 @@ def execute(db_host = 'localhost',
             "Preservation": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Stain": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Contrast enhancement": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
-            "Observation technique": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""}
+            "Technique": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""}
         }
         #
         # Facts edit formats:
@@ -506,7 +506,11 @@ def execute(db_host = 'localhost',
                                 "Creative Commons Attribution-ShareAlike 3.0 Unported", 
                                 "Public domain"],
                 "Default value": "Creative Commons Attribution-NoDerivs 3.0 Unported", 
-                "Description": "Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a> for more information."},
+                "Description": """                
+'Creative Commons Attribution-NoDerivs 3.0 Unported' is recommended. This license is the most restrictive of our the licenses, 
+only allowing others to download your works and share them with others as long as they credit you, 
+but they can’t change them in any way. 
+Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a> for more information."""},
 
             "Preservation": {"Type": "checkboxes", 
                 "Options": ["Not described", "No preservation", "Lugols iodine", "Formaldehyde", "Glutardialdehyde", "Osmium tetroxide", "Other preservative"],
@@ -521,10 +525,13 @@ def execute(db_host = 'localhost',
                 "Options": ["Not described", "No contrast enhancement", "DIC/Nomarski", "Phase contrast", "Acid cleaned and mounted in resin with high refractive index", "Other"], 
                 "Default value": "Not described", 
                 "Description": ""},
-            "Observation technique": {"Type": "checkboxes", 
-                "Options": ["Not described", "Light microscopy", "Fluorescence microscopy", "TEM Transmission Electron Micoscopy", 
-                                "SEM Scanning Electron Microscopy", "Photography from land Photography from ship Photography from air Satellite remote sensing", 
-                                "Other observation technique"], 
+            "Technique": {"Type": "checkboxes", 
+                "Options": ["Not described",
+                            "Drawing", "Painting",  
+                            "Light microscopy", "Fluorescence microscopy", "TEM Transmission Electron Micoscopy", 
+                            "SEM Scanning Electron Microscopy", "Photography from land", "Photography from ship", 
+                            "Photography from air", "Satellite remote sensing", 
+                            "Other technique"], 
                 "Default value": "Not described", 
                 "Description": ""},
             "Image galleries": {"Type": "checkboxes", 
