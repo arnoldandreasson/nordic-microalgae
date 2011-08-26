@@ -32,6 +32,7 @@ import json
   
 def execute(db_host, db_name, db_user, db_passwd, file_name, 
 #            file_encoding = 'utf16',
+#            file_encoding = 'utf8',
             file_encoding = 'cp1252',
             field_separator = '\t', 
             row_delimiter = '\r\n'):
@@ -70,12 +71,13 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
-                pass
+                headers = map(cleanup_string, row.split(field_separator))
+#                headers = map(string.strip, row.split(field_separator))
+#                headers = map(unicode, headers)
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = map(cleanup_string, row.split(field_separator))
+#                row = map(string.strip, row.split(field_separator))
+#                row = map(unicode, row)
                 #
                 scientificname = row[0] # Scientific name
                 mediaid = row[1] # Media id
@@ -143,6 +145,13 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
         if db: db.close()
         if cursor: cursor.close()
 
+def cleanup_string(value):
+    """ 
+    Removes white characters at beginning and end of string. Convert to unicode.
+    Citation characters eventually added by Excel are also removed. 
+    """
+    return unicode(value.strip().strip('"'))
+    
 
 # To be used when this module is launched directly from the command line.
 import getopt
@@ -161,7 +170,7 @@ def main():
               "db_user": "root", 
               "db_passwd": "",
 #              "file_name": "taxa_facts.txt"}
-              "file_name": "taxa_media_edited_by_BK_2011-08-23.txt"}
+              "file_name": "taxa_media_2011-08-25_edited_by_BK_ver2.txt"}
     for opt, arg in opts:
         if opt in ("-h", "--host"):
             params['db_host'] = arg
