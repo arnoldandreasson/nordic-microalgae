@@ -102,8 +102,7 @@ def execute(db_host = 'localhost',
         keydict["Media"] = {
             "Field list": [
                 "Title",
-                "Creator", # OLD. Remove later.
-                "Photographer/artist", # NEW
+                "Photographer/artist",
                 "Copyright holder",
                 "Institute",
                 "Contributor",
@@ -125,7 +124,6 @@ def execute(db_host = 'localhost',
             ],
             "Field types": {
                 "Title": "text",
-                "Creator": "text",
                 "Photographer/artist": "text",
                 "Copyright holder": "text",
                 "Institute": "text",
@@ -313,7 +311,6 @@ def execute(db_host = 'localhost',
         keydict["Image view"] = {
             "Field list": [
                 "Media.Title",
-                "Media.Creator",
                 "Media.Photographer/artist",
                 "Media.Copyright holder",
                 "Media.Institute",
@@ -370,7 +367,6 @@ def execute(db_host = 'localhost',
         #
         keydict["Media view formats"] = {
             "Title": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
-            "Creator": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Photographer/artist": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Copyright holder": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Institute": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
@@ -416,7 +412,6 @@ def execute(db_host = 'localhost',
         #
         keydict["Media edit formats"] = {
             "Title": {"Type": "textfield", "Description": "Usually the name of the organism.", "Required": "True"}, # Mandatory.
-            "Creator": {"Type": "textfield", "Description": "Photographer or artist."},
             "Photographer/artist": {"Type": "textfield", "Description": "Photographer or artist.", "Required": "True"}, # Mandatory.
             "Copyright holder": {"Type": "textfield", "Description": ""},
             "Institute": {"Type": "textfield", "Description": "Usually your institute, university or company."},
