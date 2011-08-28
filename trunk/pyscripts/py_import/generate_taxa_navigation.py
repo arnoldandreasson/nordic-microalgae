@@ -100,7 +100,7 @@ def execute(db_host = 'localhost',
         # Add classification.
         for item in taxa:
             id = item['id']
-            classification = item['name']
+            classification = item['name'] + ':' + item['rank']
             parenttaxon = item
             while parenttaxon['parent_id'] != 0:
                 
@@ -115,7 +115,7 @@ def execute(db_host = 'localhost',
                 
                 
                 parenttaxon = idtotaxon[parenttaxon['parent_id']]
-                classification = parenttaxon['name'] + ';' + classification
+                classification = parenttaxon['name'] + ':' + parenttaxon['rank'] + ';' + classification
             # Save result.
             taxanavigation[id]['classification'] = classification
             item['classification'] = classification # Used in sort function.
