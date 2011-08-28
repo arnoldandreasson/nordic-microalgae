@@ -76,6 +76,77 @@ def execute(db_host = 'localhost',
                 # Add row in taxa_filter_search.
                 cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
                                (taxon_id, 'Harmful', 'True'))
+            #
+            # Filters for GROUPS OF ORGANISMS
+            #
+            cursor.execute("select rank, classification from taxa_navigation where taxon_id = %s", taxon_id)
+            result = cursor.fetchone()
+            if result:
+                rank = result[0] 
+                classification = result[1]
+                # Only add filter if species or below in rank.
+                if rank in ['Species', 'Subspecies', 'Variety', 'Form', 'Hybrid']:
+                    # - GROUPS OF ORGANISMS: All.
+                    # Add row in taxa_filter_search.
+                    cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                   (taxon_id, 'Group', 'All'))
+                    
+                    # - GROUPS OF ORGANISMS: Cyanobacteria.
+                    #   (Cyanobacteria)
+                    if 'Cyanobacteria' in classification:
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Group', 'Cyanobacteria'))
+                        
+                    
+                    # - GROUPS OF ORGANISMS: Diatoms.
+                    #   (Bacillariophyta)
+                    if 'Bacillariophyta' in classification:
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Group', 'Bacillariophyta'))
+                    
+                    # - GROUPS OF ORGANISMS: Dinoflagellates.
+                    #   (Dinophyceae)
+                    if 'Dinophyceae' in classification:
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Group', 'Dinophyceae'))
+                    
+                    # - GROUPS OF ORGANISMS: Other microalgae.
+                    #   (Cryptophyceae + Haptophyta + Bolidophyceae + Chrysophyceae + Dictyochophyceae + 
+                    #   Eustigmatophyceae + Pelagophyceae  + Raphidophyceae  + Synurophyceae  + Chlorophyta + 
+                    #   Glaucophyta + Coleochaetophyceae + Klebsormidiophyceae + Mesostigmatophyceae + 
+                    #   Zygnematophyceae + Euglenophyceae)
+                    found = False
+                    for taxon in ['Cryptophyceae', 'Haptophyta', 'Bolidophyceae', 'Chrysophyceae', 'Dictyochophyceae', 
+                                  'Eustigmatophyceae', 'Pelagophyceae', 'Raphidophyceae', 'Synurophyceae', 'Chlorophyta',
+                                  'Glaucophyta', 'Coleochaetophyceae', 'Klebsormidiophyceae', 'Mesostigmatophyceae',
+                                  'Zygnematophyceae', 'Euglenophyceae']:
+                        if taxon in classification:
+                            found = True
+                            break
+                    if found:
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Group', 'Other microalgae'))
+
+                    # - GROUPS OF ORGANISMS: Ciliates.
+                    #   (Ciliophora)
+                    if 'Ciliophora' in classification:
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Group', 'Ciliates'))
+                    
+                    # - GROUPS OF ORGANISMS: Other protozoa.
+                    #   (Cryptophyta, ordines incertae sedis + Bicosoecophyceae + Bodonophyceae + 
+                    #   Heterokontophyta, ordines incertae sedis + Cercozoa + Craspedophyceae + 
+                    #   Ellobiopsea + Protozoa, classes incertae sedis)
+                    found = False
+                    for taxon in ['Cryptophyta, ordines incertae sedis', 'Bicosoecophyceae', 'Bodonophyceae',
+                                  'Heterokontophyta, ordines incertae sedis', 'Cercozoa', 'Craspedophyceae',
+                                  'Ellobiopsea', 'Protozoa, classes incertae sedis']:
+                        if taxon in classification:
+                            found = True
+                            break
+                    if found:
+                        cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                                       (taxon_id, 'Group', 'Other protozoa'))
         #
         # Loop through taxon_facts. 
         cursor.execute("select taxon_id, facts_json from taxa_facts")
