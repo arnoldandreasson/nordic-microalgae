@@ -688,6 +688,35 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
             }
         }
         #
+        # Filter groups:
+        # Display information for taxon groups.
+        # - Label: Displayed text.
+        # - Defaults: Indicates if the group should be selected by default.
+        # - Color: Displayed background color.
+        # - Value: Used to match values in the db-table taxa_filter_search.
+        #                     Example: "where ((filter = 'Group' and value = 'Cyanobacteria')
+        #
+        keydict["Filter groups"] = {
+            "Group list": [
+                    "All",
+                    "Cyanobacteria",
+                    "Diatoms",
+                    "Dinoflagellates",
+                    "Other microalgae",
+                    "Ciliates",
+                    "Other protozoa"
+            ],
+            "Groups": {
+                "All": {"Label": "All", "Default": "True", "Color": "ffffff", "Value": "All"},
+                "Cyanobacteria": {"Label": "Cyanobacteria", "Default": "False", "Color": "bcffff", "Value": "Cyanobacteria"},
+                "Diatoms": {"Label": "Diatoms", "Default": "False", "Color": "ffe7bc", "Value": "Diatoms"},
+                "Dinoflagellates": {"Label": "Dinoflagellates", "Default": "False", "Color": "e7c7c7", "Value": "Dinoflagellates"},
+                "Other microalgae": {"Label": "Other microalgae", "Default": "False", "Color": "bcddbc", "Value": "Other microalgae"},
+                "Ciliates": {"Label": "Ciliates", "Default": "False", "Color": "bcbcff", "Value": "Ciliates"},
+                "Other protozoa": {"Label": "Other protozoa", "Default": "False", "Color": "ffffbc", "Value": "Other protozoa"}
+            }
+        }
+        #
         # Iterate over keydict keys and insert into db table.
         #
         for key in keydict.keys():
