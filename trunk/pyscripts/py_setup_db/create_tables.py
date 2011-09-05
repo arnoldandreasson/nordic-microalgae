@@ -99,6 +99,7 @@ create table taxa_navigation (
   taxon_id           int unsigned not null, -- FK.
   name               varchar(128) not null default '',
   rank               varchar(128) not null default '',
+  parent             varchar(128) not null default '',
   prev_in_rank       varchar(128) not null default '',
   next_in_rank       varchar(128) not null default '',
   prev_in_tree       varchar(128) not null default '',
