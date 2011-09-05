@@ -47,18 +47,45 @@ def execute(db_host = 'localhost',
         #
         # Loop through taxon_media. 
         cursor.execute("select taxon_id, media_id, metadata_json from taxa_media")
+        #
+        hall_of_fame_dict = {}
+        #
         for taxon_id, media_id, metadata_json in cursor.fetchall():
-                # Unpack json.
-                metadatadict = json.loads(metadata_json, encoding = 'utf-8')
-                #
-                # Add rows from 'Image galleries'.
-                #
-                if 'Image galleries' in metadatadict:
-                    for gallery in metadatadict['Image galleries']:
-                        # Add row in taxa_media_filter_search.
-                        cursor.execute("insert into taxa_media_filter_search(taxon_id, media_id, filter, value) " +
-                                       "values (%s, %s, %s, %s)", 
-                                       (taxon_id, media_id, 'Gallery', gallery))
+            # Unpack json.
+            metadatadict = json.loads(metadata_json, encoding = 'utf-8')
+            #
+            # Add rows from 'Image galleries'.
+            #
+            if 'Image galleries' in metadatadict:
+                for gallery in metadatadict['Image galleries']:
+                    # Add row in taxa_media_filter_search.
+                    cursor.execute("insert into taxa_media_filter_search(taxon_id, media_id, filter, value) " +
+                                   "values (%s, %s, %s, %s)", 
+                                   (taxon_id, media_id, 'Gallery', gallery))
+            #
+            # Add rows from 'Latest images'. Value is date-time.
+            #
+            if 'Date added' in metadatadict:
+                datetime = metadatadict['Date added']
+                cursor.execute("insert into taxa_media_filter_search(taxon_id, media_id, filter, value) " +
+                               "values (%s, %s, %s, %s)", 
+                               (taxon_id, media_id, 'Latest images', datetime))
+            #
+            # 'Hall of fame', count images for each photographer/artist.
+            #
+            if 'Creator' in metadatadict:
+                creator =  metadatadict['Creator']
+                if creator in hall_of_fame_dict:
+                    hall_of_fame_dict[creator] = hall_of_fame_dict[creator] + 1
+                else:
+                    hall_of_fame_dict[creator] = 1
+        #
+        # Add rows from 'Hall of fame'. Value is a key-value-pair "Photographer":"counter".
+        #
+        for key, value in hall_of_fame_dict.items():
+            cursor.execute("insert into taxa_media_filter_search(taxon_id, media_id, filter, value) " +
+                           "values (%s, %s, %s, %s)", 
+                           (0, '', 'Hall of fame', key + ':' + unicode(value)))
     #
     except mysql.Error, e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))

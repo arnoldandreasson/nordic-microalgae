@@ -707,13 +707,13 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                     "Other protozoa"
             ],
             "Groups": {
-                "All": {"Label": "All", "Default": "True", "Color": "ffffff", "Value": "All"},
-                "Cyanobacteria": {"Label": "Cyanobacteria", "Default": "False", "Color": "bcffff", "Value": "Cyanobacteria"},
-                "Diatoms": {"Label": "Diatoms", "Default": "False", "Color": "ffe7bc", "Value": "Diatoms"},
-                "Dinoflagellates": {"Label": "Dinoflagellates", "Default": "False", "Color": "e7c7c7", "Value": "Dinoflagellates"},
-                "Other microalgae": {"Label": "Other microalgae", "Default": "False", "Color": "bcddbc", "Value": "Other microalgae"},
-                "Ciliates": {"Label": "Ciliates", "Default": "False", "Color": "bcbcff", "Value": "Ciliates"},
-                "Other protozoa": {"Label": "Other protozoa", "Default": "False", "Color": "ffffbc", "Value": "Other protozoa"}
+                "All": {"Label": "All", "Default": "True", "Color": "ffffff", "Value": "All", "Hint": "All species, subspecies, forma and varieties"},
+                "Cyanobacteria": {"Label": "Cyanobacteria", "Default": "False", "Color": "bcffff", "Value": "Cyanobacteria", "Hint": "Cyanophyta"},
+                "Diatoms": {"Label": "Diatoms", "Default": "False", "Color": "ffe7bc", "Value": "Diatoms", "Hint": "Bacillariophyceae"},
+                "Dinoflagellates": {"Label": "Dinoflagellates", "Default": "False", "Color": "e7c7c7", "Value": "Dinoflagellates", "Hint": "Dinophyceae (auto, mixo- and heterotrophic)"},
+                "Other microalgae": {"Label": "Other microalgae", "Default": "False", "Color": "bcddbc", "Value": "Other microalgae", "Hint": "Includes many autotrophic flagellates etc."},
+                "Ciliates": {"Label": "Ciliates", "Default": "False", "Color": "bcbcff", "Value": "Ciliates", "Hint": "Includes tintinnids and naked ciliates"},
+                "Other protozoa": {"Label": "Other protozoa", "Default": "False", "Color": "ffffbc", "Value": "Other protozoa", "Hint": "Includes choanoflagellates, other heterotrophic flagellates, foraminifera, radiolarians etc."}            
             }
         }
         #

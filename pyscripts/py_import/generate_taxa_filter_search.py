@@ -102,13 +102,13 @@ def execute(db_host = 'localhost',
                     #   (Bacillariophyta)
                     if 'Bacillariophyta' in classification:
                         cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
-                                       (taxon_id, 'Group', 'Bacillariophyta'))
+                                       (taxon_id, 'Group', 'Diatoms'))
                     
                     # - GROUPS OF ORGANISMS: Dinoflagellates.
                     #   (Dinophyceae)
                     if 'Dinophyceae' in classification:
                         cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
-                                       (taxon_id, 'Group', 'Dinophyceae'))
+                                       (taxon_id, 'Group', 'Dinoflagellates'))
                     
                     # - GROUPS OF ORGANISMS: Other microalgae.
                     #   (Cryptophyceae + Haptophyta + Bolidophyceae + Chrysophyceae + Dictyochophyceae + 

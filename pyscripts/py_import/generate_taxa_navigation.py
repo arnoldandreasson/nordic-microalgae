@@ -63,6 +63,7 @@ def execute(db_host = 'localhost',
             # Add empty navigation records.
             navigationdict = {'name': name, 
                               'rank': rank, 
+                              'parent': '', 
                               'prev_in_rank': '', 
                               'next_in_rank': '', 
                               'prev_in_tree': '', 
@@ -119,6 +120,11 @@ def execute(db_host = 'localhost',
             # Save result.
             taxanavigation[id]['classification'] = classification
             item['classification'] = classification # Used in sort function.
+            #
+            # Also save the parent name.
+            if item['parent_id'] != 0:
+                taxanavigation[id]['parent'] = idtoname[item['parent_id']]
+            
         #
         # Add previous and next name in tree walk. Add value to sort_order_tree.
         # Sort taxa by classification.
@@ -208,12 +214,12 @@ def execute(db_host = 'localhost',
 #                    )
             #            
             cursor.execute("insert into taxa_navigation " + 
-                           "(taxon_id, name, rank, " + 
+                           "(taxon_id, name, rank, parent, " + 
                            "prev_in_rank, next_in_rank, " + 
                            "prev_in_tree, next_in_tree, sort_order_tree, " + 
                            "classification, children, siblings) " + 
-                           "values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                           (unicode(id), navdict['name'], navdict['rank'], 
+                           "values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                           (unicode(id), navdict['name'], navdict['rank'], navdict['parent'], 
                             navdict['prev_in_rank'], navdict['next_in_rank'], 
                             navdict['prev_in_tree'], navdict['next_in_tree'], navdict['sort_order_tree'], 
                             navdict['classification'], navdict['children'], navdict['siblings'] 
