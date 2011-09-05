@@ -73,12 +73,12 @@ def execute(db_host = 'localhost',
             #
             # 'Hall of fame', count images for each photographer/artist.
             #
-            if 'Creator' in metadatadict:
-                creator =  metadatadict['Creator']
-                if creator in hall_of_fame_dict:
-                    hall_of_fame_dict[creator] = hall_of_fame_dict[creator] + 1
+            if 'Photographer/artist' in metadatadict:
+                photographer =  metadatadict['Photographer/artist']
+                if photographer in hall_of_fame_dict:
+                    hall_of_fame_dict[photographer] = hall_of_fame_dict[photographer] + 1
                 else:
-                    hall_of_fame_dict[creator] = 1
+                    hall_of_fame_dict[photographer] = 1
         #
         # Add rows from 'Hall of fame'. Value is a key-value-pair "Photographer":"counter".
         #
