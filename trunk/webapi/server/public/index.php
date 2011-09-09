@@ -51,7 +51,7 @@ switch ($cmd) {
 
     if ($taxon === false) {
       header('HTTP/1.1 404 Not Found');
-    	exit(render_json(array('message' => 'Not Found')));
+      exit(render_json(array('message' => 'Not Found')));
     }
 
     if ($part === null) {
@@ -116,7 +116,7 @@ switch ($cmd) {
 
     if ($response === false) {
       header('HTTP/1.1 404 Not Found');
-    	exit(render_json(array('message' => 'Not Found')));
+      exit(render_json(array('message' => 'Not Found')));
     }
     
     render_json($response);
@@ -126,6 +126,6 @@ switch ($cmd) {
   // Return 404 Not Found for unknown commands.
   default:
     header('HTTP/1.1 404 Not Found');
-  	exit(render_json(array('message' => 'Not Found')));
+    exit(render_json(array('message' => 'Not Found')));
   
 }

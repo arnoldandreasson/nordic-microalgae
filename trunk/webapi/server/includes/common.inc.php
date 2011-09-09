@@ -35,5 +35,5 @@ function render_json($data) {
     header('Content-Type: application/json; charset=utf-8');
   }
  
- echo $output;
+ print $output;
 }

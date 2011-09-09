@@ -41,9 +41,10 @@ if (DEBUG === true) {
 
 $dsn = 'mysql:dbname=' . DB_NAME . ';host=' . DB_HOST;
 try {
-	$pdo = new PDO($dsn, DB_USER, DB_PASS);
-	$pdo->exec('SET NAMES utf8');
-	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  
+  $pdo = new PDO($dsn, DB_USER, DB_PASS);
+  $pdo->exec('SET NAMES utf8');
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
   if (DEBUG === true) {
     $message = sprintf('Error: PDO %d: %s', $e->getCode(), $e->getMessage());
@@ -52,7 +53,7 @@ try {
   }
   
   header('HTTP/1.1 500 Internal Server Error');
-	exit(render_json(array( 'message' => $message )));
+  exit(render_json(array( 'message' => $message )));
 
 }
 unset($dsn);
