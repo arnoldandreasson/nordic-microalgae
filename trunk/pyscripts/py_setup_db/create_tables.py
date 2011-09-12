@@ -31,7 +31,13 @@ def execute(db_host = 'localhost',
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
             db_passwd = ''):
-    """ Creates all tables in the database. """
+    """ 
+    Creates all tables in the database. 
+    All table definitions is located in this Python script.
+    
+    Note: There will be an "out of sync" error message when running this script. Just ignore it. 
+    
+    """
     db = None
     cursor = None
     try:

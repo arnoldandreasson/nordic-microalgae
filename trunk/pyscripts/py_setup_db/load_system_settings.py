@@ -32,7 +32,10 @@ def execute(db_host = 'localhost',
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
             db_passwd = ''):
-    """ Settings for internal use in the web application Nordic Microalgae. """
+    """ 
+    Settings for internal use in the web application Nordic Microalgae. 
+    All data is located in this Python script.
+    """
     db = None
     cursor = None
     try:

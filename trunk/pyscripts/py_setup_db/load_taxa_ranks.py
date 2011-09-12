@@ -46,7 +46,10 @@ def execute(db_host = 'localhost',
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
             db_passwd = ''):
-    """ Creates table with sort order information for taxonomic rank. """
+    """ 
+    Creates table with sort order information for taxonomic rank. 
+    All data is located in this Python script.
+    """
     db = None
     cursor = None
     try:
