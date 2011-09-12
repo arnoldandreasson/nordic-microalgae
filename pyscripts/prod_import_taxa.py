@@ -24,22 +24,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import create_tables
-import load_system_settings
-import load_taxa_ranks
+import py_import.import_taxa as import_taxa
 
 def execute(db_host, db_name, db_user, db_passwd):
-    """ Script that creates and populates a test database. """
+    """ """
     #
-    print("\n=== Create tables. ===\n")
-    print("Note: An exception 'Lost connection...' will occur during database rebuild.")
-    create_tables.execute(db_host, db_name, db_user, db_passwd)
-    #
-    print("\n=== Load: system_settings. ===\n")
-    load_system_settings.execute(db_host, db_name, db_user, db_passwd)
-    #
-    print("\n=== Load: taxa_ranks. ===\n")
-    load_taxa_ranks.execute(db_host, db_name, db_user, db_passwd)
+    print("\n=== Import taxa. ===\n")
+    import_taxa.execute(file_name = 'data_import/taxa_dyntaxa.txt',
+                        delete_db_content = True)
     #
     print("\n=== Finished. ===\n")
 
@@ -49,7 +41,9 @@ import getopt, sys
 def main():
     # Parse command line options.
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "h:d:u:p:", ["host=", "database=", "user=", "password="])
+        opts, args = getopt.getopt(sys.argv[1:], 
+                                   "h:d:u:p:", 
+                                   ["host=", "database=", "user=", "password="])
     except getopt.error, msg:
         print msg
         sys.exit(2)
