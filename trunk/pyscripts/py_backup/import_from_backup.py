@@ -34,10 +34,10 @@ def execute(db_host = 'localhost',
             db_name = 'nordicmicroalgae', 
             db_user = 'root', 
             db_passwd = '',
-            taxa_facts_file_name = '../data_backup/taxa_facts_backup.txt', 
-            taxa_media_file_name = '../data_backup/taxa_media_backup.txt', 
-            taxa_media_list_file_name = '../data_backup/taxa_media_list_backup.txt', 
-            change_history_file_name = '../data_backup/change_history_backup.txt', 
+            taxa_facts_file_name = 'taxa_facts_backup.txt', 
+            taxa_media_file_name = 'taxa_media_backup.txt', 
+            taxa_media_list_file_name = 'taxa_media_list_backup.txt', 
+            change_history_file_name = 'change_history_backup.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
             row_delimiter = '\r\n'): # For windows usage.
@@ -199,6 +199,37 @@ def execute(db_host = 'localhost',
         if infile: infile.close()
 
 
-# Main.
-if __name__ == '__main__':
-    execute()
+# To be used when this module is launched directly from the command line.
+import getopt, sys
+def main():
+    # Parse command line options.
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 
+                                   "h:d:u:p:", 
+                                   ["host=", "database=", "user=", "password=", "path="])
+    except getopt.error, msg:
+        print msg
+        sys.exit(2)
+    # Create dictionary with named arguments.
+    params = {"db_host": "localhost", 
+              "db_name": "nordicmicroalgae", 
+              "db_user": "root", 
+              "db_passwd": "",
+              "directory_path": "data_download/"}
+    for opt, arg in opts:
+        if opt in ("-h", "--host"):
+            params['db_host'] = arg
+        elif opt in ("-d", "--database"):
+            params['db_name'] = arg
+        elif opt in ("-u", "--user"):
+            params['db_user'] = arg
+        elif opt in ("-p", "--password"):
+            params['db_passwd'] = arg
+        elif opt in ("--path"):
+            params['directory_path'] = arg
+    # Execute with parameter list.
+    execute(**params) # The "two stars" prefix converts the dictionary into named arguments. 
+
+if __name__ == "__main__":
+    main()
+
