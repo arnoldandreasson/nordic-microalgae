@@ -40,7 +40,8 @@ def execute(db_host = 'localhost',
             change_history_file_name = 'change_history_backup.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 
-            row_delimiter = '\r\n'): # For windows usage.
+            row_delimiter = '\r\n',
+            **more_options):
     """ 
     Imports data to database from backup file. Backup must be done by running 
     'export_to_backup.py'. 
@@ -200,13 +201,13 @@ def execute(db_host = 'localhost',
 
 
 # To be used when this module is launched directly from the command line.
-import getopt, sys
+import getopt
 def main():
     # Parse command line options.
     try:
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h:d:u:p:", 
-                                   ["host=", "database=", "user=", "password=", "path="])
+                                   ["host=", "database=", "user=", "password="])
     except getopt.error, msg:
         print msg
         sys.exit(2)
@@ -214,8 +215,7 @@ def main():
     params = {"db_host": "localhost", 
               "db_name": "nordicmicroalgae", 
               "db_user": "root", 
-              "db_passwd": "",
-              "directory_path": "data_download/"}
+              "db_passwd": ""}
     for opt, arg in opts:
         if opt in ("-h", "--host"):
             params['db_host'] = arg
@@ -225,8 +225,6 @@ def main():
             params['db_user'] = arg
         elif opt in ("-p", "--password"):
             params['db_passwd'] = arg
-        elif opt in ("--path"):
-            params['directory_path'] = arg
     # Execute with parameter list.
     execute(**params) # The "two stars" prefix converts the dictionary into named arguments. 
 
