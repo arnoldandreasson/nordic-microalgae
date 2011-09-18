@@ -26,45 +26,45 @@
  */
  
 class TaxaQuery {
-  protected $_name = array();
-  protected $_rank = array();
-  protected $_filters = array();
+  protected $name = array();
+  protected $rank = array();
+  protected $filters = array();
   
-  protected $_page;
-  protected $_pages;
-  protected $_per_page;
-  protected $_total;
+  protected $page;
+  protected $pages;
+  protected $per_page;
+  protected $total;
   
   function set_name(array $name = array()) {
-    $this->_name = $name;
+    $this->name = $name;
   }
   
   function set_rank(array $rank = array()) {
-    $this->_rank = $rank;
+    $this->rank = $rank;
   }
   
   function set_filters(array $filters = array()) {
-    $this->_filters = $filters;
+    $this->filters = $filters;
   }
   
   function set_page($page) {
-    $this->_page = (int) $page;
+    $this->page = (int) $page;
   }
   
   function set_per_page($per_page) {
-    $this->_per_page = (int) $per_page;
+    $this->per_page = (int) $per_page;
   }
   
   function set_pages($pages) {
-    $this->_pages = (int) $pages;
+    $this->pages = (int) $pages;
   }
   
   function set_total($total) {
-    $this->_total = (int) $total;
+    $this->total = (int) $total;
   }
   
   function __isset($var) {
-    return isset($this->{"_$var"});
+    return isset($this->$var);
   }
   
   function __get($var) {
@@ -72,7 +72,7 @@ class TaxaQuery {
     if (is_callable(array($this, $method)))
       return call_user_func(array($this, $method));
     
-    return $this->{"_$var"};    
+    return $this->$var;
   }
   
   function __set($var, $value) {
@@ -80,6 +80,6 @@ class TaxaQuery {
     if (is_callable(array($this, $method)))
       return call_user_func_array(array($this, $method), array($value));
 
-    return $this->{"_$var"} = $value;    
+    return $this->$var = $value;    
   }
 }
