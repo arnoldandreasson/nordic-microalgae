@@ -428,9 +428,9 @@ def execute(db_host = 'localhost',
             "Title": {"Type": "textfield", "Description": "Usually the name of the organism.", "Required": "True"}, # Mandatory.
             "Photographer/artist": {"Type": "textfield", "Description": "Photographer or artist.", "Required": "True"}, # Mandatory.
             "Copyright holder": {"Type": "textfield", "Description": ""},
-            "Copyright stamp": {"Type": "textfield", "Description": ""},
+            "Copyright stamp": {"Type": "textfield", "Description": "This text will be used for the stamping images with the name of the copyright holder. Leave empty if no stamp is needed. Fill in the name of the Copyright holder if you want a stamp. Keep the text as short as possible."},
             "Institute": {"Type": "textfield", "Description": "Usually your institute, university or company."},
-            "Publisher": {"Type": "textfield", "Description": ""},
+            "Publisher": {"Type": "textfield", "Description": "This could be e.g. HELCOM-PEG, the name of an institute or a company. Maximum number of characters is 28. The text is shown e.g. under the author name in Galleries and Latest images."},
             "Contributor": {"Type": "textfield", "Description": "", "Required": "True"}, # Mandatory.
             "Caption": {"Type": "textarea", "Description": "The text describing the illustration.", "Visual": "True"},
             "Sampling date": {"Type": "textfield", "Description": ""},
@@ -684,7 +684,7 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                 "Geographic area (not yet implemented)": [
                         {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Geographic area"}, 
                         {"Label": "Baltic sea", "Default": "False", "Filter": "Geographic area", "Value": "Baltic sea"},
-                        {"Label": "Skagerakk", "Default": "False", "Filter": "Geographic area", "Value": "Skagerakk"},
+                        {"Label": "Skagerrak", "Default": "False", "Filter": "Geographic area", "Value": "Skagerrak"},
                         {"Label": "North sea", "Default": "False", "Filter": "Geographic area", "Value": "North sea"},
                         {"Label": "Norwegian sea", "Default": "False", "Filter": "Geographic area", "Value": "Norwegian sea"} 
                 ],
