@@ -109,7 +109,7 @@ def execute(db_host = 'localhost',
                 "Copyright holder",
                 "Copyright stamp",
                 "Institute",
-                "Publisher",
+                "Contributing organisation",
                 "Contributor",
                 "Caption",
                 "Sampling date",
@@ -132,7 +132,7 @@ def execute(db_host = 'localhost',
                 "Copyright holder": "text",
                 "Copyright stamp": "text",
                 "Institute": "text",
-                "Publisher": "text",
+                "Contributing organisation": "text",
                 "Contributor": "text",
                 "Caption": "text",
                 "Sampling date": "text",
@@ -320,32 +320,43 @@ def execute(db_host = 'localhost',
         #
         #
         #
-        keydict["Image view"] = {
+        keydict["Media view"] = {
             "Field list": [
-                "Media.Title",
-                "Media.Photographer/artist",
-                "Media.Copyright holder",
-                "Media.Copyright stamp",
-                "Media.Institute",
-                "Media.Publisher",
-                "Media.Contributor",
-                "Media.Caption",
-                "Media.Sampling date",
-                "Media.Geographic area",
-                "Media.Location",
-#                "Component.Geo position",
-                "Media.Latitude, degree",
-                "Media.Latitude, minute",
-                "Media.Longitude, degree",
-                "Media.Longitude, minute",
-                "Media.License",
-                "Media.Technique",
-                "Media.Preservation",
-                "Media.Contrast enhancement",
-                "Media.Stain",
-                "Media.Image galleries"
+                "Title",
+                "Photographer/artist",
+                "Copyright holder",
+                "Copyright stamp",
+                "Institute",
+                "Contributing organisation",
+                "Contributor",
+                "Caption",
+                "Sampling date",
+                "Geographic area",
+                "Location",
+                "Latitude, degree",
+                "Latitude, minute",
+                "Longitude, degree",
+                "Longitude, minute",
+                "License",
+                "Technique",
+                "Preservation",
+                "Contrast enhancement",
+                "Stain",
+                "Image galleries"
             ]
-        }        
+        }
+        #
+        #
+        #
+        keydict["Mediaset view"] = {
+            "Field list": [
+                "Title",
+                "Date added",
+                "Photographer/artist",
+                "Copyright holder",
+                "Contributing organisation"
+            ]
+        }   
         #
         # Facts view formats:
         # Information needed when viewing data.
@@ -384,7 +395,7 @@ def execute(db_host = 'localhost',
             "Copyright holder": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Copyright stamp": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Institute": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
-            "Publisher": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
+            "Contributing organisation": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Contributor": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Caption": {"Type": "text", "CSS class": "", "Hint": "", "Help": ""},
             "Sampling date": {"Type": "date", "CSS class": "", "Hint": "", "Help": ""},
@@ -430,9 +441,9 @@ def execute(db_host = 'localhost',
             "Copyright holder": {"Type": "textfield", "Description": ""},
             "Copyright stamp": {"Type": "textfield", "Description": "This text will be used for the stamping images with the name of the copyright holder. Leave empty if no stamp is needed. Fill in the name of the Copyright holder if you want a stamp. Keep the text as short as possible."},
             "Institute": {"Type": "textfield", "Description": "Usually your institute, university or company."},
-            "Publisher": {"Type": "textfield", "Description": "This could be e.g. HELCOM-PEG, the name of an institute or a company. Maximum number of characters is 28. The text is shown e.g. under the author name in Galleries and Latest images."},
+            "Contributing organisation": {"Type": "textfield", "Description": "This could be e.g. HELCOM-PEG, the name of an institute or a company. Maximum number of characters is 28. The text is shown e.g. under the author name in Galleries and Latest images."},
             "Contributor": {"Type": "textfield", "Description": "", "Required": "True"}, # Mandatory.
-            "Caption": {"Type": "textarea", "Description": "The text describing the illustration.", "Visual": "True"},
+            "Caption": {"Type": "textarea", "Description": "The text describing the illustration. Caption is not saved in template.", "Visual": "True"},
             "Sampling date": {"Type": "textfield", "Description": ""},
             "Geographic area": {"Type": "select", "Description": "Choose the area where the organism was collected.", 
                 "Options": ["", 
