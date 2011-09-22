@@ -353,7 +353,6 @@ def execute(db_host = 'localhost',
                 "Title",
                 "Date added",
                 "Photographer/artist",
-                "Copyright holder",
                 "Contributing organisation"
             ]
         }   
