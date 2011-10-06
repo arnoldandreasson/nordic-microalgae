@@ -261,6 +261,7 @@ def execute(db_host = 'localhost',
 #                "Component.Images", # TODO: Component or Division or ... this is not the web component available via api.
 #                "Component.Classification",
 #                "Component.Similar species",
+                "External Facts.Generated facts.IDs in other systems",
                 "Facts.Note on taxonomy",
                 "Facts.Tropic type",
                 "Facts.Morphology",
@@ -277,9 +278,6 @@ def execute(db_host = 'localhost',
                 "Facts.Size",
                 "Facts.Resting spore",
                 "Facts.Literature",
-
-                "External Facts.Generated facts.IDs in other systems",
-
 #                "Component.HELCOM PEG"
             ]
         }
