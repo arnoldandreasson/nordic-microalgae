@@ -277,6 +277,9 @@ def execute(db_host = 'localhost',
                 "Facts.Size",
                 "Facts.Resting spore",
                 "Facts.Literature",
+
+                "External Facts.Generated facts.ID’s in other systems",
+
 #                "Component.HELCOM PEG"
             ]
         }
