@@ -72,7 +72,8 @@ def execute(db_host, db_name, db_user, db_passwd):
             provider_omnidia_codes = "SLU",
             file_name_omnidia_codes = 'data_import/external_facts_omnidia_codes.txt', 
             provider_ioc_hab = "IOC",
-            file_name_ioc_hab = 'data_import/external_facts_ioc_hab.txt', 
+            file_name_ioc_hab = 'data_import/external_facts_ioc_hab.txt',
+            delete_db_content = True # Delete content, first import. 
             )
     #
     print("\n=== Import data: taxa_helcom_peg. ===\n")
