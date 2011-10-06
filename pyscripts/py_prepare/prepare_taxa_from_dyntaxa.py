@@ -93,7 +93,7 @@ def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
         # Create outdatafile.
         out = codecs.open(out_file_name, mode = 'w', encoding = outfile_encoding)
         # Header, define and print.
-        outheader = ['Scientific name', 'Author', 'Rank', 'Parent name']
+        outheader = ['Scientific name', 'Author', 'Rank', 'Parent name', 'Dyntaxa id']
         out.write(field_separator.join(outheader) + row_delimiter)
         # Restart taxafile and iterate.
         taxafile.seek(0)            
@@ -122,7 +122,7 @@ def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
                     if rank != 'Kingdom':
                         print("ERROR: No parent found: " + rank + "  " + taxonid + "  " + scientificname)
                 # Create row.
-                outrow = [scientificname, author, rank, parentname]
+                outrow = [scientificname, author, rank, parentname, taxonid]
                 # Print row.
                 out.write(field_separator.join(outrow) + row_delimiter)                
         #            

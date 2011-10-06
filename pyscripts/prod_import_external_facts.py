@@ -28,19 +28,25 @@ import py_import.import_taxa_external_links as import_taxa_external_links
 import py_import.import_taxa_external_facts as import_taxa_external_facts
 import py_import.import_taxa_helcom_peg as import_taxa_helcom_peg
 import py_import.import_taxa_synonyms as import_taxa_synonyms
+import py_import.generate_taxa_facts_external_identities as generate_taxa_facts_external_identities
 
 def execute(db_host, db_name, db_user, db_passwd):
     """ """
     #
     print("\n=== Import data: taxa_synonyms, DynTaxa. ===\n")
-    import_taxa_synonyms.execute(file_name = 'data_import/synonyms_dyntaxa.txt',
-                                 delete_db_content = True # Delete content, first import.
+    import_taxa_synonyms.execute(
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
+            file_name = 'data_import/synonyms_dyntaxa.txt',
+            delete_db_content = True # Delete content, first import.
                                  )
     print("\n=== Import data: taxa_synonyms, AlgaeBase. ===\n")
-    import_taxa_synonyms.execute(file_name = 'data_import/synonyms_algaebase.txt')
+    import_taxa_synonyms.execute(
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
+            file_name = 'data_import/synonyms_algaebase.txt')
     #
     print("\n=== Import data: taxa_external_links, AlgaeBase. ===\n")
     import_taxa_external_links.execute(
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
             provider = "AlgaeBase",
             link_type = "Taxon URL",
             url_template = "http://algaebase.org/search/species/detail/?species_id=<replace-id>",
@@ -49,25 +55,36 @@ def execute(db_host, db_name, db_user, db_passwd):
             )
     print("\n=== Import data: taxa_external_links, IOC. ===\n")
     import_taxa_external_links.execute(
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
             provider = "IOC",
             link_type = "Taxon URL",
             url_template = "http://www.marinespecies.org/hab/aphia.php?p=taxdetails&id=<replace-id>",
             file_name = 'data_import/external_links_ioc_hab.txt' 
             )
     #
-#    print("\n=== Import data: taxa_external_facts. ===\n")
+    print("\n=== Import data: taxa_external_facts. ===\n")
     import_taxa_external_facts.execute(
-            provider_ioc_hab = "IOC",
-            file_name_ioc_hab = 'data_import/external_facts_ioc_hab.txt',
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd,
+            provider_dyntaxa_id = "Dyntaxa",
+            file_name_dyntaxa_id = 'data_import/taxa_dyntaxa.txt', 
+            provider_algaebase_id = "AlgaeBase",
+            file_name_algaebase_id = 'data_import/external_links_algaebase.txt', 
             provider_omnidia_codes = "SLU",
-            file_name_omnidia_codes = 'data_import/external_facts_omnidia_codes.txt',
-            delete_db_content = True # Delete content, first import. 
+            file_name_omnidia_codes = 'data_import/external_facts_omnidia_codes.txt', 
+            provider_ioc_hab = "IOC",
+            file_name_ioc_hab = 'data_import/external_facts_ioc_hab.txt', 
             )
     #
     print("\n=== Import data: taxa_helcom_peg. ===\n")
     import_taxa_helcom_peg.execute(
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
             file_name = 'data_import/peg_bvol2011.json',
             translate_file_name = 'data_import/peg_to_dyntaxa.txt'
+            )
+    #
+    print("\n=== Import data: Generate external identities. ===\n")
+    generate_taxa_facts_external_identities.execute(
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd
             )
     #
     print("\n=== Finished. ===\n")

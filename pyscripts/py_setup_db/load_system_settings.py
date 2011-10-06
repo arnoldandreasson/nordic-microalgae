@@ -163,12 +163,13 @@ def execute(db_host = 'localhost',
                 "WORMS",
                 "IOC",
                 "Dyntaxa",
-                "SLU"
+                "SLU",
+                "Generated facts"
             ],
             "Providers": {
                 "AlgaeBase": {
                     "Field list": [
-                        "TODO"
+                        "Algaebase id"
                     ],
                     "Source of data": "",
                     "Copyright notice": ""
@@ -189,7 +190,7 @@ def execute(db_host = 'localhost',
                 },
                 "Dyntaxa": {
                     "Field list": [
-                        "TODO"
+                        "Dyntaxa id"
                     ],
                     "Source of data": "",
                     "Copyright notice": ""
@@ -197,6 +198,13 @@ def execute(db_host = 'localhost',
                 "SLU": {
                     "Field list": [
                         "OMNIDIA code"
+                    ],
+                    "Source of data": "",
+                    "Copyright notice": ""
+                },
+                "Generated facts": {
+                    "Field list": [
+                        "ID’s in other systems"
                     ],
                     "Source of data": "",
                     "Copyright notice": ""
