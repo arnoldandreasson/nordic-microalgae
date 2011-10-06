@@ -80,7 +80,7 @@ def execute(db_host = 'localhost',
                               """More info at <a href="http://www.artdata.slu.se/dyntaxa"> http://www.artdata.slu.se/dyntaxa.</a>""" + \
                               '</li>'
             if algaebaseid:
-                htmlstring += '<li>AlgaeBase ID: ' + unicode(algaebaseid) + \
+                htmlstring += '<li>AlgaeBase ID: ' + unicode(algaebaseid) + '<br/>'  + \
                               """More info at <a href="http://algaebase.org"> http://algaebase.org.</a>""" + \
                               '</li>'
             if omnidiacode:
