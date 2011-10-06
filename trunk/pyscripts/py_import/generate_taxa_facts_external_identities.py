@@ -33,7 +33,7 @@ def execute(db_host = 'localhost',
             db_user = 'root', 
             db_passwd = ''
             ):
-    """ Automatically generated the taxa facts field 'ID’s in other systems'. """
+    """ Automatically generated the taxa facts field 'IDs in other systems'. """
     db = None
     cursor = None
     try:
@@ -73,7 +73,7 @@ def execute(db_host = 'localhost',
                 factsdict = json.loads(result[0], encoding = 'utf-8')
                 omnidiacode = factsdict['OMNIDIA code']
             #
-            # Create html content for the facts field 'ID’s in other systems'.
+            # Create html content for the facts field 'IDs in other systems'.
             htmlstring = '<ul>'
             if dyntaxaid:
                 htmlstring += '<li>Dynamic taxa ID: ' + unicode(dyntaxaid) + '<br/>' + \
@@ -101,10 +101,10 @@ def execute(db_host = 'localhost',
                 factsdict = {}
             # Update facts.
             if dyntaxaid or algaebaseid or omnidiacode:
-                factsdict["ID’s in other systems"] = htmlstring
+                factsdict["IDs in other systems"] = htmlstring
             else:
-                if "ID’s in other systems" in factsdict:
-                    del factsdict["ID’s in other systems"] # Delete if it was earlier added.
+                if "IDs in other systems" in factsdict:
+                    del factsdict["IDs in other systems"] # Delete if it was earlier added.
             # Convert facts to string.
             jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
                                  sort_keys=True, indent=4)
