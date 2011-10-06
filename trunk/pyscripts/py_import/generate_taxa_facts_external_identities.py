@@ -77,13 +77,15 @@ def execute(db_host = 'localhost',
             htmlstring = '<ul>'
             if dyntaxaid:
                 htmlstring += '<li>Dynamic taxa ID: ' + unicode(dyntaxaid) + '<br/>' + \
-                              """More info at <a href="http://www.artdata.slu.se/dyntaxa"> <i>http://www.artdata.slu.se/dyntaxa</i>.</a>and <a href="http://www.norbaf.net"> <i>http://www.norbaf.net</i>.</a>""" + \
+                              """More info at <a href="http://www.artdata.slu.se/dyntaxa"> http://www.artdata.slu.se/dyntaxa.</a>""" + \
                               '</li>'
             if algaebaseid:
-                htmlstring += '<li>AlgaeBase ID: ' + unicode(algaebaseid) + '</li>'
+                htmlstring += '<li>AlgaeBase ID: ' + unicode(algaebaseid) + \
+                              """More info at <a href="http://algaebase.org"> http://algaebase.org.</a>""" + \
+                              '</li>'
             if omnidiacode:
                 htmlstring += '<li>OMNIDIA code: ' + unicode(omnidiacode) + '<br/>' + \
-                              """Used by many freshwater diatomists. See <a href="http://omnidia.free.fr/omnidia_english.htm"> <i>http://omnidia.free.fr/omnidia_english.htm</i>.</a>and <a href="http://www.norbaf.net"> <i>http://www.norbaf.net</i>.</a>""" + \
+                              """Used by many freshwater diatomists. See <a href="http://omnidia.free.fr/omnidia_english.htm"> http://omnidia.free.fr/omnidia_english.htm.</a>and <a href="http://www.norbaf.net"> http://www.norbaf.net.</a>""" + \
                               '</li>'
             htmlstring += '</ul>'
             #
@@ -114,7 +116,7 @@ def execute(db_host = 'localhost',
                 cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) values (%s, %s, %s)", 
                                (unicode(taxon_id), u'Generated facts', jsonstring))
             else:
-                cursor.execute("update taxa_facts set taxa_external_facts = %s where (taxon_id = %s) and (provider = %s)", 
+                cursor.execute("update taxa_external_facts set facts_json = %s where (taxon_id = %s) and (provider = %s)", 
                                (jsonstring, unicode(taxon_id), u'Generated facts'))
             
     #
