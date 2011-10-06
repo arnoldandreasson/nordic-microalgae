@@ -79,6 +79,9 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
 #                row = map(string.strip, row.split(field_separator))
 #                row = map(unicode, row)
                 #
+                if len(row) < 3:
+                    continue
+                
                 scientificname = row[0] # Scientific name
                 mediaid = row[1] # Media id
 #                mediatype = row[2] # Media type
@@ -170,7 +173,8 @@ def main():
               "db_user": "root", 
               "db_passwd": "",
 #              "file_name": "taxa_facts.txt"}
-              "file_name": "taxa_media_2011-08-25_edited_by_BK_ver2.txt"}
+#              "file_name": "taxa_media_2011-08-25_edited_by_BK_ver2.txt"}
+              "file_name": "taxa_media_caption_from_checklist.txt"}
     for opt, arg in opts:
         if opt in ("-h", "--host"):
             params['db_host'] = arg

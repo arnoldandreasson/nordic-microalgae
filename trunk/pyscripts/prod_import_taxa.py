@@ -30,7 +30,8 @@ def execute(db_host, db_name, db_user, db_passwd):
     """ """
     #
     print("\n=== Import taxa. ===\n")
-    import_taxa.execute(file_name = 'data_import/taxa_dyntaxa.txt',
+    import_taxa.execute(db_host, db_name, db_user, db_passwd,
+                        file_name = 'data_import/taxa_dyntaxa.txt',
                         delete_db_content = True)
     #
     print("\n=== Finished. ===\n")
