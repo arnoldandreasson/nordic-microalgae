@@ -61,6 +61,22 @@ def execute(db_host, db_name, db_user, db_passwd):
             url_template = "http://www.marinespecies.org/hab/aphia.php?p=taxdetails&id=<replace-id>",
             file_name = 'data_import/external_links_ioc_hab.txt' 
             )
+
+#
+# Remove. SCCAP is not an external link list. Should be managed as external facts.
+#
+#    print("\n=== Import data: taxa_external_links, SCCAP. ===\n")
+#    import_taxa_external_links.execute(
+#            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
+#            provider = "IOC",
+#            link_type = "Taxon URL",
+#            url_template = "<replace-id>", # Complete url is provided in file.
+#            file_encoding = 'cp1252',
+#            file_name = 'data_import/external_links_sccap.txt' 
+#            )    
+
+
+
     #
     print("\n=== Import data: taxa_external_facts. ===\n")
     import_taxa_external_facts.execute(
