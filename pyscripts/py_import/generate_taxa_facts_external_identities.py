@@ -50,7 +50,8 @@ def execute(db_host = 'localhost',
             algaebaseid = None
             omnidiacode = None
             # Get Dyntaxa id.
-            cursor.execute("select facts_json from taxa_external_facts where (taxon_id = %s) and (provider = %s)", 
+            cursor.execute("select facts_json from taxa_external_facts " +
+                           "where (taxon_id = %s) and (provider = %s)", 
                            (taxon_id, u'Dyntaxa'))
             result = cursor.fetchone()
             if result:

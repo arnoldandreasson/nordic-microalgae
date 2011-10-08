@@ -28,6 +28,7 @@ import py_export.export_taxa as export_taxa
 import py_export.export_taxa_facts as export_taxa_facts
 import py_export.export_taxa_media as export_taxa_media
 import py_backup.export_to_backup as export_to_backup
+import py_export.export_taxa_checklists as export_taxa_checklists
 
 def execute(db_host, db_name, db_user, db_passwd, path_to_downloads):
     """ """
@@ -50,6 +51,11 @@ def execute(db_host, db_name, db_user, db_passwd, path_to_downloads):
                              taxa_media_file_name = path_to_downloads + 'taxa_media_backup.txt', 
                              taxa_media_list_file_name = path_to_downloads + 'taxa_media_list_backup.txt', 
                              change_history_file_name = path_to_downloads + 'change_history_backup.txt') 
+    #    
+    print("\n=== Export: nordicmicroalgae_checklist and nordicmicroalgae_checklist_short. ===\n")
+    export_taxa_checklists.execute(db_host, db_name, db_user, db_passwd, 
+                                   checklist_short_file_name = path_to_downloads + 'nordicmicroalgae_checklist_short.txt', 
+                                   checklist_long_file_name = path_to_downloads + 'nordicmicroalgae_checklist.txt') 
     #
     print("\n=== Finished. ===\n")
 
