@@ -41,6 +41,9 @@ switch ($cmd) {
     $name = !empty($_GET['name']) ? $_GET['name'] : null;
     $part = !empty($_GET['part']) ? $_GET['part'] : null;
 
+    // Slashes in taxon names are replaced by underscores in URLs.
+    $name = str_replace('_', '/', $name);
+
     // Load taxon and all or a specific part of related data.
     $taxon = false;
     if ($part === null) {

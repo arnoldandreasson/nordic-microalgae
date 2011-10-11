@@ -177,9 +177,11 @@ class Taxa {
       $row->metadata = json_decode($row->metadata);
       
       // Set URL's for different versions
-      $filename = pathinfo($row->media_id, PATHINFO_FILENAME);
+      $filename = trim(pathinfo($row->media_id, PATHINFO_FILENAME), '.');
       $row->small_url = 'http://media.nordicmicroalgae.org/small/' . $filename . '.jpg';
+      //$row->medium_url = 'http://media.nordicmicroalgae.org/medium/' . $filename . '.jpg';
       $row->large_url = 'http://media.nordicmicroalgae.org/large/' . $filename . '.jpg';
+      $row->original_url = 'http://media.nordicmicroalgae.org/original/' . $filename . '.jpg';
       
       $media[] = $row;
     }
