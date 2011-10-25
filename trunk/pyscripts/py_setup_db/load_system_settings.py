@@ -204,7 +204,8 @@ def execute(db_host = 'localhost',
                 },
                 "Generated facts": {
                     "Field list": [
-                        "IDs in other systems"
+                        "IDs in other systems",
+                        "Culture collections"
                     ],
                     "Source of data": "",
                     "Copyright notice": ""
@@ -277,6 +278,7 @@ def execute(db_host = 'localhost',
                 "Facts.Length",
                 "Facts.Size",
                 "Facts.Resting spore",
+                "External Facts.Generated facts.Culture collections",
                 "Facts.Literature",
 #                "Component.HELCOM PEG"
             ]
