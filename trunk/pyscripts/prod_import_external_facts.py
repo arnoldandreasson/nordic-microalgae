@@ -29,6 +29,7 @@ import py_import.import_taxa_external_facts as import_taxa_external_facts
 import py_import.import_taxa_helcom_peg as import_taxa_helcom_peg
 import py_import.import_taxa_synonyms as import_taxa_synonyms
 import py_import.generate_taxa_facts_external_identities as generate_taxa_facts_external_identities
+import py_import.import_taxa_external_facts_culture_collections as import_taxa_external_facts_culture_collections
 
 def execute(db_host, db_name, db_user, db_passwd):
     """ """
@@ -97,6 +98,12 @@ def execute(db_host, db_name, db_user, db_passwd):
             db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
             file_name = 'data_import/peg_bvol2011.json',
             translate_file_name = 'data_import/peg_to_dyntaxa.txt'
+            )
+    #
+    print("\n=== Import data: taxa_external_facts_culture_collections. ===\n")
+    import_taxa_external_facts_culture_collections.execute(
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
+            file_name_sccap = 'data_import/external_facts_culture_collections_sccap.txt'
             )
     #
     print("\n=== Import data: Generate external identities. ===\n")
