@@ -684,10 +684,12 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
         keydict["Filters"] = {
             "Group list": [
                     "Select",
-                    "Country (not yet implemented)",
-                    "Geographic area (not yet implemented)",
-                    "Habitat (not yet implemented)",
-                    "Trophic type (not yet implemented)"
+                    "For contributors"
+                    # Remove until implemented:
+                    #"Country (not yet implemented)",
+                    #"Geographic area (not yet implemented)",
+                    #"Habitat (not yet implemented)",
+                    #"Trophic type (not yet implemented)"
             ],
             "Groups": {
                 "Select": [
@@ -696,32 +698,35 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                         {"Label": "Swedish benthic freshwater diatoms only", "Default": "False", "Filter": "Benthic FW. diatoms", "Value": "True"}, 
                         {"Label": "IOC Harmful algae only", "Default": "False", "Filter": "Harmful", "Value": "True"}
                 ],
-                "Country (not yet implemented)": [
-                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Country"}, 
-                        {"Label": "Denmark", "Default": "False", "Filter": "Country", "Value": "Denmark"}, 
-                        {"Label": "Finland", "Default": "False", "Filter": "Country", "Value": "Finland"}, 
-                        {"Label": "Norway", "Default": "False", "Filter": "Country", "Value": "Norway"}, 
-                        {"Label": "Sweden", "Default": "False", "Filter": "Country", "Value": "Sweden"} 
-                 ],
-                "Geographic area (not yet implemented)": [
-                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Geographic area"}, 
-                        {"Label": "Baltic sea", "Default": "False", "Filter": "Geographic area", "Value": "Baltic sea"},
-                        {"Label": "Skagerrak", "Default": "False", "Filter": "Geographic area", "Value": "Skagerrak"},
-                        {"Label": "North sea", "Default": "False", "Filter": "Geographic area", "Value": "North sea"},
-                        {"Label": "Norwegian sea", "Default": "False", "Filter": "Geographic area", "Value": "Norwegian sea"} 
-                ],
-                "Habitat (not yet implemented)": [
-                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Habitat"}, 
-                        {"Label": "Marine/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Marine/planktonic"}, 
-                        {"Label": "Marine/benthic", "Default": "False", "Filter": "Habitat", "Value": "Marine/benthic"}, 
-                        {"Label": "Freshwater/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/planktonic"}, 
-                        {"Label": "Freshwater/benthic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/benthic"} 
-                ],
-                "Trophic type (not yet implemented)": [
-                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Trophic type"}, 
-                        {"Label": "Photo- or mixotrophic", "Default": "False", "Filter": "Trophic type", "Value": "Photo- or mixotrophic"}, 
-                        {"Label": "Heterotrophic", "Default": "False", "Filter": "Trophic type", "Value": "Heterotrophic"} 
+                "For contributors": [
+                        {"Label": "Not illustrated", "Default": "False", "Filter": "Not illustrated", "Value": "True"}, 
                 ]
+#                "Country (not yet implemented)": [
+#                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Country"}, 
+#                        {"Label": "Denmark", "Default": "False", "Filter": "Country", "Value": "Denmark"}, 
+#                        {"Label": "Finland", "Default": "False", "Filter": "Country", "Value": "Finland"}, 
+#                        {"Label": "Norway", "Default": "False", "Filter": "Country", "Value": "Norway"}, 
+#                        {"Label": "Sweden", "Default": "False", "Filter": "Country", "Value": "Sweden"} 
+#                 ],
+#                "Geographic area (not yet implemented)": [
+#                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Geographic area"}, 
+#                        {"Label": "Baltic sea", "Default": "False", "Filter": "Geographic area", "Value": "Baltic sea"},
+#                        {"Label": "Skagerrak", "Default": "False", "Filter": "Geographic area", "Value": "Skagerrak"},
+#                        {"Label": "North sea", "Default": "False", "Filter": "Geographic area", "Value": "North sea"},
+#                        {"Label": "Norwegian sea", "Default": "False", "Filter": "Geographic area", "Value": "Norwegian sea"} 
+#                ],
+#                "Habitat (not yet implemented)": [
+#                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Habitat"}, 
+#                        {"Label": "Marine/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Marine/planktonic"}, 
+#                        {"Label": "Marine/benthic", "Default": "False", "Filter": "Habitat", "Value": "Marine/benthic"}, 
+#                        {"Label": "Freshwater/planktonic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/planktonic"}, 
+#                        {"Label": "Freshwater/benthic", "Default": "False", "Filter": "Habitat", "Value": "Freshwater/benthic"} 
+#                ],
+#                "Trophic type (not yet implemented)": [
+#                        {"Label": "Show all", "Default": "True", "Type": "Master", "Filter": "Trophic type"}, 
+#                        {"Label": "Photo- or mixotrophic", "Default": "False", "Filter": "Trophic type", "Value": "Photo- or mixotrophic"}, 
+#                        {"Label": "Heterotrophic", "Default": "False", "Filter": "Trophic type", "Value": "Heterotrophic"} 
+#                ]
             }
         }
         #

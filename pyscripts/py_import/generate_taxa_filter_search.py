@@ -57,6 +57,10 @@ def execute(db_host = 'localhost',
                 # Add row in taxa_filter_search.
                 cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
                                (taxon_id, 'Illustrated', 'True'))
+            else: 
+                # New filter added 2011-02-21. Name: "Not illustrated".
+                cursor.execute("insert into taxa_filter_search(taxon_id, filter, value) values (%s, %s, %s)", 
+                               (taxon_id, 'Not illustrated', 'True'))
             #
             # Check if HELCOM PEG. 
             #
