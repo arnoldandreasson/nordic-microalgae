@@ -77,7 +77,7 @@ def execute(db_host = 'localhost',
             # Create html content for the facts field 'IDs in other systems'.
             htmlstring = '<ul>'
             if dyntaxaid:
-                htmlstring += '<li>Dynamic taxa ID: ' + unicode(dyntaxaid) + '<br/>' + \
+                htmlstring += '<li>Dyntaxa ID: ' + unicode(dyntaxaid) + '<br/>' + \
                               """More info at <a href="http://www.artdata.slu.se/dyntaxa"> http://www.artdata.slu.se/dyntaxa.</a>""" + \
                               '</li>'
             if algaebaseid:
