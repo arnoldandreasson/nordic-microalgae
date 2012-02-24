@@ -26,6 +26,8 @@
  */
  
 class TaxaQuery {
+  protected $name_status = 'accepted';
+  
   protected $name = array();
   protected $rank = array();
   protected $filters = array();
@@ -34,6 +36,12 @@ class TaxaQuery {
   protected $pages;
   protected $per_page;
   protected $total;
+  
+  function set_name_status($name_status) {
+    if (in_array($name_status, array('accepted', 'synonym'), true)) {
+      $this->name_status = $name_status;
+    }
+  }
   
   function set_name(array $name = array()) {
     $this->name = $name;
