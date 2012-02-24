@@ -221,19 +221,44 @@ class Taxa {
   
   
   function load_list(TaxaQuery $query) {
-    $select = array('name', 'author', 'rank');
-    $from   = array('taxa');
-    $order  = array('name ASC');
-
-    $where  = array();
+    // Set up query parts, based on choosed name status.
+    switch ($query->name_status) {
+      case 'accepted':
+      default:
+        $select = array('name', 'author', 'rank');
+        $from   = array('taxa');
+        $where  = array();
+        $order  = array('name ASC');
+        break;
+        
+      case 'synonym':
+        $select = array('synonym_name', 'synonym_author', 'name', 'author', 'rank');
+        $from   = array('taxa_synonyms, taxa');
+        $where  = array('taxa_synonyms.taxon_id = taxa.id');
+        $order  = array('synonym_name ASC');
+        break;
+    }
+    
     $params = array();
 
-    // Add WHERE taxa.name LIKE clause and parameters.
+    // Add WHERE name/synonym_name LIKE clause and parameters.
     if (!empty($query->name)) {
+      // Use different fields depending on name status.
+      switch ($query->name_status) {
+        case 'accepted':
+        default:
+          $name_field = 'taxa.name';
+          break;
+          
+        case 'synonym':
+          $name_field = 'taxa_synonyms.synonym_name';
+          break;
+      }
+      
       $name_where = array();
       for ($i = 0; $i < count($query->name); $i++) {
         $param_name = sprintf(':name_%u', $i);
-        $name_where[] = "taxa.name LIKE $param_name";
+        $name_where[] = "$name_field LIKE $param_name";
 
         // Replace custom wildcard characters with MySQL wildcard characters, if specified.
         if (strpos($query->name[$i], '*') !== false)

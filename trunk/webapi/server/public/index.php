@@ -79,11 +79,14 @@ switch ($cmd) {
     $taxa = new Taxa($pdo);
     $query = new TaxaQuery();
     
-    if (!empty($_GET['rank']))
-      $query->rank = (array) $_GET['rank'];
-
+    if (!empty($_GET['name_status']))
+      $query->name_status = $_GET['name_status'];
+    
     if (!empty($_GET['name']))
       $query->name = (array) $_GET['name'];
+    
+    if (!empty($_GET['rank']))
+      $query->rank = (array) $_GET['rank'];
     
     if (!empty($_GET['filters']))
       $query->filters = (array) $_GET['filters'];
