@@ -71,7 +71,15 @@ def execute(db_host = 'localhost',
                                "values (%s, %s, %s, %s)", 
                                (taxon_id, media_id, 'Latest images', datetime))
             #
-            # 'Hall of fame', count images for each photographer/artist.
+            # 'Hall of fame, part 1'. Add filter 'Artist' for value of photographer/artist.
+            #
+            if 'Photographer/artist' in metadatadict:
+                photographer =  metadatadict['Photographer/artist']
+                cursor.execute("insert into taxa_media_filter_search(taxon_id, media_id, filter, value) " +
+                               "values (%s, %s, %s, %s)", 
+                               (taxon_id, media_id, 'Artist', photographer))
+            #
+            # 'Hall of fame, part 2'. Count images for each photographer/artist.
             #
             if 'Photographer/artist' in metadatadict:
                 photographer =  metadatadict['Photographer/artist']
