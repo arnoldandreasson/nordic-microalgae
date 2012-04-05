@@ -36,6 +36,8 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
             file_name_algaebase_id = '../data_import/external_links_algaebase.txt', 
             provider_omnidia_codes = "SLU",
             file_name_omnidia_codes = '../data_import/external_facts_omnidia_codes.txt', 
+            provider_rebecca_codes = "NIVA",
+            file_name_rebecca_codes = '../data_import/external_facts_rebecca_codes.txt', 
             provider_ioc_hab = "IOC",
             file_name_ioc_hab = '../data_import/external_facts_ioc_hab.txt', 
             file_encoding = 'utf16',
@@ -172,7 +174,8 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                                    "where (taxon_id = %s) and (provider = %s) ", 
                                    (jsonstring, unicode(taxon_id), unicode(provider_algaebase_id)))
         
-        # === OMNIDIA codes === 
+        # === OMNIDIA codes ===          
+        # Note: This code is used in "External identities", see generate_taxa_facts_external_identities.py.        
         print("")
         print("=== OMNIDIA codes ===")
         # Open file for reading.
@@ -212,7 +215,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 for colindex, headeritem in enumerate(headers):
                     if not headeritem in ['Scientific name']:
                         factsdict[headeritem] = row[colindex]
-# Note: Description is moved to "External identities", see prepare_external_identities.py.
+# Note: Description is moved to "External identities", see generate_taxa_facts_external_identities.py.
 #                        if headeritem == "OMNIDIA code":
 #                            # Add extra info if omidia code.
 #                            omnidia = row[colindex]
@@ -237,6 +240,73 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                     cursor.execute("update taxa_external_facts set facts_json = %s " + 
                                    "where (taxon_id = %s) and (provider = %s) ", 
                                    (jsonstring, unicode(taxon_id), unicode(provider_omnidia_codes)))
+
+
+
+
+
+
+        # === REBECCA codes ===         
+        # Note: This code is used in "External identities", see generate_taxa_facts_external_identities.py.        
+        print("")
+        print("=== REBECCA codes ===")
+        # Open file for reading.
+        infile = codecs.open(file_name_rebecca_codes, mode = 'r', encoding = file_encoding)    
+        # Iterate over rows in file.
+        for rowindex, row in enumerate(infile):
+            if rowindex == 0: # First row is assumed to be the header row.
+                headers = map(string.strip, row.split(field_separator))
+                headers = map(unicode, headers)
+            else:
+                row = map(string.strip, row.split(field_separator))
+                row = map(unicode, row)
+                # Get taxon_id from name.
+                cursor.execute("select id from taxa " + 
+                                 "where name = %s", (row[1])) # 1 = AcceptedTaxon
+                result = cursor.fetchone()
+                if result:
+                    taxon_id = result[0]
+                else:
+                    print("Error: Can't find taxon i taxa. Name: " + row[1]) # 1 = AcceptedTaxon
+                    continue # Skip this taxon.
+                # Get facts_json from db.
+                cursor.execute("select facts_json from taxa_external_facts " + 
+                               "where (taxon_id = %s) and (provider = %s) ", 
+                               (unicode(taxon_id), unicode(provider_rebecca_codes)))
+                result = cursor.fetchone()
+                if result:
+                    # From string to dictionary.
+                    factsdict = json.loads(result[0], encoding = 'utf-8')
+                    # Add column values to row, if available.
+                    for headeritem in headers:
+                        row.append(factsdict.get(headeritem, ''))
+                else:
+                    # Add empty columns.
+                    factsdict = {}
+                # Update facts.
+                factsdict[u'REBECCA code'] = row[0] # 0 = RebeccaID
+                # Convert facts to string.
+                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                                     sort_keys=True, indent=4)
+                # Check if db row exists. 
+                cursor.execute("select count(*) from taxa_external_facts " + 
+                               "where (taxon_id = %s) and (provider = %s) ", 
+                               (unicode(taxon_id), unicode(provider_rebecca_codes)))
+                result = cursor.fetchone()
+                if result[0] == 0: 
+                    cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) " + 
+                                   "values (%s, %s, %s)", 
+                                   (unicode(taxon_id), unicode(provider_rebecca_codes), jsonstring))
+                else:
+                    cursor.execute("update taxa_external_facts set facts_json = %s " + 
+                                   "where (taxon_id = %s) and (provider = %s) ", 
+                                   (jsonstring, unicode(taxon_id), unicode(provider_rebecca_codes)))
+
+
+
+
+
+
 
         # === IOC-HAB === 
         print("")
