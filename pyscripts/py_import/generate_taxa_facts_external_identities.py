@@ -49,6 +49,7 @@ def execute(db_host = 'localhost',
             dyntaxaid = None
             algaebaseid = None
             omnidiacode = None
+            rebeccacode = None
             # Get Dyntaxa id.
             cursor.execute("select facts_json from taxa_external_facts " +
                            "where (taxon_id = %s) and (provider = %s)", 
@@ -73,21 +74,44 @@ def execute(db_host = 'localhost',
             if result:
                 factsdict = json.loads(result[0], encoding = 'utf-8')
                 omnidiacode = factsdict['OMNIDIA code']
+
+            
+            
+            # Get REBECCA code.
+            cursor.execute("select facts_json from taxa_external_facts " +
+                           "where (taxon_id = %s) and (provider = %s)", 
+                           (taxon_id, u'NIVA'))
+            result = cursor.fetchone()
+            if result:
+                factsdict = json.loads(result[0], encoding = 'utf-8')
+                rebeccacode = factsdict['REBECCA code']
+
+            
+            
+            
             #
             # Create html content for the facts field 'IDs in other systems'.
             htmlstring = '<ul>'
             if dyntaxaid:
                 htmlstring += '<li>Dyntaxa ID: ' + unicode(dyntaxaid) + '<br/>' + \
-                              """More info at <a href="http://www.artdata.slu.se/dyntaxa"> http://www.artdata.slu.se/dyntaxa.</a>""" + \
+                              """More info at <a href="http://www.artdata.slu.se/dyntaxa"> http://www.artdata.slu.se/dyntaxa</a>""" + \
                               '</li>'
             if algaebaseid:
                 htmlstring += '<li>AlgaeBase ID: ' + unicode(algaebaseid) + '<br/>'  + \
-                              """More info at <a href="http://algaebase.org"> http://algaebase.org.</a>""" + \
+                              """More info at <a href="http://algaebase.org"> http://algaebase.org</a>""" + \
                               '</li>'
             if omnidiacode:
                 htmlstring += '<li>OMNIDIA code: ' + unicode(omnidiacode) + '<br/>' + \
-                              """Used by many freshwater diatomists. See <a href="http://omnidia.free.fr/omnidia_english.htm"> http://omnidia.free.fr/omnidia_english.htm.</a>and <a href="http://www.norbaf.net"> http://www.norbaf.net.</a>""" + \
+                              """Used by many freshwater diatomists. See <a href="http://omnidia.free.fr/omnidia_english.htm"> http://omnidia.free.fr/omnidia_english.htm</a>and <a href="http://www.norbaf.net"> http://www.norbaf.net</a>""" + \
                               '</li>'
+
+            if rebeccacode:
+                htmlstring += '<li>REBECCA code: ' + unicode(rebeccacode) + '<br/>' + \
+                              """More info at <a href="http://www.freshwaterecology.info"> http://www.freshwaterecology.info</a>""" + \
+                              '</li>'
+
+            
+            
             htmlstring += '</ul>'
             #
             # Get facts_json from db.

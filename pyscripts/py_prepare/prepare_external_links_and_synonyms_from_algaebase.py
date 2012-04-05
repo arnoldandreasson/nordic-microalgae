@@ -29,7 +29,8 @@ import string
 import codecs
 import json
   
-def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.txt', 
+def execute(algaebase_file_name = '../data_external/algaebase_species_20120306.txt', 
+            ###algaebase_file_name = '../data_external/algaebase_species_20090318.txt', 
             taxa_file_name = '../data_prepared/taxa_dyntaxa.txt', 
             out_external_links_file_name = '../data_prepared/external_links_algaebase.txt', 
             out_synonyms_file_name = '../data_prepared/synonyms_algaebase.txt', 
@@ -50,21 +51,59 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.t
         # Iterate over rows in file.
         for rowindex, row in enumerate(algaebasefile):
             if rowindex == 0: # First row is assumed to be the header row.
-                # Header: Genus    genus_id    id    Accepted_name_serial    Species    Subspecies    Variety    Forma    Current_flag 
+                # Header OLD: Genus    genus_id    id    Accepted_name_serial    Species    Subspecies    Variety    Forma    Current_flag 
+                # Header NEW: species.id    genus.Genus    species.Species    species.Subspecies    species.Variety    species.Forma    taxon_authority.taxon_authority    taxon_authority.authority_year    species.Current_flag    species.Record_status    species.Accepted_name_serial    species.genus_id    species.key_Habitat    species.Type_locality
                 pass
             else:
                 row = map(string.strip, row.split(field_separator))
                 row = map(unicode, row)
+                 
+#               # OLD: 
+#                # 0: Genus    
+#                # 1: genus_id    
+#                # 2: id    
+#                # 3: Accepted_name_serial    
+#                # 4: Species    
+#                # 5: Subspecies    
+#                # 6: Variety    
+#                # 7: Forma    
+#                # 8: Current_flag
+#                id = row[2]
+#                idforsynonyms = row[3]
+#                genus = row[0]
+#                species = row[4]
+#                subspecies = row[5]
+#                variety = row[6]
+#                forma = row[7]
+#                currentflag = row[8]
+
+                # NEW: 
+                # 0: species.id    
+                # 1: genus.Genus    
+                # 2: species.Species    
+                # 3: species.Subspecies    
+                # 4: species.Variety    
+                # 5: species.Forma    
+                # 6: taxon_authority.taxon_authority    
+                # 7: taxon_authority.authority_year    
+                # 8: species.Current_flag    
+                # 9: species.Record_status    
+                # 10: species.Accepted_name_serial    
+                # 11: species.genus_id    
+                # 12: species.key_Habitat    
+                # 13: species.Type_locality
                 #
-                id = row[2]
-                idforsynonyms = row[3]
-                genus = row[0]
-                species = row[4]
-                subspecies = row[5]
-                variety = row[6]
-                forma = row[7]
+                if len(row) < 10:
+                    continue
+                #
+                id = row[0]
+                idforsynonyms = row[10] 
+                genus = row[1]
+                species = row[2]
+                subspecies = row[3]
+                variety = row[4]
+                forma = row[5]
                 currentflag = row[8]
-                #
                 #
                 if currentflag in ['U', 'P', 'D']: # U: uncertain taxonomically, P: not checked, D: deprecated.
                     continue
@@ -109,6 +148,9 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.t
         synonymcounter = 0
         synonymerrorscounter = 0
         highertaxacounter = 0
+        
+        print(u'Start:')
+        
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
                 # Header: Scientific name    Author    Rank    Parent name
@@ -157,7 +199,7 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20090318.t
         print('')
         print('Number of matches: ' + unicode(matchcounter))
         print('Number of no match: ' + unicode(nomatchcounter))
-        print('Number of no synonyms: ' + unicode(synonymcounter))
+        print('Number of synonyms: ' + unicode(synonymcounter))
         print('Number of no synonym errors: ' + unicode(synonymerrorscounter))
         print('Number of higher taxa: ' + unicode(highertaxacounter))
         #
