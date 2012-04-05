@@ -57,7 +57,8 @@ def execute(db_host = 'localhost',
         outheadershort = ['Class', 'Scientific name', 'Author', 'Rank', 'Trophy', 'IOC-HAB', 'Dyntaxa id']
         outheaderlong = ['Class', 'Scientific name', 'Author', 'Rank', 'Trophy', 'IOC-HAB', 'Dyntaxa id',
                          'Algaebase id', 'HELCOM-PEG name', 'Synonym names',
-                         'Habitat', 'Geographic Area', 'Country', 'Taxonomic hierarchy']
+                         'Habitat', 'Geographic Area', 'Country', 'Taxonomic hierarchy',
+                         'Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'Subspecies/Form/Variety']
 
         # Print header rows.
         outshort.write(field_separator.join(outheadershort) + row_delimiter)
@@ -81,8 +82,16 @@ def execute(db_host = 'localhost',
                 geographicarea = ''
                 country = ''
                 taxonomichierarchy = ''
-    
-                
+                #
+                taxonomic_kingdom = '' # Kingdom
+                taxonomic_phylum = '' # Phylum
+                taxonomic_class = '' # Class (note: duplicated)
+                taxonomic_order = '' # Order
+                taxonomic_family = '' # Family
+                taxonomic_genus = '' # Genus
+                taxonomic_species = '' # Species
+                taxonomic_subspecies = '' # Subspecies/Form/Variety
+
                 # Get info from table taxa_facts.
                 # - trophy
                 # - habitat
@@ -165,15 +174,31 @@ def execute(db_host = 'localhost',
                         newhierarchy = []
                         for taxonandrank in hierarchy:
                             taxon, rank = taxonandrank.split(':')
-                            if rank == 'Class':
+                            # New columns.    
+                            if rank == 'Kingdom':
+                                taxonomic_kingdom = taxon
+                            elif rank == 'Phylum':
+                                taxonomic_phylum = taxon
+                            elif rank == 'Class':
                                 taxonomicclass = taxon
+                                taxonomic_class = taxon
+                            elif rank == 'Order':
+                                taxonomic_order = taxon
+                            elif rank == 'Family':
+                                taxonomic_family = taxon
+                            elif rank == 'Genus':
+                                taxonomic_genus = taxon
+                            elif rank == 'Species':
+                                taxonomic_species = taxon
+                            elif rank in ['Subspecies', 'Form', 'Variety']:
+                                taxonomic_subspecies = taxon
+                            # # Change order fromtaxon:rank to rank:taxon.
                             newhierarchy.append(rank + ': ' + taxon)
                     taxonomichierarchy = ', '.join(newhierarchy)
                 except:
                     print('Error in taxonomy hierarchy:' + result[0])
                     taxonomichierarchy = ''
-                    
-
+                #
                 row =  [taxonomicclass, 
                         scientificname, 
                         author, 
@@ -189,7 +214,15 @@ def execute(db_host = 'localhost',
                             habitat, 
                             geographicarea, 
                             country, 
-                            taxonomichierarchy
+                            taxonomichierarchy,
+                            taxonomic_kingdom,
+                            taxonomic_phylum,
+                            taxonomic_class,
+                            taxonomic_order,
+                            taxonomic_family,
+                            taxonomic_genus,
+                            taxonomic_species,
+                            taxonomic_subspecies
                             ]                
                 outlong.write(field_separator.join(row) + row_delimiter)                
             
