@@ -88,6 +88,8 @@ def execute(db_host, db_name, db_user, db_passwd):
             file_name_algaebase_id = 'data_import/external_links_algaebase.txt', 
             provider_omnidia_codes = "SLU",
             file_name_omnidia_codes = 'data_import/external_facts_omnidia_codes.txt', 
+            provider_rebecca_codes = "NIVA",
+            file_name_rebecca_codes = 'data_import/external_facts_rebecca_codes.txt', 
             provider_ioc_hab = "IOC",
             file_name_ioc_hab = 'data_import/external_facts_ioc_hab.txt',
             delete_db_content = True # Delete content, first import. 
