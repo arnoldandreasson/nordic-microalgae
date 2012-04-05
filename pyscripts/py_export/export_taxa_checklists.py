@@ -54,11 +54,14 @@ def execute(db_host = 'localhost',
         outshort = codecs.open(checklist_short_file_name, mode = 'w', encoding = file_encoding)
         outlong = codecs.open(checklist_long_file_name, mode = 'w', encoding = file_encoding)
         # Headers.
-        outheadershort = ['Class', 'Scientific name', 'Author', 'Rank', 'Trophy', 'IOC-HAB', 'Dyntaxa id']
-        outheaderlong = ['Class', 'Scientific name', 'Author', 'Rank', 'Trophy', 'IOC-HAB', 'Dyntaxa id',
+        outheadershort = ['Class', 'Taxon name', 'Author', 'Rank', 'Trophy', 'IOC-HAB', 'Dyntaxa id']
+        outheaderlong = [
+##                       'Class', 
+                         'Taxon name', 'Author', 'Rank', 'Trophy', 'IOC-HAB', 'Dyntaxa id',
                          'Algaebase id', 'HELCOM-PEG name', 'Synonym names',
-                         'Habitat', 'Geographic Area', 'Country', 'Taxonomic hierarchy',
-                         'Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'Subspecies/Form/Variety']
+                         'Habitat', 'Geographic Area', 'Country', 
+                         'Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'Subspecies/Form/Variety',
+                         'Taxonomic hierarchy']
 
         # Print header rows.
         outshort.write(field_separator.join(outheadershort) + row_delimiter)
@@ -163,7 +166,7 @@ def execute(db_host = 'localhost',
 
                 # Get info from table taxa_navigation.
                 # - taxonomichierarchy
-                # - taxonomicclass
+                # - etc.
                 cursor.execute("select classification from taxa_navigation " +
                                "where taxon_id = %s", 
                                (taxon_id,))
@@ -199,7 +202,8 @@ def execute(db_host = 'localhost',
                     print('Error in taxonomy hierarchy:' + result[0])
                     taxonomichierarchy = ''
                 #
-                row =  [taxonomicclass, 
+                row =  [
+                        taxonomicclass, 
                         scientificname, 
                         author, 
                         rank, 
@@ -208,21 +212,30 @@ def execute(db_host = 'localhost',
                         dyntaxaid, 
                        ]
                 outshort.write(field_separator.join(row) + row_delimiter)
-                row = row + [algaebaseid, 
-                            helcompegname, 
-                            synonymnames, 
-                            habitat, 
-                            geographicarea, 
-                            country, 
-                            taxonomichierarchy,
-                            taxonomic_kingdom,
-                            taxonomic_phylum,
-                            taxonomic_class,
-                            taxonomic_order,
-                            taxonomic_family,
-                            taxonomic_genus,
-                            taxonomic_species,
-                            taxonomic_subspecies
+                #
+                row =   [
+                        scientificname, 
+                        author, 
+                        rank, 
+                        trophy, 
+                        iochab, 
+                        dyntaxaid,
+                        # 
+                        algaebaseid, 
+                        helcompegname, 
+                        synonymnames, 
+                        habitat, 
+                        geographicarea, 
+                        country, 
+                        taxonomic_kingdom,
+                        taxonomic_phylum,
+                        taxonomic_class,
+                        taxonomic_order,
+                        taxonomic_family,
+                        taxonomic_genus,
+                        taxonomic_species,
+                        taxonomic_subspecies,
+                        taxonomichierarchy
                             ]                
                 outlong.write(field_separator.join(row) + row_delimiter)                
             
