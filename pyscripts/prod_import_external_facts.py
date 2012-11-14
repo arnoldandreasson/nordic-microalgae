@@ -45,14 +45,22 @@ def execute(db_host, db_name, db_user, db_passwd):
             db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
             file_name = 'data_import/synonyms_algaebase.txt')
     #
+    print("\n=== Import data: taxa_external_links, Dyntaxa. ===\n")
+    import_taxa_external_links.execute(
+            db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
+            provider = "Dyntaxa",
+            link_type = "Taxon URL",
+            url_template = "http://dyntaxa.se/Taxon/Info/<replace-id>",
+            file_name = 'data_import/external_links_dyntaxa.txt',
+            delete_db_content = True # Delete content, first import. 
+            )
     print("\n=== Import data: taxa_external_links, AlgaeBase. ===\n")
     import_taxa_external_links.execute(
             db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
             provider = "AlgaeBase",
             link_type = "Taxon URL",
             url_template = "http://algaebase.org/search/species/detail/?species_id=<replace-id>",
-            file_name = 'data_import/external_links_algaebase.txt',
-            delete_db_content = True # Delete content, first import. 
+            file_name = 'data_import/external_links_algaebase.txt'
             )
     print("\n=== Import data: taxa_external_links, IOC. ===\n")
     import_taxa_external_links.execute(
