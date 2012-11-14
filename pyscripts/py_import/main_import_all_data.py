@@ -82,7 +82,7 @@ def execute():
     #
     print("\n=== Import data: taxa_helcom_peg. ===\n")
     import_taxa_helcom_peg.execute(
-            file_name = '../data_import/peg_bvol2011.json',
+            file_name = '../data_import/peg_bvol2012.json',
             translate_file_name = '../data_import/peg_to_dyntaxa.txt'
             )
     #

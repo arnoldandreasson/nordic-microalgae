@@ -29,9 +29,9 @@ import string
 import codecs
 import json
   
-def execute(file_name = '../data_external/peg_bvol2011.txt', 
+def execute(file_name = '../data_external/peg_bvol2012.txt', 
 #            translate_file_name = '../data_external/peg_to_dyntaxa.txt', 
-            out_file_name = '../data_prepared/peg_bvol2011.json', 
+            out_file_name = '../data_prepared/peg_bvol2012.json', 
             infile_encoding = 'utf16',
             outfile_encoding = 'utf8',
             field_separator = '\t', 
