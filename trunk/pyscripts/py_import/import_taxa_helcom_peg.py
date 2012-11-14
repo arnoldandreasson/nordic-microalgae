@@ -33,7 +33,7 @@ import string
 #import plankton_toolbox.core.biology.taxa_sources as taxa_sources
 
     
-def execute(file_name = '../data_import/peg_bvol2011.json',
+def execute(file_name = '../data_import/peg_bvol2012.json',
             translate_file_name = '../data_import/peg_to_dyntaxa.txt', 
             file_encoding = 'utf16',
             field_separator = '\t', 

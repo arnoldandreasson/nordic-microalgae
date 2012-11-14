@@ -664,7 +664,7 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                     2006 Biovolumes and size-classes of phytoplankton in the Baltic Sea HELCOM Balt.Sea Environ. Proc. No. 106, 144pp. (PDF)</a>,  
                     <br/> 
                     <a href="http://www.ices.dk/env/repfor/index.asp" target="_blank">HELCOM PEG Biovolume</a>,   
-                    <a href="http://www.ices.dk/env/repfor/PEG_BVOL2011.xls" target="_blank">PEG_BVOL2011.xls</a>
+                    <a href="http://www.ices.dk/env/repfor/PEG_BVOL2012.xls" target="_blank">PEG_BVOL2012.xls</a>
                     """,
                 "Copyright notice": ""
         }
