@@ -493,6 +493,12 @@ def execute(db_host = 'localhost',
                             "Barent Sea - off shore",
                             "Barent Sea - Norwegian coast",
                             "Barent Sea - Svalbard",
+                            
+                            "Iceland - East",
+                            "Iceland - North",
+                            "Iceland - West",
+                            "Iceland - South",
+                            
                             "Greenland Sea - off shore",
                             "Greenland Sea - Greenland coast",
                             "Arctic ocean - off shore",
@@ -566,7 +572,13 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                 "Default value": "", 
                 "Description": ""},
             "Image galleries": {"Type": "checkboxes", 
-                "Options": ["HELCOM-PEG", "Kuylenstierna", "Skagerrak-Kattegat", "Norwegian Sea", "Freshwater", 
+                "Options": ["HELCOM-PEG", 
+                            "ScaMPy",
+                            "Kuylenstierna", 
+                            "Skagerrak-Kattegat", 
+                            "Norwegian Sea", 
+                            "Marine Research Institute - Iceland", 
+                            "Freshwater", 
                             "Swedish benthic freshwater diatoms", 
                             "Diatom resting stages", "Dinoflagellate cysts", "Other resting stages"], 
                 "Default value": "", 
@@ -663,8 +675,7 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                     <a href="http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106.pdf" target="_blank">
                     2006 Biovolumes and size-classes of phytoplankton in the Baltic Sea HELCOM Balt.Sea Environ. Proc. No. 106, 144pp. (PDF)</a>,  
                     <br/> 
-                    <a href="http://www.ices.dk/env/repfor/index.asp" target="_blank">HELCOM PEG Biovolume</a>,   
-                    <a href="http://www.ices.dk/env/repfor/PEG_BVOL2012.xls" target="_blank">PEG_BVOL2012.xls</a>
+                    <a href="http://www.ices.dk/marine-data/vocabularies/Documents/PEG_BVOL.zip" target="_blank">PEG_BVOL.zip</a>
                     """,
                 "Copyright notice": ""
         }
