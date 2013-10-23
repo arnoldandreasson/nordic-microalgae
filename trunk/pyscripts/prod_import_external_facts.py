@@ -106,7 +106,7 @@ def execute(db_host, db_name, db_user, db_passwd):
     print("\n=== Import data: taxa_helcom_peg. ===\n")
     import_taxa_helcom_peg.execute(
             db_host = db_host, db_name = db_name, db_user = db_user, db_passwd = db_passwd, 
-            file_name = 'data_import/peg_bvol2012.json',
+            file_name = 'data_import/peg_bvol2013.json',
             translate_file_name = 'data_import/peg_to_dyntaxa.txt'
             )
     #

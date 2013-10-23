@@ -29,10 +29,11 @@ import string
 import codecs
 import json
   
-def execute(file_name = '../data_external/peg_bvol2012.txt', 
+def execute(file_name = '../data_external/peg_bvol2013.txt', 
 #            translate_file_name = '../data_external/peg_to_dyntaxa.txt', 
-            out_file_name = '../data_prepared/peg_bvol2012.json', 
-            infile_encoding = 'utf16',
+            out_file_name = '../data_prepared/peg_bvol2013.json', 
+            infile_encoding = 'cp1252', # 2013.
+#            infile_encoding = 'utf16', # 2011, 2012.
             outfile_encoding = 'utf8',
             field_separator = '\t', 
             row_delimiter = '\r\n'):
@@ -113,6 +114,7 @@ def execute(file_name = '../data_external/peg_bvol2012.txt',
     except Exception, e:
         print("ERROR: Exception %s" % (e.args[0]))
         print("ERROR: Script will be terminated.")
+        raise # DEBUG
         sys.exit(1)
     finally:
         pass
@@ -127,27 +129,40 @@ def translate_header(importFileHeader):
     if (importFileHeader == u'SFLAG (sp., spp., cf., complex, group)'): return u'SFLAG' # Modified
     if (importFileHeader == u'STAGE (cyst, naked)'): return u'Stage' # Modified
 #        if (importFileHeader == u'Author'): return u'Author'
+#        if (importFileHeader == u'AphiaID'): return u'AphiaID'
 #        if (importFileHeader == u'Trophy'): return u'Trophy'
 #        if (importFileHeader == u'Geometric shape'): return u'Geometric shape'
     if (importFileHeader == u'FORMULA'): return u'Formula' # Modified
     if (importFileHeader == u'Size class No'): return u'Size class' # Modified
+    if (importFileHeader == u'SizeClassNo'): return u'Size class' # Modified
+    if (importFileHeader == u'Nonvalid_SIZCL'): return u'Nonvalid size class' # Modified
+    if (importFileHeader == u'Not_accepted'): return u'Not accepted' # Modified
 #        if (importFileHeader == u'Unit'): return u'Unit'
     if (importFileHeader == u'size range,'): return u'Size range' # Modified
     if (importFileHeader == u'Length (l1), µm'): return u'Length(l1), µm' # Modified
+    if (importFileHeader == u'Length(l1)µm'): return u'Length(l1), µm' # Modified
     if (importFileHeader == u'Length (l2), µm'): return u'Length(l2), µm' # Modified
+    if (importFileHeader == u'Length(l2)µm'): return u'Length(l2), µm' # Modified
     if (importFileHeader == u'Width (w), µm'): return u'Width(w), µm' # Modified
+    if (importFileHeader == u'Width(w)µm'): return u'Width(w), µm' # Modified
     if (importFileHeader == u'Height (h), µm'): return u'Height(h), µm' # Modified
+    if (importFileHeader == u'Height(h)µm'): return u'Height(h), µm' # Modified
     if (importFileHeader == u'Diameter (d1), µm'): return u'Diameter(d1), µm' # Modified
+    if (importFileHeader == u'Diameter(d1)µm'): return u'Diameter(d1), µm' # Modified
     if (importFileHeader == u'Diameter (d2), µm'): return u'Diameter(d2), µm' # Modified
+    if (importFileHeader == u'Diameter(d2)µm'): return u'Diameter(d2), µm' # Modified
     if (importFileHeader == u'No. of cells/ counting unit'): return u'No. of cells/counting unit' # Modified
     if (importFileHeader == u'Calculated  volume, µm3'): return u'Calculated volume, µm3' # Modified
+    if (importFileHeader == u'Calculated  volume µm3'): return u'Calculated volume, µm3' # Modified
     if (importFileHeader == u'Comment'): return u'Comment'
     if (importFileHeader == u'Filament: length of cell (µm)'): return u'Filament: length of cell, µm' # Modified
     if (importFileHeader == u'Calculated Carbon pg/counting unit        (Menden-Deuer & Lessard 2000)'): return u'Calculated Carbon pg/counting unit' # Modified
+    if (importFileHeader == u'Calculated Carbon pg/counting unit'): return u'Calculated Carbon pg/counting unit' # Modified
 #    if (importFileHeader == u'Comment on Carbon calculation'): return u'Comment on Carbon calculation'
     if (importFileHeader == u'CORRECTION / ADDITION                            2009'): return u'Correction/addition 2009' # Modified
     if (importFileHeader == u'CORRECTION / ADDITION                            2010'): return u'Correction/addition 2010' # Modified
     if (importFileHeader == u'CORRECTION / ADDITION                            2011'): return u'Correction/addition 2011' # Modified
+    if (importFileHeader == u'Corrections/Additions 2013'): return u'Corrections/additions 2013' # Modified
     return importFileHeader     
         
 def is_taxon_related(header, column):
