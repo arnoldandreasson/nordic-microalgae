@@ -494,11 +494,9 @@ def execute(db_host = 'localhost',
                             "Barent Sea - Norwegian coast",
                             "Barent Sea - Svalbard",
                             
-                            "Iceland - East",
-                            "Iceland - North",
-                            "Iceland - West",
-                            "Iceland - South",
-                            
+                            "Iceland - NE",
+                            "Iceland - SW",
+
                             "Greenland Sea - off shore",
                             "Greenland Sea - Greenland coast",
                             "Arctic ocean - off shore",
@@ -573,7 +571,7 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                 "Description": ""},
             "Image galleries": {"Type": "checkboxes", 
                 "Options": ["HELCOM-PEG", 
-                            "ScaMPy",
+                            "NOMP",
                             "Kuylenstierna", 
                             "Skagerrak-Kattegat", 
                             "Norwegian Sea", 
@@ -672,7 +670,7 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                     Olenina, I., Hajdu, S., Edler, L., Andersson, A., Wasmund, N., Busch, S., Göbel, J., 
                     Gromisz, S., Huseby, S., Huttunen, M., Jaanus, A., Kokkonen, P., Ledaine, I. and Niemkiewicz, 
                     E. 
-                    <a href="http://www.helcom.fi/stc/files/Publications/Proceedings/bsep106.pdf" target="_blank">
+                    <a href="http://helcom.fi/Lists/Publications/BSEP106.pdf" target="_blank">
                     2006 Biovolumes and size-classes of phytoplankton in the Baltic Sea HELCOM Balt.Sea Environ. Proc. No. 106, 144pp. (PDF)</a>,  
                     <br/> 
                     <a href="http://www.ices.dk/marine-data/vocabularies/Documents/PEG_BVOL.zip" target="_blank">PEG_BVOL.zip</a>
@@ -706,7 +704,6 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
                 "Select": [
                         {"Label": "Illustrated only", "Default": "False", "Filter": "Illustrated", "Value": "True"}, 
                         {"Label": "HELCOM-PEG species", "Default": "False", "Filter": "HELCOM PEG", "Value": "True"}, 
-                        {"Label": "Swedish benthic freshwater diatoms only", "Default": "False", "Filter": "Benthic FW. diatoms", "Value": "True"}, 
                         {"Label": "IOC Harmful algae only", "Default": "False", "Filter": "Harmful", "Value": "True"}
                 ],
                 "For contributors": [
