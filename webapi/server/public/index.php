@@ -28,6 +28,8 @@
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'bootstrap.inc.php';
 require_once LIBRARY . DIRECTORY_SEPARATOR . 'Taxa.php';
 require_once LIBRARY . DIRECTORY_SEPARATOR . 'TaxaQuery.php';
+require_once LIBRARY . DIRECTORY_SEPARATOR . 'TaxaMedia.php';
+require_once LIBRARY . DIRECTORY_SEPARATOR . 'TaxaMediaQuery.php';
 require_once LIBRARY . DIRECTORY_SEPARATOR . 'SystemSettings.php';
 
 $cmd = !empty($_GET['cmd']) ? $_GET['cmd'] : null;
@@ -108,7 +110,52 @@ switch ($cmd) {
     $response = compact('taxa', 'total', 'page', 'pages', 'per_page');
     render_json($response);
     break;
-  
+
+  // Load and return media item.
+  // URL: media/Dinophysis acuta_1.gif.json
+  case 'media':
+    $media = new TaxaMedia($pdo);
+
+    $response = false;
+    if (!empty($_GET['media_id'])) {
+      $response = $media->load($_GET['media_id']);
+    }
+
+    if ($response === false) {
+      header('HTTP/1.1 404 Not Found');
+      exit(render_json(array('message' => 'Not Found')));
+    }
+
+    render_json($response);
+    break;
+
+  // Load and return a list of media items.
+  // URL: media.json
+  case 'media-list':
+    $media = new TaxaMedia($pdo);
+    $query = new TaxaMediaQuery();
+
+    if (!empty($_GET['filters']))
+      $query->filters = (array) $_GET['filters'];
+
+    if (!empty($_GET['page']))
+      $query->page = $_GET['page'];
+
+    if (!empty($_GET['per_page']))
+      $query->per_page = $_GET['per_page'];
+
+    $media = $media->load_list($query);
+    if (isset($query->per_page)) {
+      $total = $query->total;
+      $page = $query->page;
+      $pages = $query->pages;
+      $per_page = $query->per_page;
+    }
+
+    $response = compact('media', 'total', 'page', 'pages', 'per_page');
+    render_json($response);
+    break;
+
   // Load and return one or all setting(s).
   // URL: settings.json or settings/$settings_key.json
   case 'setting':
