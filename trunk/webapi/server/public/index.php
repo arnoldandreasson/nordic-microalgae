@@ -111,6 +111,14 @@ switch ($cmd) {
     render_json($response);
     break;
 
+  // Load and return a list of artists/photographers.
+  // URL: media/artists.json
+  case 'artist-list':
+    $media = new TaxaMedia($pdo);
+    $response = array('artists' => $media->load_artist_list());
+    render_json($response);
+    break;
+
   // Load and return media item.
   // URL: media/Dinophysis acuta_1.gif.json
   case 'media':
