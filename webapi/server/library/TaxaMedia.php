@@ -135,6 +135,29 @@ class TaxaMedia {
     return $media;
   }
 
+  function load_artist_list() {
+    $stmt = $this->conn->prepare(
+      " SELECT `value`
+          FROM `taxa_media_filter_search`
+         WHERE `filter` = 'Hall of fame'"
+    );
+    $stmt->execute();
+
+    $artists = array();
+    while ($row = $stmt->fetchObject()) {
+      list($name, $total) = explode(':', $row->value);
+      $artists[] = array('name' => trim($name), 'total' => trim($total));
+    }
+
+    usort($artists, function($a, $b) {
+      if ($a['name'] > $b['name']) return 1;
+      if ($a['name'] < $b['name']) return -1;
+      return 0;
+    });
+
+    return $artists;
+  }
+
   function setup_row($row) {
     // Decode JSON
     $row->metadata = json_decode($row->metadata_json);

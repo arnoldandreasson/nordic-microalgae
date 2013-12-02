@@ -5,6 +5,8 @@
   RewriteRule ^taxa/([^/]+)(?:/([^/]+))?\.json$ /index.php?cmd=taxon&name=$1&part=$2 [QSA,L]
   # taxa.json
   RewriteRule ^taxa\.json$ /index.php?cmd=taxon-list [QSA,L]
+  # media/artists.json
+  RewriteRule ^media/artists\.json$ /index.php?cmd=artist-list [QSA,L]
   # media/Dinophysis acuta_1.gif.json
   RewriteRule ^media/([^/]+)\.json$ /index.php?cmd=media&media_id=$1 [QSA,L]
   # media.json
