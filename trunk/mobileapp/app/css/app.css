@@ -1,0 +1,452 @@
+/*
+ Nordic Microalgae Mobile. http://m.nordicmicroalgae.org
+
+ Author: Andreas Loo, info@andreasloo.se
+ Copyright (c) 2013 SMHI, Swedish Meteorological and Hydrological Institute
+ License: MIT License as follows:
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+*/
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none;
+}
+
+[nma\:standalone], [nma-standalone], [data-nma-standalone], .nma-standalone {
+  display: none;
+}
+
+/* Padding for fixed navbar */
+@media (min-width: 980px) {
+  body { padding-top: 60px; }
+}
+
+h1, h2 { font-size: 24.5px; }
+
+
+/*
+ Header
+*/
+.navbar .brand {
+  text-indent: -10000px;
+  width: 16px;
+  background: url(../img/logo.png) no-repeat center center;
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+  .navbar .brand {
+    background-image: url(../img/logo@2x.png);
+    -webkit-background-size: 16px 16px;
+            background-size: 16px 16px;
+  }
+}
+
+
+/*
+ Sidebar/Navigation
+*/
+#browse-groups,
+#browse-galleries {
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+
+#browse-groups > span,
+#browse-galleries > span {
+  display: block;
+  padding: 8px 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+#browse-groups > ul,
+#browse-galleries > ul {
+  padding: 8px 14px;
+}
+
+#search-form {
+  display: table;
+  width: 100%;
+}
+
+#search-form > fieldset {
+  display: table-row;
+}
+
+#search-field {
+  display: table-cell;
+  width: 100%;
+  vertical-align: top;
+}
+
+#search-field input {
+  display: block;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+#search-submit {
+  display: table-cell;
+  vertical-align: top;
+}
+
+
+/*
+ Search page
+*/
+#taxon-search-total {
+  text-align: right;
+}
+
+
+/*
+ Taxon list page
+*/
+#taxon-list-header > h1 {
+  margin: 0;
+  font-size: 1em;
+  line-height: 20px;
+}
+
+#taxon-list-header > p {
+  margin: 0;
+}
+
+#taxon-list-filters legend {
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+#taxon-list-filters-actions {
+  clear: both;
+  text-align: right;
+}
+
+
+/*
+ Media list page
+*/
+#media-list-header > h1 {
+  float: left;
+  margin: 0;
+  width: 50%;
+  font-size: 1em;
+  line-height: 20px;
+}
+
+#media-list-header > p {
+  float: right;
+  margin: 0;
+  width: 50%;
+  text-align: right;
+}
+
+#artist-list-header > h1 {
+  margin: 0;
+  font-size: 1em;
+  line-height: 20px;
+}
+
+
+/*
+ About page
+*/
+#partners {
+  margin: 25px 0 16px;
+  text-align: center;
+}
+
+#partners .partner {
+  display: inline-block;
+  margin: 0 10px 0 0;
+}
+
+
+/*
+ General
+*/
+
+/* Taxon lists */
+ul.taxon-list {
+  margin: 0;
+  padding: 0;
+}
+
+ul.taxon-list li {
+  list-style: none;
+  display: table;
+  width: 100%;
+  border-top: 1px solid #ddd;
+}
+
+ul.taxon-list li:first-child {
+  border-top: none;
+}
+
+ul.taxon-list li a {
+  display: table-row;
+  height: 100px;
+  text-decoration: none;
+  color: #333;
+}
+
+ul.taxon-list li a:hover {
+  background: #f5f5f5;
+}
+
+ul.taxon-list li a b,
+ul.taxon-list li a i {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+ul.taxon-list li a b {
+  width: 100px;
+  text-align: center;
+}
+
+ul.taxon-list li a i {
+  padding: 0 10px;
+  font-style: normal;
+}
+
+ul.taxon-list .synonym {
+  color: #ff0000;
+}
+
+/* TODO: remove when we have proper image sizes */
+ul.taxon-list img {
+  max-width: 80px;
+  max-height: 80px;
+}
+
+/* Media */
+.mediaset .media-item {
+  position: relative;
+  float: left;
+  margin: 10px 5px;
+  width: 80px;
+  height: 130px;
+  overflow: hidden;
+}
+
+.mediaset .media-item .media-item-image {
+  position: relative;
+  height: 80px;
+}
+
+.mediaset .media-item .media-item-image a {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.mediaset .media-item .media-item-image img {
+  display: block;
+  margin: 0 auto;
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.mediaset .media-item .media-item-title {
+  margin: 2px 0 0;
+  padding: 0;
+  font-size: 10px;
+  font-weight: normal;
+  line-height: 1.2em;
+  text-align: center;
+}
+
+.mediaset .media-item:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+}
+
+.media-frame {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: #000;
+  color: #999;
+}
+
+.media-frame-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+}
+
+.media-frame-header h2 {
+  margin: 8px 50px 0;
+  padding: 0;
+  line-height: 1.2;
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+}
+
+.media-frame-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  text-indent: -10000px;
+  background-position: 11px 11px;
+  cursor: pointer;
+}
+
+.media-frame-body {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  overflow: auto;
+}
+
+.media-frame-image {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.media-frame-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+}
+
+.media-frame-show-details {
+  position: absolute;
+  left: 45px;
+  right: 45px;
+  top: 0;
+  bottom: 0;
+  display: block;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 4px 0 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+a.media-frame-show-details,
+a.media-frame-show-details:hover {
+  color: #999;
+  text-decoration: none;
+}
+
+.media-frame-details {
+  position: fixed;
+  top: 60px;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: rgba(0,0,0,0.90);
+  z-index: 100000;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.media-frame-next {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45px;
+  height: 30px;
+  text-indent: -10000px;
+  background-position: 14px -37px;
+  cursor: pointer;
+}
+
+.media-frame-next.disabled {
+  background-position: 14px -129px;
+}
+
+.media-frame-prev {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45px;
+  height: 30px;
+  text-indent: -10000px;
+  background-position: 14px -83px;
+  cursor: pointer;
+}
+
+.media-frame-prev.disabled {
+  background-position: 14px -175px;
+}
+
+.media-frame-close,
+.media-frame-next, .media-frame-next.disabled,
+.media-frame-prev, .media-frame-prev.disabled {
+  background-image: url(../img/icon-sprite.png);
+  background-repeat: no-repeat;
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+  .media-frame-close,
+  .media-frame-next, .media-frame-next.disabled,
+  .media-frame-prev, .media-frame-prev.disabled {
+    background-image: url(../img/icon-sprite@2x.png);
+    -webkit-background-size: 18px 201px;
+            background-size: 18px 201px;
+  }
+}
+
+/* Biovolumes */
+.table.table-biovolumes {
+  margin-bottom: 1em;
+}
+
+.table.table-biovolumes th {
+  width: 200px;
+  background: #f5f5f5;
+}
+
+.table.table-biovolumes th, 
+.table.table-biovolumes td {
+  border: 1px solid #dddddd;
+}
