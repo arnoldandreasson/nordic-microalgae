@@ -26,7 +26,7 @@
 
 import sys
 import codecs
-import string
+# import string
 
 def execute(species_file_name = '../data_external/b_neat_species.txt', 
             images_file_name = '../data_external/b_neat_images.txt', 
@@ -44,11 +44,11 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
         # Iterate over rows in file.
         for rowindex, row in enumerate(speciesfile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(str, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(str, row))
                 #
                 speciesdict[row[0]] = row[2]
         speciesfile.close()
@@ -69,8 +69,8 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
                 # Header: id, species_id, filename, users_id, sort_order, date_added, location, latitude, longitude, dc_title, dc_creator, dc_description, dc_publisher, dc_contributor, dc_date, dc_type, dc_format, dc_rights, last_modified
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(str, row))
                 #
                 # 0 : id 
                 # 18 : last_modified
@@ -113,7 +113,7 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
         imagesfile.close()
         out.close                
     #
-    except Exception, e:
+    except Exception as e:
         print("ERROR: Exception %s" % (e.args[0]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

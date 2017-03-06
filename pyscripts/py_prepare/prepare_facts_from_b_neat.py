@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 
 import codecs
-import string
+# import string
 
 def execute(species_file_name = '../data_external/b_neat_species.txt', 
             facts_file_name = '../data_external/b_neat_species_data.txt', 
@@ -43,8 +43,8 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
         # Iterate over rows in file.
         for rowindex, row in enumerate(speciesfile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
                 # Replace characters interpreted as latin-1.
                 row = row.replace(u'Âµ', u'µ') # Âµ  µ
@@ -61,8 +61,8 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
                 row = row.replace(u'Ã«', u'ë') # Ã« ë
                 row = row.replace(u'Ã¶', u'ö') # Ã¶ ö
                                
-                row = map(string.strip, row.split(field_separator))                
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))          
+                # row = list(map(unicode, row))
                 #
                 speciesdict[row[0]] = row[2]
         #
@@ -114,8 +114,8 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
                 row = row.replace(u'â€œ', u'“') # â€œ “                
                 row = row.replace(u'â€', u'”') # â€ ”                
                 #
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 # 0 : id 
                 # 18 : last_modified
@@ -131,7 +131,7 @@ def execute(species_file_name = '../data_external/b_neat_species.txt',
         imagesfile.close()
         out.close                
     #
-#    except Exception, e:
+#    except Exception as e:
 #        print("ERROR: Exception %s" % (e.args[0]))
 #        print("ERROR: Script will be terminated.")
 #        sys.exit(1)

@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 
 import sys
-import string
+# import string
 import codecs
   
 def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt', 
@@ -57,8 +57,8 @@ def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
                 # Header: TaxonId    SortOrder    TaxonTypeId    ScientificName    Author    CommonName    Kingdom    Phylum    Class    Order    Family    Genus    OrganismGroupId    IsSwedishTaxon    IsRedlisted    IsRedlistedSpecies    IsNatura2000Listed    RedlistCategoryId    OrganismGroup    OrganismSubGroupId    OrganismSubGroup    RedlistTaxonCategoryId    RedlistCategory    RedlistCriteria    Landscape
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 scientificname = row[3] # ScientificName
                 author = row[4] # Author
@@ -79,8 +79,8 @@ def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
                 # Header: ParentTaxonId    ChildTaxonId    ParentChildRelationId
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 if row[2] == '2': # ParentChildRelationId.
                     if (row[0] in taxonidtonamedict) and \
@@ -103,8 +103,8 @@ def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
                 # Header: TaxonId    SortOrder    TaxonTypeId    ScientificName    Author    CommonName    Kingdom    Phylum    Class    Order    Family    Genus    OrganismGroupId    IsSwedishTaxon    IsRedlisted    IsRedlistedSpecies    IsNatura2000Listed    RedlistCategoryId    OrganismGroup    OrganismSubGroupId    OrganismSubGroup    RedlistTaxonCategoryId    RedlistCategory    RedlistCriteria    Landscape
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 taxonid = row[0]
                 scientificname = row[3] # ScientificName
@@ -129,7 +129,7 @@ def execute(taxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
         taxafile.close()
         out.close
     #
-    except Exception, e:
+    except Exception as e:
         print("ERROR: Exception %s" % (e.args[0]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

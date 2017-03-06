@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import json
 import codecs
@@ -52,7 +52,7 @@ def execute(db_host = 'localhost',
     out = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()        
@@ -75,12 +75,12 @@ def execute(db_host = 'localhost',
                 taxonname = taxonidtoname[taxon_id] 
                 # Repack json and remove pretty print (by setting indent=None).
                 factsdict = json.loads(facts_json, encoding = 'utf-8')
-                facts_json = json.dumps(factsdict, encoding = 'utf-8', 
+                facts_json = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys = True, indent = None)
                 # Print row.
                 out.write(taxonname + field_separator + facts_json + row_delimiter)
             else:
-                print("To backup, table taxa_facts: Can't find taxon id in table taxa. Id: " + unicode(taxon_id))               
+                print("To backup, table taxa_facts: Can't find taxon id in table taxa. Id: " + str(taxon_id))               
         #
         out.close()
 
@@ -111,7 +111,7 @@ def execute(db_host = 'localhost',
                 taxonname = taxonidtoname[taxon_id] 
                 # Repack json and remove pretty print (by setting indent=None).
                 factsdict = json.loads(metadata_json, encoding = 'utf-8')
-                metadata_json = json.dumps(factsdict, encoding = 'utf-8', 
+                metadata_json = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys = True, indent = None)
                 # Print row.
                 out.write(taxonname + field_separator + 
@@ -120,7 +120,7 @@ def execute(db_host = 'localhost',
                           user_name + field_separator + 
                           metadata_json + row_delimiter)
             else:
-                print("To backup, table taxa_media: Can't find taxon id in table taxa. Id: " + unicode(taxon_id))
+                print("To backup, table taxa_media: Can't find taxon id in table taxa. Id: " + str(taxon_id))
         #    
         # TAXA MEDIA LIST.    
         # Open file and write header.
@@ -137,7 +137,7 @@ def execute(db_host = 'localhost',
                 out.write(taxonname + field_separator + 
                           media_list + row_delimiter)
             else:
-                print("To backup, table taxa_media_list: Can't find taxon id in table taxa. Id: " + unicode(taxon_id))
+                print("To backup, table taxa_media_list: Can't find taxon id in table taxa. Id: " + str(taxon_id))
         #    
         # CHANGE HISTORY.    
         # Open file and write header.
@@ -158,14 +158,14 @@ def execute(db_host = 'localhost',
                       current_taxon_name + field_separator + 
                       user_name + field_separator + 
                       description + field_separator + 
-                      unicode(timestamp) + row_delimiter)
+                      str(timestamp) + row_delimiter)
     #
     except (IOError, OSError):
         print("ERROR: Can't write to text file.")
         print("ERROR: Script will be terminated.")
 #        print(sys.exc_info())
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

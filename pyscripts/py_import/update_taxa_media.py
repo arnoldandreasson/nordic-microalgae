@@ -24,9 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
-import string
+# import string
 import codecs
 import json
   
@@ -41,7 +41,7 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
     cursor = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor = db.cursor()
@@ -71,13 +71,13 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(cleanup_string, row.split(field_separator))
-#                headers = map(string.strip, row.split(field_separator))
-#                headers = map(unicode, headers)
+                headers = list(map(cleanup_string, row.split(field_separator)))
+#                headers = list(map(str.strip, row.split(field_separator)))
+#                headers = list(map(unicode, headers))
             else:
-                row = map(cleanup_string, row.split(field_separator))
-#                row = map(string.strip, row.split(field_separator))
-#                row = map(unicode, row)
+                row = list(map(cleanup_string, row.split(field_separator)))
+#                row = list(map(str.strip, row.split(field_separator)))
+#                # row = list(map(unicode, row))
                 #
                 if len(row) < 3:
                     continue
@@ -88,7 +88,8 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
 #                username = row[3] # 'User name
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (scientificname))
+                                 "where name = %s", 
+                                 (scientificname,) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -132,15 +133,15 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
                                 metadatadict[headeritem] = row[colindex]
                 
                 # Convert metadata to string.
-                jsonstring = json.dumps(metadatadict, encoding = 'utf-8', 
+                jsonstring = json.dumps(metadatadict, # encoding = 'utf-8', 
                                         sort_keys=True, indent=4)
                 # Update metadata. 
                 cursor.execute("update taxa_media set metadata_json = %s where taxon_id = %s and media_id = %s", 
-                               (jsonstring, unicode(taxon_id), mediaid))
+                               (jsonstring, str(taxon_id), mediaid))
         #
         infile.close()
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
@@ -153,7 +154,7 @@ def cleanup_string(value):
     Removes white characters at beginning and end of string. Convert to unicode.
     Citation characters eventually added by Excel are also removed. 
     """
-    return unicode(value.strip().strip('"'))
+    return str(value.strip().strip('"'))
     
 
 # To be used when this module is launched directly from the command line.
@@ -164,8 +165,8 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h:d:u:p:f:", 
                                    ["host=", "database=", "user=", "password=", "filename="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {"db_host": "localhost", 

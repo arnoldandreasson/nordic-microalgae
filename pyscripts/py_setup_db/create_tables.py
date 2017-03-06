@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 
 def execute(db_host = 'localhost', 
@@ -42,12 +42,13 @@ def execute(db_host = 'localhost',
     cursor = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
-                           user = db_user, passwd = db_passwd,
-                           use_unicode = True, charset = 'utf8')
+        db = mysql.connector.connect(
+                        host = db_host, db = db_name, 
+                        user = db_user, passwd = db_passwd,
+                        use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
         #
-        cursor.execute("""
+        sql_statements = """
         
 -- ===== TAXA =====
 
@@ -249,11 +250,17 @@ create table change_history (
   key (timestamp)
 ) engine=MyISAM charset=utf8;
 
-        """)
+commit;
+
+"""
+        
+        for result in cursor.execute(sql_statements, multi=True):
+                pass
+
         #
         #if db: db.close()
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
@@ -265,8 +272,8 @@ def main():
     # Parse command line options.
     try:
         opts, args = getopt.getopt(sys.argv[1:], "h:d:u:p:", ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {}

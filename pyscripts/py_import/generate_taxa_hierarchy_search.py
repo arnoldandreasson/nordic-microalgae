@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
     
 def execute(db_host = 'localhost', 
@@ -35,7 +35,7 @@ def execute(db_host = 'localhost',
     """ Automatically generated db table for fast taxon classification lookup. """
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor_1=db.cursor()
@@ -49,27 +49,28 @@ def execute(db_host = 'localhost',
             #
             if taxon_id == parent_id:
                 # Handle error in dyntaxa. Will generate infinite loop.
-                print("ERROR: taxon_id = parent_id:" + unicode(taxon_id))
+                print("ERROR: taxon_id = parent_id:" + str(taxon_id))
                 continue # Continue with next taxon.
             #
             try:
                 while (parent_id) and (parent_id != 0):
                     #                
                     cursor_2.execute("insert into taxa_hierarchy_search(taxon_id, ancestor_id) values(%s, %s)",
-                                     (unicode(taxon_id), unicode(parent_id)))
+                                     (str(taxon_id), str(parent_id)))
                     #
                     cursor_2.execute("select parent_id from taxa " + 
-                                     "where id = %s", (unicode(parent_id)))
+                                     "where id = %s", 
+                                     (parent_id,) )
                     result = cursor_2.fetchone()
                     if result:
                         parent_id = result[0]
                     else:
                         parent_id = 0
-            except mysql.Error, e:
-                print("ERROR: taxon_id: " + unicode(taxon_id) + " parent_id: " + unicode(parent_id))
+            except mysql.connector.Error as e:
+                print("ERROR: taxon_id: " + str(taxon_id) + " parent_id: " + str(parent_id))
                 print("ERROR %d: %s" % (e.args[0], e.args[1]))
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
@@ -85,8 +86,8 @@ def main():
     # Parse command line options.
     try:
         opts, args = getopt.getopt(sys.argv[1:], "h:d:u:p:", ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {}

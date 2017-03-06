@@ -24,10 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import codecs
-import string
+# import string
 import json
 
 def execute(provider_dyntaxa_id = "Dyntaxa",
@@ -52,7 +52,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
     """ Imports facts prepared from external sources. """
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -68,14 +68,14 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (row[0]))
+                                 "where name = %s", (row[0],) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -85,7 +85,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_dyntaxa_id)))
+                               (str(taxon_id), str(provider_dyntaxa_id)))
                 result = cursor.fetchone()
                 if result:
                     # From string to dictionary.
@@ -101,21 +101,21 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                     if headeritem == 'Dyntaxa id':
                         factsdict[headeritem] = row[colindex]
                 # Convert facts to string.
-                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                jsonstring = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys=True, indent=4)
                 # Check if db row exists. 
                 cursor.execute("select count(*) from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_dyntaxa_id)))
+                               (str(taxon_id), str(provider_dyntaxa_id)))
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) " + 
                                    "values (%s, %s, %s)", 
-                                   (unicode(taxon_id), unicode(provider_dyntaxa_id), jsonstring))
+                                   (str(taxon_id), str(provider_dyntaxa_id), jsonstring))
                 else:
                     cursor.execute("update taxa_external_facts set facts_json = %s " + 
                                    "where (taxon_id = %s) and (provider = %s) ", 
-                                   (jsonstring, unicode(taxon_id), unicode(provider_dyntaxa_id)))
+                                   (jsonstring, str(taxon_id), str(provider_dyntaxa_id)))
         
         # === AlgaeBase_id === 
         print("")
@@ -125,14 +125,14 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (row[0]))
+                                 "where name = %s", (row[0],) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -142,7 +142,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_algaebase_id)))
+                               (str(taxon_id), str(provider_algaebase_id)))
                 result = cursor.fetchone()
                 if result:
                     # From string to dictionary.
@@ -158,21 +158,21 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                     if headeritem == 'Algaebase id':
                         factsdict[headeritem] = row[colindex]
                 # Convert facts to string.
-                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                jsonstring = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys=True, indent=4)
                 # Check if db row exists. 
                 cursor.execute("select count(*) from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_algaebase_id)))
+                               (str(taxon_id), str(provider_algaebase_id)))
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) " + 
                                    "values (%s, %s, %s)", 
-                                   (unicode(taxon_id), unicode(provider_algaebase_id), jsonstring))
+                                   (str(taxon_id), str(provider_algaebase_id), jsonstring))
                 else:
                     cursor.execute("update taxa_external_facts set facts_json = %s " + 
                                    "where (taxon_id = %s) and (provider = %s) ", 
-                                   (jsonstring, unicode(taxon_id), unicode(provider_algaebase_id)))
+                                   (jsonstring, str(taxon_id), str(provider_algaebase_id)))
         
         # === OMNIDIA codes ===          
         # Note: This code is used in "External identities", see generate_taxa_facts_external_identities.py.        
@@ -183,14 +183,14 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (row[0]))
+                                 "where name = %s", (row[0],) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -200,7 +200,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_omnidia_codes)))
+                               (str(taxon_id), str(provider_omnidia_codes)))
                 result = cursor.fetchone()
                 if result:
                     # From string to dictionary.
@@ -219,27 +219,27 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
 #                        if headeritem == "OMNIDIA code":
 #                            # Add extra info if omidia code.
 #                            omnidia = row[colindex]
-#                            infostring = unicode(omnidia) + """<br/>Used by many freshwater diatomists. See <a href="http://omnidia.free.fr/omnidia_english.htm"> <i>http://omnidia.free.fr/omnidia_english.htm</i>.</a>and <a href="http://www.norbaf.net"> <i>http://www.norbaf.net</i>.</a>"""
+#                            infostring = str(omnidia) + """<br/>Used by many freshwater diatomists. See <a href="http://omnidia.free.fr/omnidia_english.htm"> <i>http://omnidia.free.fr/omnidia_english.htm</i>.</a>and <a href="http://www.norbaf.net"> <i>http://www.norbaf.net</i>.</a>"""
 #                            factsdict[headeritem] = infostring
 #                        else:
 #                            # Store other as key/value.
 #                            factsdict[headeritem] = row[colindex]
                 # Convert facts to string.
-                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                jsonstring = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys=True, indent=4)
                 # Check if db row exists. 
                 cursor.execute("select count(*) from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_omnidia_codes)))
+                               (str(taxon_id), str(provider_omnidia_codes)))
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) " + 
                                    "values (%s, %s, %s)", 
-                                   (unicode(taxon_id), unicode(provider_omnidia_codes), jsonstring))
+                                   (str(taxon_id), str(provider_omnidia_codes), jsonstring))
                 else:
                     cursor.execute("update taxa_external_facts set facts_json = %s " + 
                                    "where (taxon_id = %s) and (provider = %s) ", 
-                                   (jsonstring, unicode(taxon_id), unicode(provider_omnidia_codes)))
+                                   (jsonstring, str(taxon_id), str(provider_omnidia_codes)))
 
 
 
@@ -255,14 +255,14 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (row[1])) # 1 = AcceptedTaxon
+                                 "where name = %s", (row[1],) ) # 1 = AcceptedTaxon
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -272,7 +272,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_rebecca_codes)))
+                               (str(taxon_id), str(provider_rebecca_codes)))
                 result = cursor.fetchone()
                 if result:
                     # From string to dictionary.
@@ -286,21 +286,21 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 # Update facts.
                 factsdict[u'REBECCA code'] = row[0] # 0 = RebeccaID
                 # Convert facts to string.
-                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                jsonstring = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys=True, indent=4)
                 # Check if db row exists. 
                 cursor.execute("select count(*) from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_rebecca_codes)))
+                               (str(taxon_id), str(provider_rebecca_codes)))
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) " + 
                                    "values (%s, %s, %s)", 
-                                   (unicode(taxon_id), unicode(provider_rebecca_codes), jsonstring))
+                                   (str(taxon_id), str(provider_rebecca_codes), jsonstring))
                 else:
                     cursor.execute("update taxa_external_facts set facts_json = %s " + 
                                    "where (taxon_id = %s) and (provider = %s) ", 
-                                   (jsonstring, unicode(taxon_id), unicode(provider_rebecca_codes)))
+                                   (jsonstring, str(taxon_id), str(provider_rebecca_codes)))
 
 
 
@@ -316,14 +316,14 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers)))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row)))
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (row[0]))
+                                 "where name = %s", (row[0],) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -333,7 +333,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_ioc_hab)))
+                               (str(taxon_id), str(provider_ioc_hab)))
                 result = cursor.fetchone()
                 if result:
                     # From string to dictionary.
@@ -349,28 +349,28 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                     if not headeritem in ['Scientific name']:
                         factsdict[headeritem] = row[colindex]
                 # Convert facts to string.
-                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                jsonstring = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys=True, indent=4)
                 # Check if db row exists. 
                 cursor.execute("select count(*) from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode(provider_ioc_hab)))
+                               (str(taxon_id), str(provider_ioc_hab)))
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) " + 
                                    "values (%s, %s, %s)", 
-                                   (unicode(taxon_id), unicode(provider_ioc_hab), jsonstring))
+                                   (str(taxon_id), str(provider_ioc_hab), jsonstring))
                 else:
                     cursor.execute("update taxa_external_facts set facts_json = %s " + 
                                    "where (taxon_id = %s) and (provider = %s) ", 
-                                   (jsonstring, unicode(taxon_id), unicode(provider_ioc_hab)))
+                                   (jsonstring, str(taxon_id), str(provider_ioc_hab)))
         
     #
     except (IOError, OSError):
         print("ERROR: Can't read text file.")
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

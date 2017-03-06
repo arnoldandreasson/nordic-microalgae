@@ -24,10 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import codecs
-import string
+# import string
 import json
 
 def execute(file_name = '../data_import/facts.txt', 
@@ -43,7 +43,7 @@ def execute(file_name = '../data_import/facts.txt',
     """ Imports facts managed by our own contributors. """
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -55,14 +55,14 @@ def execute(file_name = '../data_import/facts.txt',
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (row[0]))
+                                 "where name = %s", (row[0],) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -70,7 +70,8 @@ def execute(file_name = '../data_import/facts.txt',
                     print("Error: Can't find taxon i taxa. Name: " + row[0])
                     continue # Skip this taxon.
                 # Get facts_json from db.
-                cursor.execute("select facts_json from taxa_facts where taxon_id = %s", taxon_id)
+                cursor.execute("select facts_json from taxa_facts where taxon_id = %s", 
+                               (taxon_id,) )
                 result = cursor.fetchone()
                 if result:
                     # From string to dictionary.
@@ -86,23 +87,24 @@ def execute(file_name = '../data_import/facts.txt',
                     if not headeritem in ['Taxon name', 'Classification']:
                         factsdict[headeritem] = row[colindex]
                 # Convert facts to string.
-                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                jsonstring = json.dumps(factsdict, # decoding = 'utf-8', 
                                      sort_keys=True, indent=4)
                 # Check if db row exists. 
-                cursor.execute("select count(*) from taxa_facts where taxon_id = %s", taxon_id)
+                cursor.execute("select count(*) from taxa_facts where taxon_id = %s", 
+                               (taxon_id,) )
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_facts(taxon_id, facts_json) values (%s, %s)", 
-                                   (unicode(taxon_id), jsonstring))
+                                   (str(taxon_id), jsonstring))
                 else:
                     cursor.execute("update taxa_facts set facts_json = %s where taxon_id = %s", 
-                                   (jsonstring, unicode(taxon_id)))
+                                   (jsonstring, str(taxon_id)))
     #
     except (IOError, OSError):
         print("ERROR: Can't read text file." + infile)
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

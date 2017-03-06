@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import json
 import codecs
@@ -43,7 +43,7 @@ def execute(db_host = 'localhost',
     out = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -85,7 +85,8 @@ def execute(db_host = 'localhost',
             # Create row.
             row = [taxon_name]
             # Add rank and classification string from the taxa_navigation table.
-            cursor.execute("select rank, classification from taxa_navigation where taxon_id = %s", taxon_id)
+            cursor.execute("select rank, classification from taxa_navigation where taxon_id = %s", 
+                           (taxon_id,) )
             result = cursor.fetchone()
             if result:
                 row.append(result[0])
@@ -94,7 +95,8 @@ def execute(db_host = 'localhost',
                 row.append('') # Empty if missing.
                 row.append('')
             # Get facts_json.
-            cursor.execute("select facts_json from taxa_facts where taxon_id = %s", taxon_id)
+            cursor.execute("select facts_json from taxa_facts where taxon_id = %s", 
+                           (taxon_id,) )
             result = cursor.fetchone()
             if result:
                 # From string to dictionary.
@@ -119,7 +121,7 @@ def execute(db_host = 'localhost',
         print("ERROR: Can't write to text file." + file_name)
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

@@ -24,10 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import codecs
-import string
+# import string
 import json
 
 def execute(db_host, db_name, db_user, db_passwd, file_name, 
@@ -39,7 +39,7 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
     """ Updates facts with changes made to text file. """
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -48,14 +48,15 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (row[0]))
+                                 "where name = %s", 
+                                 (row[0],) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -84,17 +85,18 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
                             # Only change value if row item contains text.
                             factsdict[headeritem] = row[colindex]
                 # Convert facts to string.
-                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                jsonstring = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys=True, indent=4)
                 # Check if db row exists. 
-                cursor.execute("select count(*) from taxa_facts where taxon_id = %s", taxon_id)
+                cursor.execute("select count(*) from taxa_facts where taxon_id = %s", 
+                               (taxon_id,) )
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_facts(taxon_id, facts_json) values (%s, %s)", 
-                                   (unicode(taxon_id), jsonstring))
+                                   (str(taxon_id), jsonstring))
                 else:
                     cursor.execute("update taxa_facts set facts_json = %s where taxon_id = %s", 
-                                   (jsonstring, unicode(taxon_id)))
+                                   (jsonstring, str(taxon_id)))
         #
         infile.close()
     #
@@ -102,7 +104,7 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
         print("ERROR: Can't read text file." + infile)
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
@@ -120,8 +122,8 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h:d:u:p:f:", 
                                    ["host=", "database=", "user=", "password=", "filename="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {"db_host": "localhost", 

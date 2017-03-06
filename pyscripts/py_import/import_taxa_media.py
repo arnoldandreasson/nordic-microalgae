@@ -24,9 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
-import string
+# import string
 import codecs
 import json
   
@@ -44,7 +44,7 @@ def execute(db_host = 'localhost',
     cursor = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor = db.cursor()
@@ -60,12 +60,12 @@ def execute(db_host = 'localhost',
                 # Header: 'Scientific name', 'Media id', 'Media type', 'User name', 'Sort order', 
                 #         'Location', 'Latitude DD', 'Longitude DD', 'Media format', 'Date', 
                 #         'Dateadded', 'Title', 'Description', 'Creator', 'Publisher', 'Contributor', 'Rights'
-                header = map(string.strip, row.split(field_separator))
-                header = map(unicode, header)
+                header = list(map(str.strip, row.split(field_separator)))
+                # header = list(map(unicode, header))
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 scientificname = row[0] # Scientific name
                 mediaid = row[1] # Media id
@@ -79,12 +79,13 @@ def execute(db_host = 'localhost',
                         if row[columnindex]:
                             metadata[headeritem] = row[columnindex]
                 # Convert facts to string.
-                jsonstring = json.dumps(metadata, encoding = 'utf-8', 
+                jsonstring = json.dumps(metadata, # encoding = 'utf-8', 
                                         sort_keys=True, indent=4)
                 
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (scientificname))
+                                 "where name = %s", 
+                                 (scientificname,) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -98,10 +99,10 @@ def execute(db_host = 'localhost',
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_media(taxon_id, media_id, media_type, user_name, metadata_json) values (%s, %s, %s, %s, %s)", 
-                                   (unicode(taxon_id), mediaid, mediatype, username, jsonstring))
+                                   (str(taxon_id), mediaid, mediatype, username, jsonstring))
                 else:
                     cursor.execute("update taxa_media set metadata_json = %s where taxon_id = %s and media_id = %s and media_type = %s"
-                                   (jsonstring, unicode(taxon_id), mediaid, mediatype))
+                                   (jsonstring, str(taxon_id), mediaid, mediatype))
         #
         # Put media in media list
         # Restart infile.
@@ -114,19 +115,20 @@ def execute(db_host = 'localhost',
                 # Header: 'Scientific name', 'Media id', 'Media type', 'User name', 'Sort order', 
                 #         'Location', 'Latitude DD', 'Longitude DD', 'Media format', 'Media type', 'Date', 
                 #         'Dateadded', 'Title', 'Description', 'Creator', 'Publisher', 'Contributor', 'Rights'
-                header = map(string.strip, row.split(field_separator))
-                header = map(unicode, header)
+                header = list(map(str.strip, row.split(field_separator)))
+                # header = list(map(unicode, header))
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 scientificname = row[0] # Scientific name
                 mediaid = row[1] # Media id
                 sortorder = row[4] # Media type
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (scientificname))
+                                 "where name = %s", 
+                                 (scientificname,) )
                 result = cursor.fetchone()
                 taxonid = None
                 if result:
@@ -145,11 +147,11 @@ def execute(db_host = 'localhost',
         #
         for taxonid in taxondict:
             cursor.execute("insert into taxa_media_list(taxon_id, media_list) values (%s, %s)", 
-               (unicode(taxonid), ';'.join(taxondict[taxonid])))
+               (str(taxonid), ';'.join(taxondict[taxonid])))
         #
         infile.close()
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

@@ -24,11 +24,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+#import mysql.connector
+import mysql.connector
 import sys
+
 import json
 import codecs
-import string
+# import string
 
 def execute(db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
@@ -49,7 +51,7 @@ def execute(db_host = 'localhost',
     """
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -73,17 +75,17 @@ def execute(db_host = 'localhost',
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 if row[0] in taxonnametoid:
                     taxon_id = taxonnametoid[row[0]]
                     facts_json = row[1]
                     # Repack json and add pretty print (by setting indent=4).
                     factsdict = json.loads(facts_json, encoding = 'utf-8')
-                    facts_json = json.dumps(factsdict, encoding = 'utf-8', 
+                    facts_json = json.dumps(factsdict, # encoding = 'utf-8', 
                                          sort_keys = True, indent = 4)
                     # Write to database.
                     cursor.execute("insert into taxa_facts(taxon_id, facts_json) values (%s, %s)", 
@@ -111,11 +113,11 @@ def execute(db_host = 'localhost',
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 if row[0] in taxonnametoid:
                     taxon_id = taxonnametoid[row[0]]
                     media_id = row[1]
@@ -124,7 +126,7 @@ def execute(db_host = 'localhost',
                     metadata_json = row[4]
                     # Repack json and add pretty print (by setting indent=4).
                     factsdict = json.loads(metadata_json, encoding = 'utf-8')
-                    metadata_json = json.dumps(factsdict, encoding = 'utf-8', 
+                    metadata_json = json.dumps(factsdict, # encoding = 'utf-8', 
                                          sort_keys = True, indent = 4)
                     # Write to database.
                     cursor.execute("insert into taxa_media(taxon_id, media_id, media_type, user_name, metadata_json) values (%s, %s, %s, %s, %s)", 
@@ -138,11 +140,11 @@ def execute(db_host = 'localhost',
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 if row[0] in taxonnametoid:
                     taxon_id = taxonnametoid[row[0]]
                     media_list = row[1]
@@ -158,11 +160,11 @@ def execute(db_host = 'localhost',
         # Iterate over rows in file.
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 if row[0] in taxonnametoid:
                     taxon_id = taxonnametoid[row[0]]
                 else:
@@ -175,7 +177,7 @@ def execute(db_host = 'localhost',
                 timestamp = row[4]
                 # Repack json and add pretty print (by setting indent=4).
                 factsdict = json.loads(metadata_json, encoding = 'utf-8')
-                metadata_json = json.dumps(factsdict, encoding = 'utf-8', 
+                metadata_json = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys = True, indent = 4)
                 # Write to database.
                 cursor.execute("insert into change_history(taxon_id, current_taxon_name, user_name, description, timestamp) values (%s, %s, %s, %s, %s)", 
@@ -184,13 +186,13 @@ def execute(db_host = 'localhost',
         # Log import from backup to change_history.
         description = 'Import_from_backup.py: Tables are loaded from backup files.'    
         cursor.execute("insert into change_history(taxon_id, current_taxon_name, user_name, description, timestamp) values (%s, %s, %s, %s, now())", 
-                       (unicode(0), '', 'db-admin', description))
+                       (str(0), '', 'db-admin', description))
     #
     except (IOError, OSError):
         print("ERROR: Can't read text file." + infile)
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
@@ -208,8 +210,8 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h:d:u:p:", 
                                    ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {"db_host": "localhost", 

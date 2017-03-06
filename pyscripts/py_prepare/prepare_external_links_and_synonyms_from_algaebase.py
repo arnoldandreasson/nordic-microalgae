@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 
 import sys
-import string
+# import string
 import codecs
 import json
   
@@ -55,8 +55,8 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20120306.t
                 # Header NEW: species.id    genus.Genus    species.Species    species.Subspecies    species.Variety    species.Forma    taxon_authority.taxon_authority    taxon_authority.authority_year    species.Current_flag    species.Record_status    species.Accepted_name_serial    species.genus_id    species.key_Habitat    species.Type_locality
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                  
 #               # OLD: 
 #                # 0: Genus    
@@ -156,8 +156,8 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20120306.t
                 # Header: Scientific name    Author    Rank    Parent name
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 scientificname = row[0] # ScientificName
                 rank = row[2] # Rank
@@ -184,7 +184,7 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20120306.t
                             infojson = {}
                             infojson['Source'] = 'AlgaeBase'
                             infojson['Hint'] = 'Valid name'
-                            infojsonstring = json.dumps(infojson, encoding = 'utf-8', 
+                            infojsonstring = json.dumps(infojson, # encoding = 'utf-8', 
                                                         sort_keys = True, indent = None)         
                             # Create and print row.
                             outrow = [scientificname, currentname, '', infojsonstring]
@@ -197,18 +197,18 @@ def execute(algaebase_file_name = '../data_external/algaebase_species_20120306.t
                     highertaxacounter += 1
         #
         print('')
-        print('Number of matches: ' + unicode(matchcounter))
-        print('Number of no match: ' + unicode(nomatchcounter))
-        print('Number of synonyms: ' + unicode(synonymcounter))
-        print('Number of no synonym errors: ' + unicode(synonymerrorscounter))
-        print('Number of higher taxa: ' + unicode(highertaxacounter))
+        print('Number of matches: ' + str(matchcounter))
+        print('Number of no match: ' + str(nomatchcounter))
+        print('Number of synonyms: ' + str(synonymcounter))
+        print('Number of no synonym errors: ' + str(synonymerrorscounter))
+        print('Number of higher taxa: ' + str(highertaxacounter))
         #
         algaebasefile.close()            
         infile.close()
         outlinks.close
         outsynonyms.close
     #
-    except Exception, e:
+    except Exception as e:
         print("ERROR: Exception %s" % (e.args[0]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

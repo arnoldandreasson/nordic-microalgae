@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 
 import sys
-import string
+# import string
 import codecs
 import json
   
@@ -80,8 +80,8 @@ TaxonNameUseTypeId    snamn    definition
                 # Header: TaxonId    SortOrder    TaxonTypeId    ScientificName    Author    CommonName    Kingdom    Phylum    Class    Order    Family    Genus    OrganismGroupId    IsSwedishTaxon    IsRedlisted    IsRedlistedSpecies    IsNatura2000Listed    RedlistCategoryId    OrganismGroup    OrganismSubGroupId    OrganismSubGroup    RedlistTaxonCategoryId    RedlistCategory    RedlistCriteria    Landscape
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 scientificname = row[3] # ScientificName
                 if scientificname:
@@ -106,8 +106,8 @@ TaxonNameUseTypeId    snamn    definition
                 # Header: TaxonNameId    TaxonId    TaxonNameTypeId    TaxonNameUseTypeId    Name    Author    IsRecommended    UpdatedBy    UpdatedDate    ReferenceId    ReferenceName    ReferenceYear    ReferenceText
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 taxonid = row[1]
                 taxonnametypeId = row[2]
@@ -130,7 +130,7 @@ TaxonNameUseTypeId    snamn    definition
 #                if taxonnametypeId == u'11': infojson['Hint'] = 'ERMS name'        
                 if taxonnametypeId == u'13': infojson['Hint'] = 'Original name'
                 if taxonnameusetypeid == u'3': infojson['Hint'] = 'Misspelled, but commonly used.'
-                infojsonstring = json.dumps(infojson, encoding = 'utf-8', 
+                infojsonstring = json.dumps(infojson, # encoding = 'utf-8', 
                                             sort_keys = True, indent = None)         
                 # Create row.
                 outrow = [taxonidtonamedict[taxonid], name, author, infojsonstring]
@@ -140,7 +140,7 @@ TaxonNameUseTypeId    snamn    definition
         taxafile.close()
         out.close
                     #
-    except Exception, e:
+    except Exception as e:
         print("ERROR: Exception %s" % (e.args[0]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
