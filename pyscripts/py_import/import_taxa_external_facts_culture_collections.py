@@ -24,10 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import codecs
-import string
+# import string
 import json
 
 def execute(file_name_sccap = '../data_import/external_facts_culture_collections_sccap.txt', 
@@ -44,7 +44,7 @@ def execute(file_name_sccap = '../data_import/external_facts_culture_collections
     """ Imports facts prepared from external sources. """
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -65,8 +65,8 @@ def execute(file_name_sccap = '../data_import/external_facts_culture_collections
                 # CUNR    GENUS    SPECIES    CLASS    COUNTRY    Foto    Availability
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 # Get taxon_id from name.
                 if row[2] == 'sp.':
                     speciesname = row[1]
@@ -84,7 +84,7 @@ def execute(file_name_sccap = '../data_import/external_facts_culture_collections
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode('Generated facts')))
+                               (str(taxon_id), str('Generated facts')))
                 result = cursor.fetchone()
                 if result:
                     # From string to dictionary.
@@ -107,28 +107,28 @@ Strains: """
                 factsdict['Culture collections'] = htmltext + ', '.join(strainsforspecies[speciesname])
                 
                 # Convert facts to string.
-                jsonstring = json.dumps(factsdict, encoding = 'utf-8', 
+                jsonstring = json.dumps(factsdict, # encoding = 'utf-8', 
                                      sort_keys=True, indent=4)
                 # Check if db row exists. 
                 cursor.execute("select count(*) from taxa_external_facts " + 
                                "where (taxon_id = %s) and (provider = %s) ", 
-                               (unicode(taxon_id), unicode('Generated facts')))
+                               (str(taxon_id), str('Generated facts')))
                 result = cursor.fetchone()
                 if result[0] == 0: 
                     cursor.execute("insert into taxa_external_facts(taxon_id, provider, facts_json) " + 
                                    "values (%s, %s, %s)", 
-                                   (unicode(taxon_id), unicode('Generated facts'), jsonstring))
+                                   (str(taxon_id), str('Generated facts'), jsonstring))
                 else:
                     cursor.execute("update taxa_external_facts set facts_json = %s " + 
                                    "where (taxon_id = %s) and (provider = %s) ", 
-                                   (jsonstring, unicode(taxon_id), unicode('Generated facts')))
+                                   (jsonstring, str(taxon_id), str('Generated facts')))
         
     #
     except (IOError, OSError):
         print("ERROR: Can't read text file.")
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

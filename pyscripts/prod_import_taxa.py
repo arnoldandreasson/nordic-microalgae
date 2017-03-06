@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import py_import.import_taxa as import_taxa
+from pyscripts.py_import import import_taxa
 
 def execute(db_host, db_name, db_user, db_passwd):
     """ """
@@ -45,8 +45,8 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h:d:u:p:", 
                                    ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {"db_host": "localhost", 

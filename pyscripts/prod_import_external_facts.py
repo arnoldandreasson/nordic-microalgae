@@ -24,12 +24,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import py_import.import_taxa_external_links as import_taxa_external_links
-import py_import.import_taxa_external_facts as import_taxa_external_facts
-import py_import.import_taxa_helcom_peg as import_taxa_helcom_peg
-import py_import.import_taxa_synonyms as import_taxa_synonyms
-import py_import.generate_taxa_facts_external_identities as generate_taxa_facts_external_identities
-import py_import.import_taxa_external_facts_culture_collections as import_taxa_external_facts_culture_collections
+from pyscripts.py_import import import_taxa_external_links
+from pyscripts.py_import import import_taxa_external_facts
+from pyscripts.py_import import import_taxa_helcom_peg
+from pyscripts.py_import import import_taxa_synonyms
+from pyscripts.py_import import generate_taxa_facts_external_identities
+from pyscripts.py_import import import_taxa_external_facts_culture_collections
 
 def execute(db_host, db_name, db_user, db_passwd):
     """ """
@@ -132,8 +132,8 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h:d:u:p:", 
                                    ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {"db_host": "localhost", 

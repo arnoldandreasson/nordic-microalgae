@@ -24,9 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
-import string
+# import string
 import codecs
 
 def execute(provider = "AlgaeBase",
@@ -46,7 +46,7 @@ def execute(provider = "AlgaeBase",
     infile = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -59,14 +59,14 @@ def execute(provider = "AlgaeBase",
         for rowindex, row in enumerate(infile):
             if rowindex == 0: # First row is assumed to be the header row.
                 # 'Scientific name', 'Synonym name', 'Synonym author', 'Info json'
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 # Get taxon_id from name.
                 cursor.execute("select id from taxa " + 
-                                 "where name = %s", (row[0]))
+                                 "where name = %s", (row[0],) )
                 result = cursor.fetchone()
                 if result:
                     taxon_id = result[0]
@@ -79,15 +79,15 @@ def execute(provider = "AlgaeBase",
                 value = url_template.replace('<replace-id>', externalid)
                 try:
                     cursor.execute("insert into taxa_external_links(taxon_id, provider, type, value) values (%s, %s, %s, %s)", 
-                                    (unicode(taxon_id), provider, link_type, value))
-                except mysql.Error, e:
+                                    (str(taxon_id), provider, link_type, value))
+                except mysql.connector.Error as e:
                     print("WARNING (taxa_external_links): MySQL %d: %s" % (e.args[0], e.args[1]))
     #
     except (IOError, OSError):
         print("ERROR: Can't read text file." + file_name)
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

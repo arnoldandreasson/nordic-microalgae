@@ -24,11 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import py_export.export_taxa as export_taxa
-import py_export.export_taxa_facts as export_taxa_facts
-import py_export.export_taxa_media as export_taxa_media
-import py_backup.export_to_backup as export_to_backup
-import py_export.export_taxa_checklists as export_taxa_checklists
+from pyscripts.py_export import export_taxa
+from pyscripts.py_export import export_taxa_facts
+from pyscripts.py_export import export_taxa_media
+from pyscripts.py_export import export_taxa_checklists
+from pyscripts.py_backup import export_to_backup
 
 def execute(db_host, db_name, db_user, db_passwd, path_to_downloads):
     """ """
@@ -68,8 +68,8 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h:d:u:p:d:", 
                                    ["host=", "database=", "user=", "password=", "downloadspath="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {"db_host": "localhost", 

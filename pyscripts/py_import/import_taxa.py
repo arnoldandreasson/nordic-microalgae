@@ -24,9 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
-import string
+# import string
 import codecs
   
 def execute(db_host = 'localhost', 
@@ -41,7 +41,7 @@ def execute(db_host = 'localhost',
     """ Imports content to the main taxa table. """
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor = db.cursor()
@@ -56,8 +56,8 @@ def execute(db_host = 'localhost',
                 # Header: Scientific name    Author    Rank    Parent name
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 scientificname = row[0] # ScientificName
                 author = row[1] # Author
@@ -69,19 +69,21 @@ def execute(db_host = 'localhost',
                     try:
                         # Check if already in taxa table.
                         cursor.execute("select count(*) from taxa where name = %s",  
-                                       (unicode(scientificname)))
+#                                        (str(scientificname), ) )
+                                       (scientificname,) )
                         result = cursor.fetchone()
                         rowcount = result[0]
                         #
                         if rowcount == 0:
                             # Add to taxa table.
+                            
                             cursor.execute("insert into taxa(name, author, rank) values (%s, %s, %s)",
                                            (scientificname, 
                                             author, # Test: author.replace("'", u'´'),
                                             rank))
                         else:
                             print("ERROR: Taxon already exists. Name: " + scientificname + ".")
-                    except mysql.Error, e:
+                    except mysql.connector.Error as e:
                         print("ERROR: Select or insert to taxa failed. Name: " + scientificname + ".")
                         print("ERROR %d: %s" % (e.args[0], e.args[1]))
         #
@@ -95,8 +97,8 @@ def execute(db_host = 'localhost',
                 # Header: Scientific name    Author    Rank    Parent name
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 #
                 scientificname = row[0] # ScientificName
                 parentname = row[3] # Parent name
@@ -104,7 +106,7 @@ def execute(db_host = 'localhost',
                     # Get id from taxa table for scientific name.
                     taxon_id = 0
                     cursor.execute("select id from taxa where name = %s ",
-                                   (scientificname)) 
+                                   (scientificname,) ) 
                     result = cursor.fetchone()
                     if result:
                         taxon_id = result[0]
@@ -113,7 +115,7 @@ def execute(db_host = 'localhost',
                     # Get id from taxa table for parent name.
                     parent_id = 0
                     cursor.execute("select id from taxa where name = %s ",
-                                   (parentname)) 
+                                   (parentname,) ) 
                     result = cursor.fetchone()
                     if result:
                         parent_id = result[0]
@@ -121,9 +123,9 @@ def execute(db_host = 'localhost',
                         continue
                     # Updata taxa table.
                     cursor.execute("update taxa set parent_id = %s where id = %s", 
-                                   (unicode(parent_id), unicode(taxon_id)))
+                                   (str(parent_id), str(taxon_id)))
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

@@ -24,8 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
+import functools
     
 def execute(db_host = 'localhost', 
             db_name = 'nordicmicroalgae', 
@@ -38,7 +39,7 @@ def execute(db_host = 'localhost',
     out = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -108,7 +109,7 @@ def execute(db_host = 'localhost',
                 
                 # Check if infinite loop.
                 if parenttaxon['id'] == parenttaxon['parent_id']:
-                    print("Break classification. Infinite loop for " + unicode(parenttaxon['id']) + " " + parenttaxon['name'])
+                    print("Break classification. Infinite loop for " + str(parenttaxon['id']) + " " + parenttaxon['name'])
                     classification = '<ERROR, Infinite loop>;' + classification
                     break # Break while loop.
                 
@@ -128,7 +129,8 @@ def execute(db_host = 'localhost',
         #
         # Add previous and next name in tree walk. Add value to sort_order_tree.
         # Sort taxa by classification.
-        taxa.sort(taxa_by_classification_sortfunction) # Sort function defined below.
+#        taxa.sort(taxa_by_classification_sortfunction) # Sort function defined below.
+        taxa = sorted(taxa, key = functools.cmp_to_key(taxa_by_classification_sortfunction)) # Sort function defined below.
         previousid = None
         for index, item in enumerate(taxa):
             id = item['id']
@@ -181,7 +183,7 @@ def execute(db_host = 'localhost',
             children.sort()
             # Add child-counter to children.
             for index, child in enumerate(children):
-                children[index] = child + ':' + unicode(childcount[child])
+                children[index] = child + ':' + str(childcount[child])
             # Save result.
             taxanavigation[id]['children'] = ';'.join(children)
         #
@@ -199,7 +201,7 @@ def execute(db_host = 'localhost',
             siblings.sort()
             # Add child-counter to siblings.
             for index, child in enumerate(siblings):
-                siblings[index] = child + ':' + unicode(childcount[child])
+                siblings[index] = child + ':' + str(childcount[child])
             # Save result.
             taxanavigation[id]['siblings'] = ';'.join(siblings)
         #
@@ -207,7 +209,7 @@ def execute(db_host = 'localhost',
         for id in taxanavigation:
             navdict = taxanavigation[id]
             
-#            print(  unicode(id), navdict['name'], 
+#            print(  str(id), navdict['name'], 
 #                    navdict['prev'], navdict['next'], 
 #                    navdict['prev_tree'], navdict['next_tree'], 
 #                    navdict['classification'], navdict['children'], navdict['siblings'] 
@@ -219,13 +221,13 @@ def execute(db_host = 'localhost',
                            "prev_in_tree, next_in_tree, sort_order_tree, " + 
                            "classification, children, siblings) " + 
                            "values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                           (unicode(id), navdict['name'], navdict['rank'], navdict['parent'], 
+                           (str(id), navdict['name'], navdict['rank'], navdict['parent'], 
                             navdict['prev_in_rank'], navdict['next_in_rank'], 
                             navdict['prev_in_tree'], navdict['next_in_tree'], navdict['sort_order_tree'], 
                             navdict['classification'], navdict['children'], navdict['siblings'] 
                             ))
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
@@ -258,8 +260,8 @@ def main():
     # Parse command line options.
     try:
         opts, args = getopt.getopt(sys.argv[1:], "h:d:u:p:", ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {}

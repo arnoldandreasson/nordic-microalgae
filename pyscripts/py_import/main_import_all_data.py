@@ -24,18 +24,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import import_taxa
-import import_taxa_facts
+from pyscripts.py_import import import_taxa
+from pyscripts.py_import import import_taxa_facts
 ###import import_taxa_facts_drafts
-import import_taxa_external_links
-import import_taxa_external_facts
-import import_taxa_helcom_peg
-import import_taxa_synonyms
-import import_taxa_media
-import generate_taxa_hierarchy_search
-import generate_taxa_navigation
-import generate_taxa_filter_search
-import generate_taxa_media_filter_search
+from pyscripts.py_import import import_taxa_external_links
+from pyscripts.py_import import import_taxa_external_facts
+from pyscripts.py_import import import_taxa_helcom_peg
+from pyscripts.py_import import import_taxa_synonyms
+from pyscripts.py_import import import_taxa_media
+from pyscripts.py_import import generate_taxa_hierarchy_search
+from pyscripts.py_import import generate_taxa_navigation
+from pyscripts.py_import import generate_taxa_filter_search
+from pyscripts.py_import import generate_taxa_media_filter_search
 
 def execute():
     """ Script that creates and populates a test database. """
@@ -75,8 +75,8 @@ def execute():
     #
 #    print("\n=== Import data: taxa_external_facts. ===\n")
     import_taxa_external_facts.execute(
-            provider = "IOC",
-            file_name = '../data_import/external_facts_ioc_hab.txt',
+#             provider = "IOC",
+#             file_name = '../data_import/external_facts_ioc_hab.txt',
             delete_db_content = True 
             )
     #

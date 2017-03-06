@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import json
 
@@ -40,9 +40,10 @@ def execute(db_host = 'localhost',
     cursor = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
-                           user = db_user, passwd = db_passwd,
-                           use_unicode = True, charset = 'utf8')
+        db = mysql.connector.connect(
+                        host = db_host, db = db_name, 
+                        user = db_user, passwd = db_passwd,
+                        use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
         # Remove all rows from table.
         cursor.execute(" delete from system_settings ")
@@ -770,12 +771,12 @@ Please visit <a href='http://creativecommons.org/licenses/'>Creative Commons</a>
         # Iterate over keydict keys and insert into db table.
         #
         for key in keydict.keys():
-            jsonstring = json.dumps(keydict[key], encoding = 'utf-8', 
+            jsonstring = json.dumps(keydict[key], # encoding = 'utf-8', 
                                  sort_keys=True, indent=4)
             cursor.execute("insert into system_settings(settings_key, settings_value) values (%s, %s)", 
-                           (unicode(key), unicode(jsonstring)))
+                           (str(key), str(jsonstring)))
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
@@ -790,8 +791,8 @@ def main():
     # Parse command line options.
     try:
         opts, args = getopt.getopt(sys.argv[1:], "h:d:u:p:", ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {}

@@ -39,7 +39,7 @@
 #  g: Delesseria(Genus)
 #
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 
 def execute(db_host = 'localhost', 
@@ -54,45 +54,42 @@ def execute(db_host = 'localhost',
     cursor = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
         # Delete all rows.
         cursor.execute(""" delete from taxa_ranks """) 
         # Insert new rows.
-        cursor.execute("""
-
-insert into taxa_ranks(rank, sort_order) values ('Rootlevel', 0); -- For internal use.
-insert into taxa_ranks(rank, sort_order) values ('Domain', 5); -- Note: Empire or Domain.
-insert into taxa_ranks(rank, sort_order) values ('Kingdom', 15);
-insert into taxa_ranks(rank, sort_order) values ('Subkingdom', 16);
-insert into taxa_ranks(rank, sort_order) values ('Phylum', 25); -- Note: Division in botany.
-insert into taxa_ranks(rank, sort_order) values ('Subphylum', 26);
-insert into taxa_ranks(rank, sort_order) values ('Superclass', 34);
-insert into taxa_ranks(rank, sort_order) values ('Class', 35);
-insert into taxa_ranks(rank, sort_order) values ('Subclass', 36);
-insert into taxa_ranks(rank, sort_order) values ('Infraclass', 37);
-insert into taxa_ranks(rank, sort_order) values ('Superorder', 44);
-insert into taxa_ranks(rank, sort_order) values ('Order', 45);
-insert into taxa_ranks(rank, sort_order) values ('Suborder', 46);
-insert into taxa_ranks(rank, sort_order) values ('Infraorder', 47);
-insert into taxa_ranks(rank, sort_order) values ('Superfamily', 54);
-insert into taxa_ranks(rank, sort_order) values ('Family', 55);
-insert into taxa_ranks(rank, sort_order) values ('Subfamily', 56);
-insert into taxa_ranks(rank, sort_order) values ('Tribe', 65);
-insert into taxa_ranks(rank, sort_order) values ('Genus', 75);
-insert into taxa_ranks(rank, sort_order) values ('Subgenus', 76);
-insert into taxa_ranks(rank, sort_order) values ('Species pair', 84);
-insert into taxa_ranks(rank, sort_order) values ('Species', 85);
-insert into taxa_ranks(rank, sort_order) values ('Subspecies', 86);
-insert into taxa_ranks(rank, sort_order) values ('Variety', 94); -- Note: Botany.
-insert into taxa_ranks(rank, sort_order) values ('Form', 95); -- Note: Zoology.
-insert into taxa_ranks(rank, sort_order) values ('Hybrid', 96);
-
-        """)
+#         cursor.execute("""
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Rootlevel', 0); """) # For internal use.
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Domain', 5); """) # Note: Empire or Domain.
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Kingdom', 15); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Subkingdom', 16); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Phylum', 25); """) # Note: Division in botany.
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Subphylum', 26); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Superclass', 34); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Class', 35); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Subclass', 36); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Infraclass', 37); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Superorder', 44); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Order', 45); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Suborder', 46); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Infraorder', 47); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Superfamily', 54); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Family', 55); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Subfamily', 56); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Tribe', 65); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Genus', 75); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Subgenus', 76); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Species pair', 84); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Species', 8); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Subspecies', 86); """)
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Variety', 94); """) # Note: Botany.
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Form', 95); """) # Note: Zoology.
+        cursor.execute(""" insert into taxa_ranks(rank, sort_order) values ('Hybrid', 96); """)
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)
@@ -107,8 +104,8 @@ def main():
     # Parse command line options.
     try:
         opts, args = getopt.getopt(sys.argv[1:], "h:d:u:p:", ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {}

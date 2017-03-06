@@ -24,11 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import json
 import codecs
-import string
+# import string
 #import plankton_toolbox.core.biology.taxa as taxa
 #import plankton_toolbox.core.biology.taxa_sources as taxa_sources
 
@@ -47,7 +47,7 @@ def execute(file_name = '../data_import/peg_bvol2013.json',
     cursor = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -62,8 +62,8 @@ def execute(file_name = '../data_import/peg_bvol2013.json',
             if rowindex == 0: # First row is assumed to be the header row.
                 pass
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 pegname = row[0]    
                 dyntaxaname = row[1]
                 translatedict[pegname] = dyntaxaname
@@ -81,20 +81,21 @@ def execute(file_name = '../data_import/peg_bvol2013.json',
                 name = translatedict[name]
             # Get taxon_id from name.
             cursor.execute("select id from taxa " + 
-                             "where name = %s", (name))
+                             "where name = %s", 
+                             (name,))
             result = cursor.fetchone()
             if result:
                 taxon_id = result[0]
                 
-                jsonstring = json.dumps(pegitem, encoding = 'utf-8', 
+                jsonstring = json.dumps(pegitem, # encoding = 'utf-8', 
                                         sort_keys=True, indent=4)
                 cursor.execute("insert into taxa_helcom_peg(taxon_id, facts_json) values (%s, %s)", 
-                               (unicode(taxon_id), unicode(jsonstring)))
+                               (str(taxon_id), str(jsonstring)))
             else:
                 print("Error: Import HELCOM PEG. Can't find taxon for: " + name)
                 continue # Skip this taxon.
     #
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

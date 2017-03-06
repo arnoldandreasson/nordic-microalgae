@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 
 import sys
-import string
+# import string
 import codecs
 import json
   
@@ -48,14 +48,14 @@ def execute(file_name = '../data_external/peg_bvol2013.txt',
         # Iterate over rows in file.
         for rowindex, row in enumerate(pegfile):
             if rowindex == 0: # First row is assumed to be the header row.
-                headers = map(string.strip, row.split(field_separator))
-                headers = map(unicode, headers)
+                headers = list(map(str.strip, row.split(field_separator)))
+                # headers = list(map(unicode, headers))
                 # Translate headers.
                 for columnname in headers: 
                     header.append(translate_header(columnname.strip()))
             else:
-                row = map(string.strip, row.split(field_separator))
-                row = map(unicode, row)
+                row = list(map(str.strip, row.split(field_separator)))
+                # row = list(map(unicode, row))
                 taxonDict = {}
                 sizeClassDict = {}
                 column = 0
@@ -107,11 +107,12 @@ def execute(file_name = '../data_external/peg_bvol2013.txt',
         
         # Open file.
         out = codecs.open(out_file_name, mode = 'w', encoding = outfile_encoding)
-        out.write(json.dumps(taxa, encoding = 'utf8', sort_keys=True, indent=4))
+        out.write(json.dumps(taxa, # encoding = 'utf8', 
+                             sort_keys=True, indent=4))
         #
         out.close()
     #
-    except Exception, e:
+    except Exception as e:
         print("ERROR: Exception %s" % (e.args[0]))
         print("ERROR: Script will be terminated.")
         raise # DEBUG

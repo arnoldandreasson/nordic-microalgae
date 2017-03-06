@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import MySQLdb as mysql
+import mysql.connector
 import sys
 import codecs
 
@@ -42,7 +42,7 @@ def execute(db_host = 'localhost',
     out = None
     try:
         # Connect to db.
-        db = mysql.connect(host = db_host, db = db_name, 
+        db = mysql.connector.connect(host = db_host, db = db_name, 
                            user = db_user, passwd = db_passwd,
                            use_unicode = True, charset = 'utf8')
         cursor=db.cursor()
@@ -58,7 +58,8 @@ def execute(db_host = 'localhost',
         for name, author, rank, parent_id in cursortaxa.fetchall():
             # Get parent name.
             parent_name = ''
-            cursor.execute("select name from taxa where id = %s", parent_id)
+            cursor.execute("select name from taxa where id = %s", 
+                           (parent_id,) )
             result = cursor.fetchone()
             if result:
                 # From string to dictionary.
@@ -71,7 +72,7 @@ def execute(db_host = 'localhost',
         print("ERROR: Can't write to text file." + file_name)
         print("ERROR: Script will be terminated.")
         sys.exit(1)
-    except mysql.Error, e:
+    except mysql.connector.Error as e:
         print("ERROR: MySQL %d: %s" % (e.args[0], e.args[1]))
         print("ERROR: Script will be terminated.")
         sys.exit(1)

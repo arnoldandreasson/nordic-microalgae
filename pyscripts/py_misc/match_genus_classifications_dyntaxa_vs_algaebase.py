@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import string
+# import string
 import codecs
   
 #def execute(dyntaxa_file_name = '../data_external/dyntaxa_taxa_xxxxxxxx.txt', 
@@ -58,8 +58,8 @@ def execute(dyntaxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
             # Header: TaxonId    SortOrder    TaxonTypeId    ScientificName    Author    CommonName    Kingdom    Phylum    Class    Order    Family    Genus    OrganismGroupId    IsSwedishTaxon    IsRedlisted    IsRedlistedSpecies    IsNatura2000Listed    RedlistCategoryId    OrganismGroup    OrganismSubGroupId    OrganismSubGroup    RedlistTaxonCategoryId    RedlistCategory    RedlistCriteria    Landscape
             pass
         else:
-            row = map(string.strip, row.split(field_separator))
-            row = map(unicode, row)
+            row = list(map(str.strip, row.split(field_separator)))
+            # row = list(map(unicode, row))
             #
             id = row[0] # ScientificName
             name = row[3] # ScientificName
@@ -88,8 +88,8 @@ def execute(dyntaxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
             # Header: genus    id    Genus_authority    Genus_Year    hierarchy
             pass
         else:
-            row = map(string.strip, row.split(field_separator))
-            row = map(unicode, row)
+            row = list(map(str.strip, row.split(field_separator)))
+            # row = list(map(unicode, row))
             #
             name = row[0]
             id = row[1]
@@ -104,7 +104,7 @@ def execute(dyntaxa_file_name = '../data_external/dyntaxa_taxa_20110523.txt',
                 #          c: Florideophyceae, sc: Rhodymeniophycidae, o: Gigartinales, f: Gigartinaceae, 
                 #          g: Chondrus
                 hierdict = {}
-                hierlist = map(string.strip, row[4].split(','))
+                hierlist = list(map(str.strip, row[4].split(',')))
                 for item in hierlist:
                     if not ':' in item:
                         continue 

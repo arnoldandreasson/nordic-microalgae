@@ -24,10 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import py_setup_db.load_taxa_ranks as load_taxa_ranks
-import py_setup_db.load_system_settings as load_system_settings
-import py_import.generate_taxa_hierarchy_search as generate_taxa_hierarchy_search
-import py_import.generate_taxa_navigation as generate_taxa_navigation
+from pyscripts.py_setup_db import load_taxa_ranks
+from pyscripts.py_setup_db import load_system_settings
+from pyscripts.py_import import generate_taxa_hierarchy_search
+from pyscripts.py_import import generate_taxa_navigation
 
 def execute(db_host, db_name, db_user, db_passwd):
     """ """
@@ -55,8 +55,8 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h:d:u:p:", 
                                    ["host=", "database=", "user=", "password="])
-    except getopt.error, msg:
-        print msg
+    except getopt.error as msg:
+        print(msg)
         sys.exit(2)
     # Create dictionary with named arguments.
     params = {"db_host": "localhost", 
