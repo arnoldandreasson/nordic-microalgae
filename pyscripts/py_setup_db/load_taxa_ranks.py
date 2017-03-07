@@ -39,13 +39,21 @@
 #  g: Delesseria(Genus)
 #
 
-import mysql.connector
+try:
+    import nordicmicroalgae_settings
+except:
+    # For development.
+    MYSQL_HOST = 'localhost' 
+    MYSQL_DATABASE = 'nordicmicroalgae' 
+    MYSQL_USER = 'root' 
+    MYSQL_PASSWORD = ''
+
 import sys
 
-def execute(db_host = 'localhost', 
-            db_name = 'nordicmicroalgae', 
-            db_user = 'root', 
-            db_passwd = ''):
+def execute(db_host = MYSQL_HOST, 
+            db_name = MYSQL_DATABASE, 
+            db_user = MYSQL_USER, 
+            db_passwd = MYSQL_PASSWORD):
     """ 
     Creates table with sort order information for taxonomic rank. 
     All data is located in this Python script.

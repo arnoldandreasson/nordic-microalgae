@@ -24,15 +24,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import nordicmicroalgae_settings
+try:
+    import nordicmicroalgae_settings
+except:
+    # For development.
+    MYSQL_HOST = 'localhost' 
+    MYSQL_DATABASE = 'nordicmicroalgae' 
+    MYSQL_USER = 'root' 
+    MYSQL_PASSWORD = ''
 
 import mysql.connector
 import sys
 
-def execute(db_host = 'localhost', 
-            db_name = 'nordicmicroalgae', 
-            db_user = 'root', 
-            db_passwd = ''):
+def execute(db_host = MYSQL_HOST, 
+            db_name = MYSQL_DATABASE, 
+            db_user = MYSQL_USER, 
+            db_passwd = MYSQL_PASSWORD):
     """ 
     Creates all tables in the database. 
     All table definitions is located in this Python script.
