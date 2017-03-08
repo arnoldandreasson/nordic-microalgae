@@ -1,3 +1,10 @@
 
-.metadata
+
+
+**/.metadata
+
+**/__pycache__
+
+**/nordicmicroalgae_settings.py
+
 
