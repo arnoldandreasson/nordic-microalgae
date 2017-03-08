@@ -8,7 +8,7 @@
 import nordicmicroalgae_settings as settings
 
 import os
-from pyscripts.py_export import export_to_backup
+from py_export import export_to_backup
 
 def execute(db_host = settings.MYSQL_HOST, 
             db_name = settings.MYSQL_DATABASE, 

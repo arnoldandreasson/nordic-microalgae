@@ -7,12 +7,12 @@
 
 import nordicmicroalgae_settings as settings
 
-from pyscripts.py_import import import_taxa_external_links
-from pyscripts.py_import import import_taxa_external_facts
-from pyscripts.py_import import import_taxa_helcom_peg
-from pyscripts.py_import import import_taxa_synonyms
-from pyscripts.py_import import generate_taxa_facts_external_identities
-from pyscripts.py_import import import_taxa_external_facts_culture_collections
+from py_import import import_taxa_external_links
+from py_import import import_taxa_external_facts
+from py_import import import_taxa_helcom_peg
+from py_import import import_taxa_synonyms
+from py_import import generate_taxa_facts_external_identities
+from py_import import import_taxa_external_facts_culture_collections
 
 def execute(db_host = settings.MYSQL_HOST, 
             db_name = settings.MYSQL_DATABASE, 
