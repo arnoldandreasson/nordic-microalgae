@@ -7,10 +7,10 @@
 
 import nordicmicroalgae_settings as settings
 
-from pyscripts.py_import import import_taxa
-from pyscripts.py_setup_db import load_taxa_ranks
-from pyscripts.py_import import generate_taxa_hierarchy_search
-from pyscripts.py_import import generate_taxa_navigation
+from py_import import import_taxa
+from py_setup_db import load_taxa_ranks
+from py_import import generate_taxa_hierarchy_search
+from py_import import generate_taxa_navigation
 
 def execute(db_host = settings.MYSQL_HOST, 
             db_name = settings.MYSQL_DATABASE, 

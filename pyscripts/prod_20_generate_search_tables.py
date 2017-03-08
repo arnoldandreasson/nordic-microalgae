@@ -7,10 +7,8 @@
 
 import nordicmicroalgae_settings as settings
 
-# import py_import.generate_taxa_filter_search as generate_taxa_filter_search
-# import py_import.generate_taxa_media_filter_search as generate_taxa_media_filter_search
-from pyscripts.py_import import generate_taxa_filter_search
-from pyscripts.py_import import generate_taxa_media_filter_search
+from py_import import generate_taxa_filter_search
+from py_import import generate_taxa_media_filter_search
 
 def execute(db_host = settings.MYSQL_HOST, 
             db_name = settings.MYSQL_DATABASE, 

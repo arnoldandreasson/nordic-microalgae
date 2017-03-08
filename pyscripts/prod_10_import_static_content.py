@@ -7,7 +7,7 @@
 
 import nordicmicroalgae_settings as settings
 
-from pyscripts.py_setup_db import load_system_settings
+from py_setup_db import load_system_settings
 
 def execute(db_host = settings.MYSQL_HOST, 
             db_name = settings.MYSQL_DATABASE, 

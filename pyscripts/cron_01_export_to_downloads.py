@@ -9,10 +9,10 @@
 import nordicmicroalgae_settings as settings
 
 import os
-from pyscripts.py_export import export_taxa
-from pyscripts.py_export import export_taxa_facts
-from pyscripts.py_export import export_taxa_media
-from pyscripts.py_export import export_taxa_checklists
+from py_export import export_taxa
+from py_export import export_taxa_facts
+from py_export import export_taxa_media
+from py_export import export_taxa_checklists
 
 
 def execute(db_host = settings.MYSQL_HOST, 
