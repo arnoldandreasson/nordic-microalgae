@@ -64,7 +64,7 @@ create table taxa_synonyms (
   taxon_id           int unsigned not null, -- FK.
   synonym_name       varchar(128) not null default '',
   synonym_author     varchar(256) not null default '',
-  info_json          text not null default '',
+  info_json          text,
   -- constraints:
   primary key (taxon_id, synonym_name),
   key (synonym_name)
@@ -94,9 +94,9 @@ create table taxa_navigation (
   prev_in_tree       varchar(128) not null default '',
   next_in_tree       varchar(128) not null default '',
   sort_order_tree    int unsigned not null default 0,
-  classification     text not null default '',
-  children           text not null default '',
-  siblings           text not null default '',
+  classification     text,
+  children           text,
+  siblings           text,
   -- constraints:
   primary key (taxon_id), 
   key (name, rank)  
@@ -109,7 +109,7 @@ create table taxa_navigation (
 drop table if exists taxa_facts;
 create table taxa_facts (
   taxon_id           int unsigned not null, -- FK, PK.
-  facts_json         text not null default '',
+  facts_json         text,
   -- constraints:
   primary key (taxon_id) 
 ) engine=MyISAM charset=utf8;
@@ -118,7 +118,7 @@ create table taxa_facts (
 drop table if exists taxa_facts_drafts;
 create table taxa_facts_drafts (
   taxon_id           int unsigned not null, -- FK, PK.
-  facts_json         text not null default '',
+  facts_json         text,
   -- constraints:
   primary key (taxon_id) 
 ) engine=MyISAM charset=utf8;
@@ -144,7 +144,7 @@ create table taxa_media (
   media_id           varchar(64) not null default '', -- PK.
   media_type         varchar(64) not null default '', -- PK.
   user_name          varchar(128) not null default '',
-  metadata_json      text not null default '',
+  metadata_json      text,
   -- constraints:
   primary key (taxon_id, media_id, media_type), 
   key (media_id),  
@@ -155,7 +155,7 @@ create table taxa_media (
 drop table if exists taxa_media_list;
 create table taxa_media_list (
   taxon_id           int unsigned not null, -- FK, PK.
-  media_list         text not null default '',
+  media_list         text,
   -- constraints:
   primary key (taxon_id) 
 ) engine=MyISAM charset=utf8;
@@ -191,7 +191,7 @@ drop table if exists taxa_external_facts;
 create table taxa_external_facts (
   taxon_id           int unsigned not null, -- FK, PK.
   provider           varchar(64) not null default '', -- PK.
-  facts_json         text not null default '',
+  facts_json         text,
   -- constraints:
   primary key (taxon_id, provider)
 ) engine=MyISAM charset=utf8;
@@ -200,7 +200,7 @@ create table taxa_external_facts (
 drop table if exists taxa_helcom_peg;
 create table taxa_helcom_peg (
   taxon_id           int unsigned not null, -- FK, PK.
-  facts_json         text not null default '',
+  facts_json         text,
   -- constraints:
   primary key (taxon_id) 
 ) engine=MyISAM charset=utf8;
@@ -211,7 +211,7 @@ create table taxa_helcom_peg (
 drop table if exists system_settings;
 create table system_settings (
   settings_key        varchar(64) not null default '', -- PK.
-  settings_value      text not null default '',
+  settings_value      text,
   -- constraints:
   primary key (settings_key)
 ) engine=MyISAM charset=utf8;
