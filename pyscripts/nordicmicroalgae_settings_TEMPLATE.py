@@ -9,9 +9,10 @@
 
 MYSQL_HOST = 'localhost' 
 MYSQL_DATABASE = 'nordicmicroalgae' 
-MYSQL_USER = 'nordicmicroalgae' 
-MYSQL_PASSWORD = '37siv4qp'
+MYSQL_USER = 'root' 
+MYSQL_PASSWORD = ''
 
 # Paths to directories and files. 
 
-PATH_TO_DOWNLOADS = ''
+PATH_TO_DOWNLOADS = 'test_download'
+PATH_TO_BACKUP = 'test_backup'
