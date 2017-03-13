@@ -71,7 +71,7 @@ def execute(db_host = 'localhost',
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon in taxa. Name: " + scientificname)
+                    print("Warning: Can't find taxon in taxa. Name: " + scientificname)
                     continue # Skip this taxon.
 
                 # Check if db row exists. 
@@ -115,7 +115,7 @@ def execute(db_host = 'localhost',
                 if result:
                     taxonid = result[0]
                 else:
-                    print("Error: Can't find taxon i taxa. Name: " + scientificname)
+                    print("Warning: Can't find taxon i taxa. Name: " + scientificname)
                     continue # Skip this taxon.
                 # 
                 if taxonid in taxondict:

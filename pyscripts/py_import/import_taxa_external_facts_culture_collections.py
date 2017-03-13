@@ -60,7 +60,7 @@ def execute(file_name_sccap = '../data_import/external_facts_culture_collections
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon i taxa. Name: " + speciesname)
+                    print("Warning: Can't find taxon i taxa. Name: " + speciesname)
                     continue # Skip this taxon.
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 

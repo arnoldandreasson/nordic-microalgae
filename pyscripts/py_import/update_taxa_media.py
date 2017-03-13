@@ -75,7 +75,7 @@ def execute(db_host, db_name, db_user, db_passwd, file_name,
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon in taxa. Name: " + scientificname)
+                    print("Warning: Can't find taxon in taxa. Name: " + scientificname)
                     continue # Skip this taxon.
 
 

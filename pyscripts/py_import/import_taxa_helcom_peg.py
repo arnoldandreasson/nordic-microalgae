@@ -73,7 +73,7 @@ def execute(file_name = '../data_import/peg_bvol2013.json',
                 cursor.execute("insert into taxa_helcom_peg(taxon_id, facts_json) values (%s, %s)", 
                                (str(taxon_id), str(jsonstring)))
             else:
-                print("Error: Import HELCOM PEG. Can't find taxon for: " + name)
+                print("Warning: Import HELCOM PEG. Can't find taxon for: " + name)
                 continue # Skip this taxon.
     #
     except mysql.connector.Error as e:

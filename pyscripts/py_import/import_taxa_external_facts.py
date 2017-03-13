@@ -61,7 +61,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon i taxa. Name: " + row[0])
+                    print("Warning: Can't find taxon i taxa. Name: " + row[0])
                     continue # Skip this taxon.
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
@@ -118,7 +118,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon i taxa. Name: " + row[0])
+                    print("Warning: Can't find taxon i taxa. Name: " + row[0])
                     continue # Skip this taxon.
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
@@ -176,7 +176,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon i taxa. Name: " + row[0])
+                    print("Warning: Can't find taxon i taxa. Name: " + row[0])
                     continue # Skip this taxon.
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
@@ -248,7 +248,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon i taxa. Name: " + row[1]) # 1 = AcceptedTaxon
+                    print("Warning: Can't find taxon i taxa. Name: " + row[1]) # 1 = AcceptedTaxon
                     continue # Skip this taxon.
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
@@ -309,7 +309,7 @@ def execute(provider_dyntaxa_id = "Dyntaxa",
                 if result:
                     taxon_id = result[0]
                 else:
-                    print("Error: Can't find taxon i taxa. Name: " + row[0])
+                    print("Warning: Can't find taxon i taxa. Name: " + row[0])
                     continue # Skip this taxon.
                 # Get facts_json from db.
                 cursor.execute("select facts_json from taxa_external_facts " + 
