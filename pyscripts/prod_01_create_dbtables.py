@@ -27,7 +27,7 @@ def execute(db_host = settings.MYSQL_HOST,
                         db = db_name, 
                         user = db_user, 
                         passwd = db_passwd,
-                        use_unicode = True, charset = 'utf8')
+                        use_unicode = True, charset = 'utf8mb4')
         cursor=db.cursor()
         #
         sql_statements = """
@@ -47,7 +47,7 @@ create table taxa (
   key (name),
   key (rank),
   key (parent_id)  
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_ranks --
 drop table if exists taxa_ranks;
@@ -56,7 +56,7 @@ create table taxa_ranks (
   sort_order         int unsigned not null,
   -- constraints:
   primary key (rank)
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_synonyms --
 drop table if exists taxa_synonyms;
@@ -68,7 +68,7 @@ create table taxa_synonyms (
   -- constraints:
   primary key (taxon_id, synonym_name),
   key (synonym_name)
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_hierarchy_search --
 -- Note: Should be automatically generated from taxa.
@@ -79,7 +79,7 @@ create table taxa_hierarchy_search (
   -- constraints:
   primary key (taxon_id, ancestor_id), 
   key (ancestor_id)  
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_navigation --
 -- Note: Should be automatically generated from taxa.
@@ -100,7 +100,7 @@ create table taxa_navigation (
   -- constraints:
   primary key (taxon_id), 
   key (name, rank)  
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 
 -- ===== FACTS =====
@@ -112,7 +112,7 @@ create table taxa_facts (
   facts_json         text,
   -- constraints:
   primary key (taxon_id) 
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_facts_drafts --
 drop table if exists taxa_facts_drafts;
@@ -121,7 +121,7 @@ create table taxa_facts_drafts (
   facts_json         text,
   -- constraints:
   primary key (taxon_id) 
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_filter_search --
 -- Note: Should be automatically generated from taxa_facts.
@@ -133,7 +133,7 @@ create table taxa_filter_search (
   -- constraints:
   primary key (taxon_id, filter, value), 
   key (filter) 
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- ===== MEDIA =====
 
@@ -149,7 +149,7 @@ create table taxa_media (
   primary key (taxon_id, media_id, media_type), 
   key (media_id),  
   key (media_type)  
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_media_list --
 drop table if exists taxa_media_list;
@@ -158,7 +158,7 @@ create table taxa_media_list (
   media_list         text,
   -- constraints:
   primary key (taxon_id) 
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_media_filter_search --
 -- Note: Should be automatically generated from taxa_media.
@@ -171,7 +171,7 @@ create table taxa_media_filter_search (
   -- constraints:
   primary key (media_id, filter, value), 
   key (filter) 
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- ===== EXTERNAL =====
 
@@ -184,7 +184,7 @@ create table taxa_external_links (
   value              text,
   -- constraints:
   primary key (taxon_id, provider, type)
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_external_facts --
 drop table if exists taxa_external_facts;
@@ -194,7 +194,7 @@ create table taxa_external_facts (
   facts_json         text,
   -- constraints:
   primary key (taxon_id, provider)
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: taxa_helcom_peg (HELCOM PEG, Plankton Expert Group) --
 drop table if exists taxa_helcom_peg;
@@ -203,7 +203,7 @@ create table taxa_helcom_peg (
   facts_json         text,
   -- constraints:
   primary key (taxon_id) 
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- ===== SYSTEM =====
 
@@ -214,7 +214,7 @@ create table system_settings (
   settings_value      text,
   -- constraints:
   primary key (settings_key)
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 -- Table: change_history --
 drop table if exists change_history;
@@ -230,7 +230,7 @@ create table change_history (
   key (taxon_id, timestamp),
   key (user_name, timestamp),
   key (timestamp)
-) engine=MyISAM charset=utf8;
+) engine=MyISAM charset=utf8mb4;
 
 commit;
 
