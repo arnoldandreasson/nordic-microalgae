@@ -10,7 +10,7 @@ import nordicmicroalgae_settings as settings
 #import mysql.connector
 import mysql.connector
 import sys
-
+import os
 import json
 import codecs
 # import string
@@ -19,10 +19,10 @@ def execute(db_host = settings.MYSQL_HOST,
             db_name = settings.MYSQL_DATABASE, 
             db_user = settings.MYSQL_USER, 
             db_passwd = settings.MYSQL_PASSWORD, 
-            taxa_facts_file_name = 'data_backup/OLDtaxa_facts_backup.txt', 
-            taxa_media_file_name = 'data_backup/OLD/taxa_media_backup.txt', 
-            taxa_media_list_file_name = 'data_backup/OLD/taxa_media_list_backup.txt', 
-            change_history_file_name = 'data_backup/OLD/change_history_backup.txt', 
+            taxa_facts_file_name = 'data_backup/OLD_Backup/taxa_facts_backup.txt', 
+            taxa_media_file_name = 'data_backup/OLD_Backup/taxa_media_backup.txt', 
+            taxa_media_list_file_name = 'data_backup/OLD_Backup/taxa_media_list_backup.txt', 
+            change_history_file_name = 'data_backup/OLD_Backup/change_history_backup.txt', 
 #             taxa_facts_file_name = 'data_backup/backup_taxa_facts.txt', 
 #             taxa_media_file_name = 'data_backup/backup_taxa_media.txt', 
 #             taxa_media_list_file_name = 'data_backup/backup_taxa_media_list.txt', 
@@ -36,6 +36,21 @@ def execute(db_host = settings.MYSQL_HOST,
     'export_to_backup.py'. 
     Use this import after a database rebuild. Taxa must be loaded before.
     """
+    
+    # Check that backup files exists before deleting db content.
+    if not os.path.isfile(taxa_facts_file_name):
+        print("Import from backap terminated. Can't find file: " + taxa_facts_file_name)
+        return
+    if not os.path.isfile(taxa_media_file_name):
+        print("Import from backap terminated. Can't find file: " + taxa_media_file_name)
+        return
+    if not os.path.isfile(taxa_media_list_file_name):
+        print("Import from backap terminated. Can't find file: " + taxa_media_list_file_name)
+        return
+    if not os.path.isfile(change_history_file_name):
+        print("Import from backap terminated. Can't find file: " + change_history_file_name)
+        return
+        
     try:
         # Connect to db.
         db = mysql.connector.connect(host = db_host, db = db_name, 
