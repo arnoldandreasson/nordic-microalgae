@@ -27,19 +27,20 @@ def execute(db_host = settings.MYSQL_HOST,
                         db = db_name, 
                         user = db_user, 
                         passwd = db_passwd,
+#                        use_unicode = True, charset = 'utf8')
                         use_unicode = True, charset = 'utf8mb4')
         cursor=db.cursor()
         #
         sql_statements = """
-        
+                
 -- ===== TAXA =====
 
 -- Table: taxa --
 drop table if exists taxa;
 create table taxa (
   id                 int unsigned auto_increment not null, -- PK.
-  name               varchar(128) not null default '',
-  author             varchar(256) not null default '',
+  name               varchar(100) not null default '',
+  author             varchar(200) not null default '',
   rank               varchar(64) not null default '',
   parent_id          int unsigned not null default 0, -- FK to taxa.id. 
   -- constraints:
@@ -62,8 +63,8 @@ create table taxa_ranks (
 drop table if exists taxa_synonyms;
 create table taxa_synonyms (
   taxon_id           int unsigned not null, -- FK.
-  synonym_name       varchar(128) not null default '',
-  synonym_author     varchar(256) not null default '',
+  synonym_name       varchar(100) not null default '',
+  synonym_author     varchar(200) not null default '',
   info_json          text,
   -- constraints:
   primary key (taxon_id, synonym_name),
@@ -86,13 +87,13 @@ create table taxa_hierarchy_search (
 drop table if exists taxa_navigation;
 create table taxa_navigation (
   taxon_id           int unsigned not null, -- FK.
-  name               varchar(128) not null default '',
-  rank               varchar(128) not null default '',
-  parent             varchar(128) not null default '',
-  prev_in_rank       varchar(128) not null default '',
-  next_in_rank       varchar(128) not null default '',
-  prev_in_tree       varchar(128) not null default '',
-  next_in_tree       varchar(128) not null default '',
+  name               varchar(100) not null default '',
+  rank               varchar(100) not null default '',
+  parent             varchar(100) not null default '',
+  prev_in_rank       varchar(100) not null default '',
+  next_in_rank       varchar(100) not null default '',
+  prev_in_tree       varchar(100) not null default '',
+  next_in_tree       varchar(100) not null default '',
   sort_order_tree    int unsigned not null default 0,
   classification     text,
   children           text,
@@ -101,8 +102,7 @@ create table taxa_navigation (
   primary key (taxon_id), 
   key (name, rank)  
 ) engine=MyISAM charset=utf8mb4;
-
-
+        
 -- ===== FACTS =====
 
 -- Table: taxa_facts --
@@ -141,9 +141,9 @@ create table taxa_filter_search (
 drop table if exists taxa_media;
 create table taxa_media (
   taxon_id           int unsigned not null, -- FK, PK.
-  media_id           varchar(64) not null default '', -- PK.
-  media_type         varchar(64) not null default '', -- PK.
-  user_name          varchar(128) not null default '',
+  media_id           varchar(50) not null default '', -- PK.
+  media_type         varchar(50) not null default '', -- PK.
+  user_name          varchar(100) not null default '',
   metadata_json      text,
   -- constraints:
   primary key (taxon_id, media_id, media_type), 
@@ -221,8 +221,8 @@ drop table if exists change_history;
 create table change_history (
   id                  int unsigned auto_increment not null, -- PK.
   taxon_id            int unsigned not null, -- FK.
-  current_taxon_name  varchar(128) not null default '',
-  user_name           varchar(128) not null default '',
+  current_taxon_name  varchar(100) not null default '',
+  user_name           varchar(100) not null default '',
   description         text,
   timestamp           datetime,
   -- constraints:
@@ -235,6 +235,8 @@ create table change_history (
 commit;
 
 """
+
+        
         # Execute the statements.
         for result in cursor.execute(sql_statements, multi=True):
             pass
