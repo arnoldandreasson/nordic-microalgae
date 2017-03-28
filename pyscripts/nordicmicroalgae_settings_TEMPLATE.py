@@ -16,3 +16,14 @@ MYSQL_PASSWORD = ''
 
 PATH_TO_DOWNLOADS = 'test_download'
 PATH_TO_BACKUP = 'test_backup'
+
+# Media settings.
+
+MEDIA_PATH_TO_UPLOADED_FILES = 'test_media_uploaded_files'
+MEDIA_PATH_TO_ORIGINAL_FILES = 'test_media_original'
+MEDIA_PATH_TO_STANDARD_FILES = 'test_media_large'
+MEDIA_PATH_TO_THUMBNAIL_FILES = 'test_media_small'
+MEDIA_PATH_TO_EXCLUDE_LIST = 'test_media_exclude_list.txt'
+
+MEDIA_STANDARD_IMAGE_SIZE = (700, 1400)
+MEDIA_THUMBNAIL_SIZE = (200, 150)
