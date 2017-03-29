@@ -80,7 +80,7 @@ def generate_symbolic_link(scientific_name,
         os.remove(link_file_name)
     # Add new link if default image exists.
     if default_image_file_name:
-        os.symlink(link_file_name, default_image_file_name)
+        os.symlink(default_image_file_name, link_file_name)
 
 
 if __name__ == "__main__":
