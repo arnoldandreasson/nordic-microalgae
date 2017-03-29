@@ -73,14 +73,18 @@ def generate_symbolic_link(scientific_name,
     
     # print('DEBUG: ' + link_file_name + '   ' + default_image_file_name + '   ' + absolute_directory_path)
     
-    # Change cwd to create relative symlinks
-    os.chdir(absolute_directory_path)
-    # Remove the old link.
-    if os.path.islink(link_file_name):
-        os.remove(link_file_name)
-    # Add new link if default image exists.
-    if default_image_file_name:
-        os.symlink(default_image_file_name, link_file_name)
+    try:
+        # Change cwd to create relative symlinks
+        os.chdir(absolute_directory_path)
+        # Remove the old link.
+        if os.path.islink(link_file_name):
+            os.remove(link_file_name)
+        # Add new link if default image exists.
+        if default_image_file_name:
+            if os.path.isfile(default_image_file_name):
+                os.symlink(default_image_file_name, link_file_name)
+    except Exception as e:
+        print('Failed to create symlink. From: ' + link_file_name + '   To: ' + default_image_file_name)
 
 
 if __name__ == "__main__":
