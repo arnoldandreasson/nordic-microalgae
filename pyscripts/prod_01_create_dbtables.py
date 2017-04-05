@@ -141,7 +141,7 @@ create table taxa_filter_search (
 drop table if exists taxa_media;
 create table taxa_media (
   taxon_id           int unsigned not null, -- FK, PK.
-  media_id           varchar(50) not null default '', -- PK.
+  media_id           varchar(100) not null default '', -- PK.
   media_type         varchar(50) not null default '', -- PK.
   user_name          varchar(100) not null default '',
   metadata_json      text,
@@ -165,7 +165,7 @@ create table taxa_media_list (
 drop table if exists taxa_media_filter_search;
 create table taxa_media_filter_search (
   taxon_id           int unsigned not null, -- FK.
-  media_id           varchar(64) not null default '', -- PK.
+  media_id           varchar(100) not null default '', -- PK.
   filter             varchar(64) not null default '', -- PK, K. -- 
   value              varchar(64) not null default '', -- PK.
   -- constraints:
